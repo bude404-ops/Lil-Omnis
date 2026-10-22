@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """
-Lil Omnis — trait generation pipeline (v0.1 proof of concept)
+Lil Omnis — trait generation pipeline (v0.3)
 Base model: BudE's shadow-being (layers/base/base_body.png)
-Chain color schemes + freemasonry-style sigils + mystic backgrounds.
+Layers: chamber bg -> mystic ring -> vestment (rare) -> body -> rim light ->
+        eye glow -> chest sigil -> relic staff + crystal -> ground shadow
+Wardens concept: relic staffs with realm crystals (BudE's wardens sheet).
 
 Run:  python3 generate.py
 Out:  out/omnis_<chain>.png (1024x1024 each) + out/test_strip.png
@@ -164,7 +166,52 @@ def rim_light(body_img, color):
     return Image.alpha_composite(halo, im)
 
 
-def render(chain_name, spec):
+def vestment(body_img, color, strength=0.22):
+    """rare vestment trait: lower body tinted toward the realm hue (wardens style)"""
+    import numpy as np
+    a = np.array(body_img).astype(float)
+    h = a.shape[0]
+    mask = np.linspace(0, 1, h)[:, None, None] ** 2.2   # 0 at top -> 1 at bottom
+    m = (mask * strength)[..., 0][..., None]
+    c = np.array(color, dtype=float)
+    a[:, :, :3] = a[:, :, :3] * (1 - m) + c * m
+    return Image.fromarray(a.astype(np.uint8), "RGBA")
+
+
+def relic_staff(size, off, target, chain_name, color, accent):
+    """the warden's relic: staff with a glowing realm crystal (mini sigil) at the top"""
+    layer = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer)
+    feet_y = int(off[1] + target * 0.94)
+    top_y = int(off[1] + target * 0.18)
+    sx = off[0] + int(target * 0.13)
+    # shaft: dark outer, light core
+    d.line([(sx, feet_y), (sx, top_y)], fill=(28, 30, 40, 255), width=13)
+    d.line([(sx, feet_y), (sx, top_y)], fill=(120, 122, 138, 255), width=6)
+    d.line([(sx, feet_y), (sx, top_y)], fill=(190, 192, 205, 255), width=2)
+    # crystal = realm sigil, glowing
+    cr = sigil(chain_name, 190, tuple(min(255, int(v * 1.3)) for v in color))
+    cxx, cyy = sx, top_y - 80
+    for blur, alpha in ((16, 60), (9, 95), (4, 140)):
+        g = cr.filter(ImageFilter.GaussianBlur(blur))
+        gp = g.copy(); put_alpha(gp, alpha)
+        layer.alpha_composite(gp, (cxx - 95, cyy - 95))
+    sharp = cr.copy(); put_alpha(sharp, 235)
+    layer.alpha_composite(sharp, (cxx - 95, cyy - 95))
+    # small accent spark
+    d.ellipse([cxx - 5, cyy - 5, cxx + 5, cyy + 5], fill=accent + (255,))
+    return layer, cyy
+
+
+def render(chain_name, spec, traits=None):
+    traits = traits or {}
+    TR = {
+        "staff": traits.get("staff", True),
+        "vestment": traits.get("vestment", False),
+        "chest_sigil": traits.get("chest_sigil", True),
+        "eye_mode": traits.get("eye_mode", "chain"),
+        "rim": traits.get("rim", "chain"),
+    }
     size = 1024
     color = spec["primary"]
     accent = spec["accent"]
@@ -178,26 +225,36 @@ def render(chain_name, spec):
     target = int(size * 0.72)
     scale = target / 897
     body = body.resize((target, target), Image.LANCZOS)
+    if TR["vestment"]:
+        body = vestment(body, color)
     # base cutout canvas is 897 with figure roughly filling it; center it slightly low
     off = ((size - target) // 2, int((size - target) * 0.56))
     canvas.alpha_composite(body, off)
-    rl = rim_light(body, color)
+    rl = rim_light(body, color if TR["rim"] == "chain" else (217, 180, 91) if TR["rim"] == "gold" else (60, 62, 74))
     canvas.alpha_composite(rl, off)
 
     # eye glow
-    canvas = Image.alpha_composite(canvas, eye_glow(897, scale, off, color, accent))
+    if TR["eye_mode"] == "white":
+        canvas = Image.alpha_composite(canvas, eye_glow(897, scale, off, (210, 214, 224), (252, 252, 252)))
+    else:
+        canvas = Image.alpha_composite(canvas, eye_glow(897, scale, off, color, accent))
 
     # chest sigil ON the body, chain color, glowing (per BudE's realm style reference)
-    sg = sigil(chain_name, 240, tuple(min(255,int(v*1.25)) for v in color))
-    cx = off[0] + int(440 * scale)
-    cy = off[1] + int(530 * scale)
-    for blur, alpha in ((14, 70), (8, 100), (3, 150)):
-        g = sg.filter(ImageFilter.GaussianBlur(blur))
-        gp = g.copy()
-        put_alpha(gp, alpha)
-        canvas.alpha_composite(gp, (cx - 120, cy - 120))
-    sharp = sg.copy(); put_alpha(sharp, 235)
-    canvas.alpha_composite(sharp, (cx - 120, cy - 120))
+    if TR["chest_sigil"]:
+        sg = sigil(chain_name, 240, tuple(min(255,int(v*1.25)) for v in color))
+        cx = off[0] + int(440 * scale)
+        cy = off[1] + int(530 * scale)
+        for blur, alpha in ((14, 70), (8, 100), (3, 150)):
+            g = sg.filter(ImageFilter.GaussianBlur(blur))
+            gp = g.copy()
+            put_alpha(gp, alpha)
+            canvas.alpha_composite(gp, (cx - 120, cy - 120))
+        sharp = sg.copy(); put_alpha(sharp, 235)
+        canvas.alpha_composite(sharp, (cx - 120, cy - 120))
+
+    # relic staff with realm crystal (wardens concept)
+    if TR["staff"]:
+        canvas = Image.alpha_composite(canvas, relic_staff(size, off, target, chain_name, color, accent)[0])
 
     out = canvas.convert("RGB")
 
@@ -218,34 +275,114 @@ def render(chain_name, spec):
 
 
 def main():
+    import json
     os.makedirs(OUT, exist_ok=True)
+
+    # ---- canonical trait catalog ----
+    traits_catalog = {
+        "collection": "Lil Omnis",
+        "total": 666,
+        "note": "666 = six chapters x 111. BIG Network = The Center, opens last (666 -> 777 arc).",
+        "chapters": [
+            {"num": "I",   "realm": "ETHEREUM",  "chamber": "The Ether Vault",   "chain_count": 111},
+            {"num": "II",  "realm": "BASE",      "chamber": "The Blue Keep",     "chain_count": 111},
+            {"num": "III", "realm": "ROBINHOOD", "chamber": "The Green Wood",    "chain_count": 111},
+            {"num": "IV",  "realm": "BNB",       "chamber": "The Amber Temple",  "chain_count": 111},
+            {"num": "V",   "realm": "SOLANA",    "chamber": "The Violet Hive",   "chain_count": 111},
+            {"num": "VI",  "realm": "SUI",       "chamber": "The Tide Gate",     "chain_count": 111},
+        ],
+        "layers": [
+            {"order": 1, "trait": "Chamber",    "type": "background",  "variants": "one per realm (radial realm tint + masonic ring geometry)"},
+            {"order": 2, "trait": "Mystic Ring", "type": "geometry",   "variants": "double circle + rotated square, realm color + faint gold"},
+            {"order": 3, "trait": "Vestment",   "type": "body_tint",   "rare": True, "note": "lower-body robe tint toward realm hue (wardens style)"},
+            {"order": 4, "trait": "Body",        "type": "base",        "note": "the shadow being - pure, unmarked, anonymous in every piece (The Unnamed doctrine)"},
+            {"order": 5, "trait": "Rim Light",   "type": "edge_glow",   "variants": ["realm color", "gilded gold (rare)"]},
+            {"order": 6, "trait": "Eye Glow",    "type": "eyes",        "variants": ["realm color", "pale white (rare)"]},
+            {"order": 7, "trait": "Chest Sigil", "type": "brand",       "variants": ["realm mark", "absent (The Unnamed, rarest)"]},
+            {"order": 8, "trait": "Relic Staff", "type": "prop",        "rare": True, "note": "warden's staff with glowing realm crystal (mini realm sigil)"},
+        ],
+        "per_realm_allocation": {
+            "total": 111,
+            "standard": 60,
+            "relic_staff": 25,
+            "vested": 12,
+            "pale_glow_eyes": 8,
+            "gilded_rim": 5,
+            "the_unnamed": 1,
+            "note": "the 1 Unnamed per realm carries no chest sigil + pale eyes - the realm's rarest soul"
+        },
+        "one_of_ones": [
+            {"piece": "001", "name": "THE ORIGIN", "note": "BudE's original shadow being, untouched - the genesis piece"},
+        ],
+        "lore": {
+            "identity": "THE SHADOW BEING HAS NO NAME. Origin sealed forever (Codex Fragment 002).",
+            "relics": "Each warden's crystal is the relic that opens its realm's chapter.",
+        },
+    }
+    with open(os.path.join(HERE, "traits.json"), "w") as f:
+        json.dump(traits_catalog, f, indent=2)
+    print("traits.json written")
+
+    # ---- render the six realm wardens (standard + relic staff) ----
     panels = []
     for name, spec in CHAINS.items():
         img = render(name, spec)
         img.save(os.path.join(OUT, f"omnis_{name.lower()}.png"))
-        panels.append((name, img))
+        panels.append((name, img, "standard"))
         print("rendered", name)
 
-    # test strip 4x2
-    cell = 512
-    strip = Image.new("RGB", (cell * 4, cell * 2), (3, 4, 9))
-    for i, (name, img) in enumerate(panels):
-        r, c = divmod(i, 4)
-        strip.paste(img.resize((cell, cell), Image.LANCZOS), (c * cell, r * cell))
-    # 8th cell: title block
+    # ---- rarity showcase ----
+    rarity = []
+    # THE UNNAMED (no sigil, pale eyes, no staff) - Solana body
+    rarity.append(("THE UNNAMED", render("SOLANA", CHAINS["SOLANA"],
+        {"staff": False, "chest_sigil": False, "eye_mode": "white"})))
+    # THE VESTED (robe tint + staff) - BNB
+    rarity.append(("THE VESTED", render("BNB", CHAINS["BNB"],
+        {"vestment": True, "staff": True})))
+    # GILDED (gold rim + staff) - Base
+    rarity.append(("GILDED", render("BASE", CHAINS["BASE"],
+        {"rim": "gold", "staff": True})))
+    # PALE GLOW (white eyes + staff) - Sui
+    rarity.append(("PALE GLOW", render("SUI", CHAINS["SUI"],
+        {"eye_mode": "white", "staff": True})))
+
+    # ---- THE ORIGIN 1/1: BudE's original shadow being, untouched ----
+    origin = Image.open(os.path.join(HERE, "..", "omnis-hub", "..", "lil-omnis-pipeline", "layers", "base", "base_body.png")).convert("RGBA") if False else Image.open(BASE).convert("RGBA")
+    # full-body original on dark chamber, nothing added
+    ocan = radial_bg(1024, (217, 180, 91)).convert("RGBA")
+    tgt = int(1024 * 0.72); sc = tgt / 897
+    ob = origin.resize((tgt, tgt), Image.LANCZOS)
+    ocan.alpha_composite(ob, ((1024 - tgt) // 2, int((1024 - tgt) * 0.56)))
+    origin_panel = ocan.convert("RGB")
+
+    # ---- collection look sheet: 5 cols x 2 rows ----
+    cell = 420
+    strip = Image.new("RGB", (cell * 5, cell * 2), (3, 4, 9))
     d = ImageDraw.Draw(strip)
     try:
-        f_big = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf", 44)
-        f_small = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf", 19)
+        f_t = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf", 17)
     except Exception:
-        f_big = f_small = ImageFont.load_default()
-    x0, y0 = cell * 3 + 20, cell + cell // 2 - 40
-    d.text((x0, y0), "LIL OMNIS", font=f_big, fill=(242, 234, 214))
-    d.text((x0 + 4, y0 + 58), "BASE MODEL: TEST LAYER PASS", font=f_small, fill=(107, 114, 144))
-    d.text((x0 + 4, y0 + 86), "EYES / SIGIL / AURA / SHADOW", font=f_small, fill=(107, 114, 144))
-    d.text((x0 + 4, y0 + 114), "PIPELINE v0.1", font=f_small, fill=GOLD)
-    strip.save(os.path.join(OUT, "test_strip.png"))
-    print("saved test_strip.png", strip.size)
+        f_t = ImageFont.load_default()
+
+    def put(img, idx, label, sub):
+        r, c = divmod(idx, 5)
+        x, y = c * cell, r * cell
+        panel = img.resize((cell - 8, cell - 8), Image.LANCZOS)
+        strip.paste(panel, (x + 4, y + 4))
+        lw = d.textlength(label, font=f_t)
+        d.text((x + (cell - lw) / 2, y + cell - 34), label, font=f_t, fill=(242, 234, 214))
+        sw = d.textlength(sub, font=f_t)
+        d.text((x + (cell - sw) / 2, y + cell - 14), sub, font=f_t, fill=(107, 114, 144))
+
+    realm_names = ["ETHEREUM", "BASE", "ROBINHOOD", "BNB", "SOLANA", "SUI"]
+    for i, (name, img, _) in enumerate(panels[:6]):
+        put(img, i, name, "REALM WARDEN · STANDARD")
+    for j, (label, img) in enumerate(rarity):
+        put(img, 6 + j, label, "RARE VARIANT")
+    put(origin_panel, 9, "THE ORIGIN 1/1", "PIECE #001 · GENESIS")
+
+    strip.save(os.path.join(OUT, "collection_look.png"))
+    print("saved collection_look.png", strip.size)
 
 
 if __name__ == "__main__":
