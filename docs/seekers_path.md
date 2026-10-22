@@ -27,8 +27,7 @@ Tiers, earned by portfolio + travel:
 | Wanderer | hold 1 Omni | that realm's riddle trail |
 | Seeker | hold pieces from 3+ realms | cross-realm contradiction map (the origin theories) |
 | Pilgrim | 1 piece that has traveled to 2+ chains | the Echo Chamber — fragments written by travelers |
-| Warden | hold all six realms | the Deep Archive: hidden pages, ciphers |
-| The Center | the final tier | opens only when Chapter VII (BIG Network) unlocks — the 777 arc |
+| Warden | hold all six realms | the Deep Archive: hidden pages, ciphers, the deepest secrets |
 
 ### 4. Riddle Trails
 Each chapter trail has 3 stages:
@@ -51,4 +50,4 @@ riddle. Its holder holds that realm's deepest secret — until they trade it.
   tier) rendered from on-chain state
 - **Phase 3**: echo fragments minted on bridge arrival (chosen bridge/cross-
   chain messaging at rollout), contradiction map visualization
-- **Phase 4**: The Center (Chapter VII) — the final gate, 777
+- **Phase 4**: final-gate expansion layer (reserved — only opens when the collection says so)
