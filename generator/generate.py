@@ -166,6 +166,62 @@ def rim_light(body_img, color):
     return Image.alpha_composite(halo, im)
 
 
+def flat_chamber(size, color):
+    """plain near-black chamber: subtle vertical depth + faint realm floor glow, no symbols"""
+    import numpy as np
+    a = np.zeros((size, size, 3), dtype=np.uint8)
+    top, bot = np.array([4, 5, 11]), np.array([9, 11, 20])
+    for y in range(size):
+        a[y, :, :] = (top + (bot - top) * (y / size)).astype(np.uint8)
+    im = Image.fromarray(a, "RGB").convert("RGBA")
+    glow = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    d = ImageDraw.Draw(glow)
+    d.ellipse([size * 0.18, size * 0.80, size * 0.82, size * 1.06], fill=color + (46,))
+    glow = glow.filter(ImageFilter.GaussianBlur(60))
+    return Image.alpha_composite(im, glow)
+
+
+def robe_pattern(body_img, chain_name, color, strength=80):
+    """embroidered realm motif: small sigils woven in a diamond grid over the robe"""
+    import numpy as np
+    w, h = body_img.size
+    tile = sigil(chain_name, 58, tuple(min(255, int(v * 1.35)) for v in color))
+    put_alpha(tile, strength)
+    tw = 88
+    layer = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    robe_top = int(h * 0.42)
+    row = 0
+    for y in range(robe_top, h, tw):
+        shift = (tw // 2) if row % 2 else 0
+        for x in range(-tw, w, tw):
+            layer.alpha_composite(tile, (x + shift, y))
+        row += 1
+    # clip to body silhouette
+    la = np.array(layer); la[:, :, 3] = np.minimum(la[:, :, 3], np.array(body_img)[:, :, 3])
+    return Image.alpha_composite(body_img, Image.fromarray(la, "RGBA"))
+
+
+def amulet(chain_name, color, accent, off, scale, size=110):
+    """the realm mark worn as an accessory: sigil pendant on a thin cord"""
+    layer = Image.new("RGBA", (1024, 1024), (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer)
+    cx = off[0] + int(440 * scale)
+    cy = off[1] + int(490 * scale)
+    # cord: V lines from shoulders to pendant
+    cord = (150, 128, 74, 200)
+    d.line([(cx - int(150 * scale), cy - int(150 * scale)), (cx, cy - 30)], fill=cord, width=3)
+    d.line([(cx + int(150 * scale), cy - int(150 * scale)), (cx, cy - 30)], fill=cord, width=3)
+    # pendant: small glowing realm sigil
+    pd = sigil(chain_name, size, tuple(min(255, int(v * 1.3)) for v in color))
+    for blur, alpha in ((10, 60), (5, 95), (2, 140)):
+        g = pd.filter(ImageFilter.GaussianBlur(blur)); gp = g.copy()
+        put_alpha(gp, alpha)
+        layer.alpha_composite(gp, (cx - size // 2, cy - size // 2))
+    sharp = pd.copy(); put_alpha(sharp, 240)
+    layer.alpha_composite(sharp, (cx - size // 2, cy - size // 2))
+    return layer
+
+
 def vestment(body_img, color, strength=0.22):
     """rare vestment trait: lower body tinted toward the realm hue (wardens style)"""
     import numpy as np
@@ -207,6 +263,7 @@ def render(chain_name, spec, traits=None):
     traits = traits or {}
     TR = {
         "staff": traits.get("staff", True),
+        "robe_pattern": traits.get("robe_pattern", True),
         "vestment": traits.get("vestment", False),
         "chest_sigil": traits.get("chest_sigil", True),
         "eye_mode": traits.get("eye_mode", "chain"),
@@ -216,9 +273,7 @@ def render(chain_name, spec, traits=None):
     color = spec["primary"]
     accent = spec["accent"]
 
-    canvas = radial_bg(size, color).convert("RGBA")
-    canvas = Image.alpha_composite(canvas, mystic_ring(size, color))
-    canvas = Image.alpha_composite(canvas, mystic_ring(size, GOLD, alpha=40))
+    canvas = flat_chamber(size, color)
 
     # body: scale base to ~72% of canvas
     body = Image.open(BASE).convert("RGBA")
@@ -227,6 +282,9 @@ def render(chain_name, spec, traits=None):
     body = body.resize((target, target), Image.LANCZOS)
     if TR["vestment"]:
         body = vestment(body, color)
+    # embroidered realm motif on the robe (identity in the fabric)
+    if TR["robe_pattern"]:
+        body = robe_pattern(body, chain_name, color)
     # base cutout canvas is 897 with figure roughly filling it; center it slightly low
     off = ((size - target) // 2, int((size - target) * 0.56))
     canvas.alpha_composite(body, off)
@@ -239,18 +297,9 @@ def render(chain_name, spec, traits=None):
     else:
         canvas = Image.alpha_composite(canvas, eye_glow(897, scale, off, color, accent))
 
-    # chest sigil ON the body, chain color, glowing (per BudE's realm style reference)
+    # realm mark worn as an amulet accessory (per BudE: symbols as accessories)
     if TR["chest_sigil"]:
-        sg = sigil(chain_name, 240, tuple(min(255,int(v*1.25)) for v in color))
-        cx = off[0] + int(440 * scale)
-        cy = off[1] + int(530 * scale)
-        for blur, alpha in ((14, 70), (8, 100), (3, 150)):
-            g = sg.filter(ImageFilter.GaussianBlur(blur))
-            gp = g.copy()
-            put_alpha(gp, alpha)
-            canvas.alpha_composite(gp, (cx - 120, cy - 120))
-        sharp = sg.copy(); put_alpha(sharp, 235)
-        canvas.alpha_composite(sharp, (cx - 120, cy - 120))
+        canvas = Image.alpha_composite(canvas, amulet(chain_name, color, accent, off, scale))
 
     # relic staff with realm crystal (wardens concept)
     if TR["staff"]:
@@ -292,14 +341,14 @@ def main():
             {"num": "VI",  "realm": "SUI",       "chamber": "The Tide Gate",     "chain_count": 111},
         ],
         "layers": [
-            {"order": 1, "trait": "Chamber",    "type": "background",  "variants": "one per realm (radial realm tint + masonic ring geometry)"},
-            {"order": 2, "trait": "Mystic Ring", "type": "geometry",   "variants": "double circle + rotated square, realm color + faint gold"},
-            {"order": 3, "trait": "Vestment",   "type": "body_tint",   "rare": True, "note": "lower-body robe tint toward realm hue (wardens style)"},
-            {"order": 4, "trait": "Body",        "type": "base",        "note": "the shadow being - pure, unmarked, anonymous in every piece (The Unnamed doctrine)"},
-            {"order": 5, "trait": "Rim Light",   "type": "edge_glow",   "variants": ["realm color", "gilded gold (rare)"]},
-            {"order": 6, "trait": "Eye Glow",    "type": "eyes",        "variants": ["realm color", "pale white (rare)"]},
-            {"order": 7, "trait": "Chest Sigil", "type": "brand",       "variants": ["realm mark", "absent (The Unnamed, rarest)"]},
-            {"order": 8, "trait": "Relic Staff", "type": "prop",        "rare": True, "note": "warden's staff with glowing realm crystal (mini realm sigil)"},
+            {"order": 1, "trait": "Chamber",     "type": "background",  "note": "plain near-black, faint realm floor glow - no symbols (v0.4 law: identity not from bg)"},
+            {"order": 2, "trait": "Body",         "type": "base",        "note": "the shadow being - pure, unmarked, anonymous (The Unnamed doctrine)"},
+            {"order": 3, "trait": "Robe Pattern", "type": "fabric",      "note": "embroidered realm sigil motif woven in a diamond grid over the robe"},
+            {"order": 4, "trait": "Vestment",      "type": "body_tint",   "rare": True, "note": "lower-body robe tint toward realm hue"},
+            {"order": 5, "trait": "Rim Light",     "type": "edge_glow",   "variants": ["realm color", "gilded gold (rare)"]},
+            {"order": 6, "trait": "Eye Glow",      "type": "eyes",        "variants": ["realm color", "pale white (rare)"]},
+            {"order": 7, "trait": "Amulet",        "type": "accessory",    "note": "realm mark worn on a cord - present/absent (absent = The Unnamed)"},
+            {"order": 8, "trait": "Relic Staff",   "type": "prop",        "rare": True, "note": "warden's staff with glowing realm crystal"},
         ],
         "per_realm_allocation": {
             "total": 111,
@@ -309,7 +358,7 @@ def main():
             "pale_glow_eyes": 8,
             "gilded_rim": 5,
             "the_unnamed": 1,
-            "note": "the 1 Unnamed per realm carries no chest sigil + pale eyes - the realm's rarest soul"
+            "note": "the 1 Unnamed per realm: no amulet, no robe pattern, pale eyes - the realm's rarest soul"
         },
         "one_of_ones": [
             {"piece": "001", "name": "THE ORIGIN", "note": "BudE's original shadow being, untouched - the genesis piece"},
@@ -335,7 +384,7 @@ def main():
     rarity = []
     # THE UNNAMED (no sigil, pale eyes, no staff) - Solana body
     rarity.append(("THE UNNAMED", render("SOLANA", CHAINS["SOLANA"],
-        {"staff": False, "chest_sigil": False, "eye_mode": "white"})))
+        {"staff": False, "chest_sigil": False, "robe_pattern": False, "eye_mode": "white"})))
     # THE VESTED (robe tint + staff) - BNB
     rarity.append(("THE VESTED", render("BNB", CHAINS["BNB"],
         {"vestment": True, "staff": True})))
