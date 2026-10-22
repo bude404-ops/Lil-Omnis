@@ -421,6 +421,9 @@ def render(chain_name, spec, traits=None):
         "chest_sigil": traits.get("chest_sigil", True),
         "eye_mode": traits.get("eye_mode", "chain"),
         "rim": traits.get("rim", "chain"),
+        "bg_glyph": traits.get("bg_glyph", False),
+        "tome": traits.get("tome", False),
+        "bg_lift": traits.get("bg_lift", 1.0),
     }
     size = 1024
     color = spec["primary"]
