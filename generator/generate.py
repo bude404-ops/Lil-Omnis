@@ -26,7 +26,6 @@ CHAINS = {
     "BNB":       {"primary": (240, 185, 11), "accent": (255, 230, 150)},
     "SOLANA":    {"primary": (153, 69, 255), "accent": (20, 241, 149)},
     "SUI":       {"primary": (77, 162, 255), "accent": (160, 215, 255)},
-    "BIGNETWORK":{"primary": (217, 180, 91), "accent": (242, 234, 214)},
 }
 
 GOLD = (217, 180, 91)
@@ -222,6 +221,80 @@ def amulet(chain_name, color, accent, off, scale, size=110):
     return layer
 
 
+def ascended(route):
+    """THE ASCENDED 1/1: pilgrimage completion reward - a fully omni being.
+    Art encodes the collector's actual route: amulet cluster + robe embroidery
+    cycle the six realm sigils in the order the piece traveled them."""
+    size = 1024
+    gold = CHAINS["BIGNETWORK"]["primary"]
+    canvas = flat_chamber(size, gold)
+
+    body = Image.open(BASE).convert("RGBA")
+    target = int(size * 0.72)
+    scale = target / 897
+    body = body.resize((target, target), Image.LANCZOS)
+
+    # robe: embroidered with ALL six realm sigils, cycling in route order
+    w, h = body.size
+    tw = 88
+    layer = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    i = 0
+    row = 0
+    for y in range(int(h * 0.42), h, tw):
+        shift = (tw // 2) if row % 2 else 0
+        for x in range(-tw, w, tw):
+            chain = route[i % len(route)]
+            tile = sigil(chain, 58, tuple(min(255, int(v * 1.35)) for v in CHAINS[chain]["primary"]))
+            put_alpha(tile, 80)
+            layer.alpha_composite(tile, (x + shift, y))
+            i += 1
+        row += 1
+    import numpy as np
+    la = np.array(layer); la[:, :, 3] = np.minimum(la[:, :, 3], np.array(body)[:, :, 3])
+    body = Image.alpha_composite(body, Image.fromarray(la, "RGBA"))
+
+    off = ((size - target) // 2, int((size - target) * 0.56))
+    canvas.alpha_composite(body, off)
+    canvas.alpha_composite(rim_light(body, gold), off)
+    canvas = Image.alpha_composite(canvas, eye_glow(897, scale, off, (210, 190, 120), (255, 245, 205)))
+
+    # amulet cluster: six realm pendants on a fan cord, route order
+    d = ImageDraw.Draw(canvas)
+    cx0 = off[0] + int(440 * scale)
+    cy0 = off[1] + int(470 * scale)
+    d.line([(cx0 - int(210 * scale), cy0 - int(130 * scale)), (cx0, cy0 - 20)], fill=(150, 128, 74, 255), width=3)
+    d.line([(cx0 + int(210 * scale), cy0 - int(130 * scale)), (cx0, cy0 - 20)], fill=(150, 128, 74, 255), width=3)
+    cluster = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    cd = ImageDraw.Draw(cluster)
+    n = len(route)
+    for j, chain in enumerate(route):
+        px = cx0 + (j - (n - 1) / 2) * 74
+        py = cy0 + abs(j - (n - 1) / 2) * 26
+        cd.line([(cx0, cy0 - 20), (px, py - 26)], fill=(150, 128, 74, 210), width=2)
+        pd = sigil(chain, 74, tuple(min(255, int(v * 1.3)) for v in CHAINS[chain]["primary"]))
+        for blur, alpha in ((8, 55), (3, 100)):
+            g = pd.filter(ImageFilter.GaussianBlur(blur)); gp = g.copy()
+            put_alpha(gp, alpha)
+            cluster.alpha_composite(gp, (int(px) - 37, int(py) - 37))
+        sharp = pd.copy(); put_alpha(sharp, 240)
+        cluster.alpha_composite(sharp, (int(px) - 37, int(py) - 37))
+    canvas = Image.alpha_composite(canvas, cluster)
+
+    # relic staff with The Center crystal
+    canvas = Image.alpha_composite(canvas, relic_staff(size, off, target, "BIGNETWORK", gold, (242, 234, 214)))
+
+    out = canvas.convert("RGB")
+    out = ground_shadow(out, int(off[1] + target * 0.965), int(target * 0.30))
+    d2 = ImageDraw.Draw(out)
+    try:
+        f = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf", 30)
+    except Exception:
+        f = ImageFont.load_default()
+    lbl = "THE ASCENDED"
+    d2.text((size / 2 - d2.textlength(lbl, font=f) / 2, size - 74), lbl, font=f, fill=gold)
+    return out
+
+
 def vestment(body_img, color, strength=0.22):
     """rare vestment trait: lower body tinted toward the realm hue (wardens style)"""
     import numpy as np
@@ -331,7 +404,7 @@ def main():
     traits_catalog = {
         "collection": "Lil Omnis",
         "total": 666,
-        "note": "666 = six chapters x 111. BIG Network = The Center, opens last (666 -> 777 arc).",
+        "note": "666 = six chapters x 111: ETH, Base, Robinhood, BNB, Solana, Sui.",
         "chapters": [
             {"num": "I",   "realm": "ETHEREUM",  "chamber": "The Ether Vault",   "chain_count": 111},
             {"num": "II",  "realm": "BASE",      "chamber": "The Blue Keep",     "chain_count": 111},
@@ -431,6 +504,11 @@ def main():
     put(origin_panel, 9, "THE ORIGIN 1/1", "PIECE #001 · GENESIS")
 
     strip.save(os.path.join(OUT, "collection_look.png"))
+
+    # THE ASCENDED demo (pilgrimage completion reward)
+    asc = ascended(["ETHEREUM", "BASE", "ROBINHOOD", "BNB", "SOLANA", "SUI"])
+    asc.save(os.path.join(OUT, "ascended_demo.png"))
+    print("saved ascended_demo.png")
     print("saved collection_look.png", strip.size)
 
 
