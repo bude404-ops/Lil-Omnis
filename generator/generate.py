@@ -226,7 +226,7 @@ def ascended(route):
     Art encodes the collector's actual route: amulet cluster + robe embroidery
     cycle the six realm sigils in the order the piece traveled them."""
     size = 1024
-    gold = CHAINS["BIGNETWORK"]["primary"]
+    gold = GOLD  # The Center's light
     canvas = flat_chamber(size, gold)
 
     body = Image.open(BASE).convert("RGBA")
@@ -281,7 +281,7 @@ def ascended(route):
     canvas = Image.alpha_composite(canvas, cluster)
 
     # relic staff with The Center crystal
-    canvas = Image.alpha_composite(canvas, relic_staff(size, off, target, "BIGNETWORK", gold, (242, 234, 214)))
+    canvas = Image.alpha_composite(canvas, relic_staff(size, off, target, "BIGNETWORK", gold, (242, 234, 214))[0])
 
     out = canvas.convert("RGB")
     out = ground_shadow(out, int(off[1] + target * 0.965), int(target * 0.30))
@@ -293,6 +293,86 @@ def ascended(route):
     lbl = "THE ASCENDED"
     d2.text((size / 2 - d2.textlength(lbl, font=f) / 2, size - 74), lbl, font=f, fill=gold)
     return out
+
+
+def chamber_v2(size, color, lift=1.0):
+    """deep but lit chamber: navy gradient + soft realm glow so beings pop off the dark"""
+    import numpy as np
+    top = np.array([13, 15, 24]); bot = np.array([26, 29, 43])
+    top = np.clip(top * lift, 0, 255); bot = np.clip(bot * lift, 0, 255)
+    a = np.zeros((size, size, 3), dtype=np.float64)
+    for y in range(size):
+        a[y, :, :] = top + (bot - top) * (y / size)
+    c = np.array(color, dtype=np.float64)
+    d = np.array([[math.hypot(x - size / 2, y - size * 0.92) / size for x in range(size)] for y in range(size)])
+    t = np.clip(1 - d * 1.6, 0, 1) ** 2 * 0.20
+    a = a * (1 - t[..., None]) + c * t[..., None]
+    im = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8), "RGB").convert("RGBA")
+    glow = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    d2 = ImageDraw.Draw(glow)
+    d2.ellipse([size * 0.16, size * 0.78, size * 0.84, size * 1.05], fill=color + (52,))
+    glow = glow.filter(ImageFilter.GaussianBlur(55))
+    return Image.alpha_composite(im, glow)
+
+
+def robe_glyphs(body_img, chain_name, color, strength=95):
+    """flowing glyph embroidery: a few sigils at varied sizes/rotations drifting down the robe"""
+    import numpy as np
+    w, h = body_img.size
+    layer = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    drift = [(0.00, 0.46, 96, -8, 100), (-0.05, 0.58, 68, 10, 80),
+             (0.05, 0.70, 82, -5, 85), (-0.03, 0.83, 58, 7, 65)]
+    col = tuple(min(255, int(v * 1.35)) for v in color)
+    for dx, dy, s, rot, alpha in drift:
+        g = sigil(chain_name, s, col)
+        g = g.rotate(rot, resample=Image.BICUBIC, expand=True)
+        put_alpha(g, alpha)
+        gx = int(w * (0.5 + dx)); gy = int(h * dy)
+        layer.alpha_composite(g, (gx - g.size[0] // 2, gy - g.size[1] // 2))
+    la = np.array(layer); la[:, :, 3] = np.minimum(la[:, :, 3], np.array(body_img)[:, :, 3])
+    return Image.alpha_composite(body_img, Image.fromarray(la, "RGBA"))
+
+
+def floating_tome(chain_name, color, accent, size=300):
+    """the keeper's book: floating tome with the realm glyph glowing on its cover"""
+    import numpy as np
+    w = size; h = int(size * 0.74)
+    book = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    d = ImageDraw.Draw(book)
+    x0, y0 = 10, int(size * 0.13)
+    cover = (26, 22, 36, 255); trim = (150, 128, 74, 255)
+    d.rounded_rectangle([x0, y0, x0 + w - 20, y0 + h], 12, fill=cover, outline=trim, width=4)
+    d.rounded_rectangle([x0 + 14, y0 + 10, x0 + w - 34, y0 + h - 10], 8, outline=(150, 128, 74, 120), width=2)
+    # spine hint
+    d.line([x0 + 22, y0 + 6, x0 + 22, y0 + h - 6], fill=(150, 128, 74, 170), width=3)
+    # pages edge
+    d.rounded_rectangle([x0 + w - 26, y0 + 14, x0 + w - 14, y0 + h - 14], 6, fill=(214, 206, 182, 255))
+    # glyph on cover, glowing
+    gs = int(size * 0.34)
+    g = sigil(chain_name, gs, tuple(min(255, int(v * 1.3)) for v in color))
+    for blur, alpha in ((9, 70), (4, 110)):
+        gb = g.filter(ImageFilter.GaussianBlur(blur)); gp = gb.copy()
+        put_alpha(gp, alpha)
+        book.alpha_composite(gp, (int(size * 0.28), int(size * 0.28)))
+    sharp = g.copy(); put_alpha(sharp, 235)
+    book.alpha_composite(sharp, (int(size * 0.28), int(size * 0.28)))
+    book = book.rotate(-11, resample=Image.BICUBIC, expand=True)
+    # float glow under the tome
+    gl = Image.new("RGBA", book.size, (0, 0, 0, 0))
+    dg = ImageDraw.Draw(gl)
+    dg.ellipse([book.size[0] * 0.3, book.size[1] * 0.86, book.size[0] * 0.7, book.size[1] * 0.98], fill=color + (70,))
+    gl = gl.filter(ImageFilter.GaussianBlur(18))
+    return Image.alpha_composite(gl, book)
+
+
+def bg_glyph(size, chain_name, color, alpha=26):
+    """giant soft realm glyph watermark behind the being"""
+    g = sigil(chain_name, int(size * 0.9), tuple(min(255, int(v * 1.1)) for v in color))
+    g = g.filter(ImageFilter.GaussianBlur(7))
+    put_alpha(g, alpha)
+    layer = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    layer.alpha_composite(g, (size // 2 - g.size[0] // 2, size // 2 - g.size[1] // 2))
+    return layer
 
 
 def vestment(body_img, color, strength=0.22):
@@ -346,7 +426,9 @@ def render(chain_name, spec, traits=None):
     color = spec["primary"]
     accent = spec["accent"]
 
-    canvas = flat_chamber(size, color)
+    canvas = chamber_v2(size, color, TR.get("bg_lift", 1.0))
+    if TR.get("bg_glyph"):
+        canvas = Image.alpha_composite(canvas, bg_glyph(size, chain_name, color))
 
     # body: scale base to ~72% of canvas
     body = Image.open(BASE).convert("RGBA")
@@ -357,7 +439,7 @@ def render(chain_name, spec, traits=None):
         body = vestment(body, color)
     # embroidered realm motif on the robe (identity in the fabric)
     if TR["robe_pattern"]:
-        body = robe_pattern(body, chain_name, color)
+        body = robe_glyphs(body, chain_name, color)
     # base cutout canvas is 897 with figure roughly filling it; center it slightly low
     off = ((size - target) // 2, int((size - target) * 0.56))
     canvas.alpha_composite(body, off)
@@ -373,6 +455,11 @@ def render(chain_name, spec, traits=None):
     # realm mark worn as an amulet accessory (per BudE: symbols as accessories)
     if TR["chest_sigil"]:
         canvas = Image.alpha_composite(canvas, amulet(chain_name, color, accent, off, scale))
+
+    # the keeper's tome (glyph carrier option)
+    if TR.get("tome"):
+        tm = floating_tome(chain_name, color, accent, 320)
+        canvas.alpha_composite(tm, (off[0] + int(target * 0.52), off[1] + int(target * 0.42)))
 
     # relic staff with realm crystal (wardens concept)
     if TR["staff"]:
@@ -399,92 +486,30 @@ def render(chain_name, spec, traits=None):
 def main():
     import json
     os.makedirs(OUT, exist_ok=True)
-
-    # ---- canonical trait catalog ----
-    traits_catalog = {
-        "collection": "Lil Omnis",
-        "total": 666,
-        "note": "666 = six chapters x 111: ETH, Base, Robinhood, BNB, Solana, Sui.",
-        "chapters": [
-            {"num": "I",   "realm": "ETHEREUM",  "chamber": "The Ether Vault",   "chain_count": 111},
-            {"num": "II",  "realm": "BASE",      "chamber": "The Blue Keep",     "chain_count": 111},
-            {"num": "III", "realm": "ROBINHOOD", "chamber": "The Green Wood",    "chain_count": 111},
-            {"num": "IV",  "realm": "BNB",       "chamber": "The Amber Temple",  "chain_count": 111},
-            {"num": "V",   "realm": "SOLANA",    "chamber": "The Violet Hive",   "chain_count": 111},
-            {"num": "VI",  "realm": "SUI",       "chamber": "The Tide Gate",     "chain_count": 111},
-        ],
-        "layers": [
-            {"order": 1, "trait": "Chamber",     "type": "background",  "note": "plain near-black, faint realm floor glow - no symbols (v0.4 law: identity not from bg)"},
-            {"order": 2, "trait": "Body",         "type": "base",        "note": "the shadow being - pure, unmarked, anonymous (The Unnamed doctrine)"},
-            {"order": 3, "trait": "Robe Pattern", "type": "fabric",      "note": "embroidered realm sigil motif woven in a diamond grid over the robe"},
-            {"order": 4, "trait": "Vestment",      "type": "body_tint",   "rare": True, "note": "lower-body robe tint toward realm hue"},
-            {"order": 5, "trait": "Rim Light",     "type": "edge_glow",   "variants": ["realm color", "gilded gold (rare)"]},
-            {"order": 6, "trait": "Eye Glow",      "type": "eyes",        "variants": ["realm color", "pale white (rare)"]},
-            {"order": 7, "trait": "Amulet",        "type": "accessory",    "note": "realm mark worn on a cord - present/absent (absent = The Unnamed)"},
-            {"order": 8, "trait": "Relic Staff",   "type": "prop",        "rare": True, "note": "warden's staff with glowing realm crystal"},
-        ],
-        "per_realm_allocation": {
-            "total": 111,
-            "standard": 60,
-            "relic_staff": 25,
-            "vested": 12,
-            "pale_glow_eyes": 8,
-            "gilded_rim": 5,
-            "the_unnamed": 1,
-            "note": "the 1 Unnamed per realm: no amulet, no robe pattern, pale eyes - the realm's rarest soul"
-        },
-        "one_of_ones": [
-            {"piece": "001", "name": "THE ORIGIN", "note": "BudE's original shadow being, untouched - the genesis piece"},
-        ],
-        "lore": {
-            "identity": "THE SHADOW BEING HAS NO NAME. Origin sealed forever (Codex Fragment 002).",
-            "relics": "Each warden's crystal is the relic that opens its realm's chapter.",
-        },
-    }
-    with open(os.path.join(HERE, "traits.json"), "w") as f:
-        json.dump(traits_catalog, f, indent=2)
-    print("traits.json written")
-
-    # ---- render the six realm wardens (standard + relic staff) ----
     panels = []
     for name, spec in CHAINS.items():
         img = render(name, spec)
         img.save(os.path.join(OUT, f"omnis_{name.lower()}.png"))
-        panels.append((name, img, "standard"))
+        panels.append((name, img))
         print("rendered", name)
 
-    # ---- rarity showcase ----
-    rarity = []
-    # THE UNNAMED (no sigil, pale eyes, no staff) - Solana body
-    rarity.append(("THE UNNAMED", render("SOLANA", CHAINS["SOLANA"],
-        {"staff": False, "chest_sigil": False, "robe_pattern": False, "eye_mode": "white"})))
-    # THE VESTED (robe tint + staff) - BNB
-    rarity.append(("THE VESTED", render("BNB", CHAINS["BNB"],
-        {"vestment": True, "staff": True})))
-    # GILDED (gold rim + staff) - Base
-    rarity.append(("GILDED", render("BASE", CHAINS["BASE"],
-        {"rim": "gold", "staff": True})))
-    # PALE GLOW (white eyes + staff) - Sui
-    rarity.append(("PALE GLOW", render("SUI", CHAINS["SUI"],
-        {"eye_mode": "white", "staff": True})))
+    # variant options for BudE to judge
+    variants = []
+    variants.append(("FLOWING GLYPHS + AMULET", render("ETHEREUM", CHAINS["ETHEREUM"], {}), "the new robe treatment"))
+    variants.append(("TOME VARIANT", render("BASE", CHAINS["BASE"], {"tome": True}), "glyph on the keeper's book"))
+    variants.append(("BG GLYPH VARIANT", render("BNB", CHAINS["BNB"], {"robe_pattern": False, "bg_glyph": True}), "giant soft watermark + plain robe"))
+    variants.append(("THE UNNAMED", render("SOLANA", CHAINS["SOLANA"],
+        {"staff": False, "chest_sigil": False, "robe_pattern": False, "eye_mode": "white"}), "nothing worn, pale eyes"))
+    variants.append(("THE ORIGIN 1/1", None, "piece #001"))
 
-    # ---- THE ORIGIN 1/1: BudE's original shadow being, untouched ----
-    origin = Image.open(os.path.join(HERE, "..", "omnis-hub", "..", "lil-omnis-pipeline", "layers", "base", "base_body.png")).convert("RGBA") if False else Image.open(BASE).convert("RGBA")
-    # full-body original on dark chamber, nothing added
-    ocan = radial_bg(1024, (217, 180, 91)).convert("RGBA")
-    tgt = int(1024 * 0.72); sc = tgt / 897
-    ob = origin.resize((tgt, tgt), Image.LANCZOS)
-    ocan.alpha_composite(ob, ((1024 - tgt) // 2, int((1024 - tgt) * 0.56)))
-    origin_panel = ocan.convert("RGB")
-
-    # ---- collection look sheet: 5 cols x 2 rows ----
     cell = 420
     strip = Image.new("RGB", (cell * 5, cell * 2), (3, 4, 9))
     d = ImageDraw.Draw(strip)
     try:
         f_t = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf", 17)
+        f_s = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf", 13)
     except Exception:
-        f_t = ImageFont.load_default()
+        f_t = f_s = ImageFont.load_default()
 
     def put(img, idx, label, sub):
         r, c = divmod(idx, 5)
@@ -492,23 +517,24 @@ def main():
         panel = img.resize((cell - 8, cell - 8), Image.LANCZOS)
         strip.paste(panel, (x + 4, y + 4))
         lw = d.textlength(label, font=f_t)
-        d.text((x + (cell - lw) / 2, y + cell - 34), label, font=f_t, fill=(242, 234, 214))
-        sw = d.textlength(sub, font=f_t)
-        d.text((x + (cell - sw) / 2, y + cell - 14), sub, font=f_t, fill=(107, 114, 144))
+        d.text((x + (cell - lw) / 2, y + cell - 40), label, font=f_t, fill=(242, 234, 214))
+        sw = d.textlength(sub, font=f_s)
+        d.text((x + (cell - sw) / 2, y + cell - 18), sub, font=f_s, fill=(107, 114, 144))
 
-    realm_names = ["ETHEREUM", "BASE", "ROBINHOOD", "BNB", "SOLANA", "SUI"]
-    for i, (name, img, _) in enumerate(panels[:6]):
-        put(img, i, name, "REALM WARDEN · STANDARD")
-    for j, (label, img) in enumerate(rarity):
-        put(img, 6 + j, label, "RARE VARIANT")
-    put(origin_panel, 9, "THE ORIGIN 1/1", "PIECE #001 · GENESIS")
+    for i, (name, img) in enumerate(panels[:5]):
+        put(img, i, name, "REALM WARDEN · v0.5")
+    put(panels[5][1], 5, "SUI", "REALM WARDEN · v0.5")
+    for j, (label, img, sub) in enumerate(variants[:4]):
+        put(img, 5 + j + 1, label, sub)
+    # THE ORIGIN
+    origin = Image.open(BASE).convert("RGBA")
+    ocan = chamber_v2(1024, (217, 180, 91))
+    tgt = int(1024 * 0.72); sc = tgt / 897
+    ob = origin.resize((tgt, tgt), Image.LANCZOS)
+    ocan.alpha_composite(ob, ((1024 - tgt) // 2, int((1024 - tgt) * 0.56)))
+    put(ocan.convert("RGB"), 9, "THE ORIGIN 1/1", "piece #001 · genesis")
 
     strip.save(os.path.join(OUT, "collection_look.png"))
-
-    # THE ASCENDED demo (pilgrimage completion reward)
-    asc = ascended(["ETHEREUM", "BASE", "ROBINHOOD", "BNB", "SOLANA", "SUI"])
-    asc.save(os.path.join(OUT, "ascended_demo.png"))
-    print("saved ascended_demo.png")
     print("saved collection_look.png", strip.size)
 
 
