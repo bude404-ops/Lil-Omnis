@@ -113,10 +113,16 @@
       "piece": "001",
       "name": "THE ORIGIN",
       "note": "BudE's original shadow being, untouched - the genesis piece"
+    },
+    {
+      "class": "reward",
+      "name": "THE ASCENDED",
+      "note": "pilgrimage completion reward, minted 1/1 per collector who completes the full journey - fully omni being carrying all six realm marks; amulet cluster + robe embroidery encode the collector's actual route order; The Center's gold light"
     }
   ],
   "lore": {
     "identity": "THE SHADOW BEING HAS NO NAME. Origin sealed forever (Codex Fragment 002).",
-    "relics": "Each warden's crystal is the relic that opens its realm's chapter."
+    "relics": "Each warden's crystal is the relic that opens its realm's chapter.",
+    "ascension": "Complete the pilgrimage (one of your pieces travels through all six realms) and the Archive mints you THE ASCENDED - your personal 1/1, fully omni, its art recording your route forever."
   }
 }
