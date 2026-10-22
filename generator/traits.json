@@ -1,0 +1,125 @@
+{
+  "collection": "Lil Omnis",
+  "total": 666,
+  "note": "666 = six chapters x 111. BIG Network = The Center, opens last (666 -> 777 arc).",
+  "chapters": [
+    {
+      "num": "I",
+      "realm": "ETHEREUM",
+      "chamber": "The Ether Vault",
+      "chain_count": 111
+    },
+    {
+      "num": "II",
+      "realm": "BASE",
+      "chamber": "The Blue Keep",
+      "chain_count": 111
+    },
+    {
+      "num": "III",
+      "realm": "ROBINHOOD",
+      "chamber": "The Green Wood",
+      "chain_count": 111
+    },
+    {
+      "num": "IV",
+      "realm": "BNB",
+      "chamber": "The Amber Temple",
+      "chain_count": 111
+    },
+    {
+      "num": "V",
+      "realm": "SOLANA",
+      "chamber": "The Violet Hive",
+      "chain_count": 111
+    },
+    {
+      "num": "VI",
+      "realm": "SUI",
+      "chamber": "The Tide Gate",
+      "chain_count": 111
+    }
+  ],
+  "layers": [
+    {
+      "order": 1,
+      "trait": "Chamber",
+      "type": "background",
+      "variants": "one per realm (radial realm tint + masonic ring geometry)"
+    },
+    {
+      "order": 2,
+      "trait": "Mystic Ring",
+      "type": "geometry",
+      "variants": "double circle + rotated square, realm color + faint gold"
+    },
+    {
+      "order": 3,
+      "trait": "Vestment",
+      "type": "body_tint",
+      "rare": true,
+      "note": "lower-body robe tint toward realm hue (wardens style)"
+    },
+    {
+      "order": 4,
+      "trait": "Body",
+      "type": "base",
+      "note": "the shadow being - pure, unmarked, anonymous in every piece (The Unnamed doctrine)"
+    },
+    {
+      "order": 5,
+      "trait": "Rim Light",
+      "type": "edge_glow",
+      "variants": [
+        "realm color",
+        "gilded gold (rare)"
+      ]
+    },
+    {
+      "order": 6,
+      "trait": "Eye Glow",
+      "type": "eyes",
+      "variants": [
+        "realm color",
+        "pale white (rare)"
+      ]
+    },
+    {
+      "order": 7,
+      "trait": "Chest Sigil",
+      "type": "brand",
+      "variants": [
+        "realm mark",
+        "absent (The Unnamed, rarest)"
+      ]
+    },
+    {
+      "order": 8,
+      "trait": "Relic Staff",
+      "type": "prop",
+      "rare": true,
+      "note": "warden's staff with glowing realm crystal (mini realm sigil)"
+    }
+  ],
+  "per_realm_allocation": {
+    "total": 111,
+    "standard": 60,
+    "relic_staff": 25,
+    "vested": 12,
+    "pale_glow_eyes": 8,
+    "gilded_rim": 5,
+    "the_unnamed": 1,
+    "note": "the 1 Unnamed per realm carries no chest sigil + pale eyes - the realm's rarest soul"
+  },
+  "one_of_ones": [
+    {
+      "piece": "001",
+      "name": "THE ORIGIN",
+      "note": "BudE's original shadow being, untouched - the genesis piece"
+    }
+  ],
+  "lore": {
+    "identity": "THE SHADOW BEING HAS NO NAME. Origin sealed forever (Codex Fragment 002).",
+    "relics": "Each warden's crystal is the relic that opens its realm's chapter."
+  }
+}
