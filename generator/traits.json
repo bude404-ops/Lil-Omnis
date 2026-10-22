@@ -45,26 +45,26 @@
       "order": 1,
       "trait": "Chamber",
       "type": "background",
-      "variants": "one per realm (radial realm tint + masonic ring geometry)"
+      "note": "plain near-black, faint realm floor glow - no symbols (v0.4 law: identity not from bg)"
     },
     {
       "order": 2,
-      "trait": "Mystic Ring",
-      "type": "geometry",
-      "variants": "double circle + rotated square, realm color + faint gold"
+      "trait": "Body",
+      "type": "base",
+      "note": "the shadow being - pure, unmarked, anonymous (The Unnamed doctrine)"
     },
     {
       "order": 3,
-      "trait": "Vestment",
-      "type": "body_tint",
-      "rare": true,
-      "note": "lower-body robe tint toward realm hue (wardens style)"
+      "trait": "Robe Pattern",
+      "type": "fabric",
+      "note": "embroidered realm sigil motif woven in a diamond grid over the robe"
     },
     {
       "order": 4,
-      "trait": "Body",
-      "type": "base",
-      "note": "the shadow being - pure, unmarked, anonymous in every piece (The Unnamed doctrine)"
+      "trait": "Vestment",
+      "type": "body_tint",
+      "rare": true,
+      "note": "lower-body robe tint toward realm hue"
     },
     {
       "order": 5,
@@ -86,19 +86,16 @@
     },
     {
       "order": 7,
-      "trait": "Chest Sigil",
-      "type": "brand",
-      "variants": [
-        "realm mark",
-        "absent (The Unnamed, rarest)"
-      ]
+      "trait": "Amulet",
+      "type": "accessory",
+      "note": "realm mark worn on a cord - present/absent (absent = The Unnamed)"
     },
     {
       "order": 8,
       "trait": "Relic Staff",
       "type": "prop",
       "rare": true,
-      "note": "warden's staff with glowing realm crystal (mini realm sigil)"
+      "note": "warden's staff with glowing realm crystal"
     }
   ],
   "per_realm_allocation": {
@@ -109,7 +106,7 @@
     "pale_glow_eyes": 8,
     "gilded_rim": 5,
     "the_unnamed": 1,
-    "note": "the 1 Unnamed per realm carries no chest sigil + pale eyes - the realm's rarest soul"
+    "note": "the 1 Unnamed per realm: no amulet, no robe pattern, pale eyes - the realm's rarest soul"
   },
   "one_of_ones": [
     {
