@@ -4,7 +4,7 @@ How to use: attach the base shadow-being image as reference FIRST, then paste th
 
 ## STYLE LOCK (paste at the top of every prompt)
 
-> Using the attached image as the exact character reference: keep the same hooded shadow-being - same faceless hood, same painterly brushwork, same proportions, same dark charcoal robe, same crystal-topped staff. Square format. Same art style, texture and lighting as the reference - one more piece from the same collection, not a new style.
+> Using the attached image as the exact character reference: keep the same hooded shadow-being - same faceless hood, same painterly brushwork, same proportions, same dark brown robe with golden-bronze trim, same knotted wooden staff with its faceted crystal held in a wooden claw mount, symbols must be glyphs only - no letters, no words, no text anywhere. Square format. Same art style, texture and lighting as the reference - one more piece from the same collection, not a new style.
 
 ## 1) The Six Realm Wardens
 
