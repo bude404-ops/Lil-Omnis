@@ -51,3 +51,14 @@ riddle. Its holder holds that realm's deepest secret — until they trade it.
 - **Phase 3**: echo fragments minted on bridge arrival (chosen bridge/cross-
   chain messaging at rollout), contradiction map visualization
 - **Phase 4**: final-gate expansion layer (reserved — only opens when the collection says so)
+
+## The Ascension (completion reward)
+Finish the full pilgrimage — one of your pieces travels through all six realms —
+and the Archive mints you **THE ASCENDED**: your personal 1/1, a fully omni
+being carrying all six realm marks at once (The Center's gold light).
+
+No two are ever alike, because the art *records your journey*:
+- the amulet cluster holds your six pendants **in visit order**
+- the robe embroidery cycles the realm sigils **along your actual route**
+
+A collector's Ascended is literally a portrait of how they traveled.
