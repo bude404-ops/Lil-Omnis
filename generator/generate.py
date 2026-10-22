@@ -21,6 +21,7 @@ CHAINS = {
     "ETHEREUM":  {"primary": (98, 126, 234), "accent": (200, 215, 255)},
     "BASE":      {"primary": (0, 82, 255),   "accent": (140, 180, 255)},
     "ROBINHOOD": {"primary": (0, 200, 5),    "accent": (150, 255, 150)},
+    "BNB":       {"primary": (240, 185, 11), "accent": (255, 230, 150)},
     "SOLANA":    {"primary": (153, 69, 255), "accent": (20, 241, 149)},
     "SUI":       {"primary": (77, 162, 255), "accent": (160, 215, 255)},
     "BIGNETWORK":{"primary": (217, 180, 91), "accent": (242, 234, 214)},
@@ -44,7 +45,7 @@ def radial_bg(size, color):
         for x in range(size):
             d = math.hypot(x - cx, y - cy) / maxd
             # tint strongest at center, falls off
-            t = max(0.0, 1 - d) ** 1.8 * 0.5
+            t = max(0.0, 1 - d) ** 1.8 * 0.34
             px[x, y] = lerp(dark, color, t)
     return im
 
@@ -113,6 +114,14 @@ def sigil(kind, size=220, color=GOLD):
     return im
 
 
+def put_alpha(img, a):
+    px = img.load()
+    for y in range(img.size[1]):
+        for x in range(img.size[0]):
+            r, g, b, al = px[x, y]
+            if al: px[x, y] = (r, g, b, a)
+
+
 def eye_glow(base_size, scale, offset, color, accent):
     """soft glowing eyes at the base art's eye positions, mapped into composition space"""
     layer = Image.new("RGBA", (1024, 1024), (0, 0, 0, 0))
@@ -178,9 +187,17 @@ def render(chain_name, spec):
     # eye glow
     canvas = Image.alpha_composite(canvas, eye_glow(897, scale, off, color, accent))
 
-    # sigil above the head
-    sg = sigil(chain_name, 220, GOLD)
-    canvas.alpha_composite(sg, (size // 2 - 110, int(size * 0.055)))
+    # chest sigil ON the body, chain color, glowing (per BudE's realm style reference)
+    sg = sigil(chain_name, 240, tuple(min(255,int(v*1.25)) for v in color))
+    cx = off[0] + int(440 * scale)
+    cy = off[1] + int(530 * scale)
+    for blur, alpha in ((14, 70), (8, 100), (3, 150)):
+        g = sg.filter(ImageFilter.GaussianBlur(blur))
+        gp = g.copy()
+        put_alpha(gp, alpha)
+        canvas.alpha_composite(gp, (cx - 120, cy - 120))
+    sharp = sg.copy(); put_alpha(sharp, 235)
+    canvas.alpha_composite(sharp, (cx - 120, cy - 120))
 
     out = canvas.convert("RGB")
 
