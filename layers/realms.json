@@ -1,0 +1,74 @@
+{
+  "realms": {
+    "ethereum": {
+      "energy_label": "sapphire",
+      "hue": 214.5,
+      "sat": 0.532,
+      "val": 0.478,
+      "amulet": "layers/amulets/ethereum_amulet.png",
+      "amulet_bbox": [
+        451,
+        588,
+        559,
+        672
+      ],
+      "source": "bude_gemini_test2.jpg"
+    },
+    "base": {
+      "energy_label": "azure",
+      "hue": 192.8,
+      "sat": 0.812,
+      "val": 0.757,
+      "amulet": "layers/amulets/base_amulet.png",
+      "amulet_bbox": [
+        451,
+        596,
+        551,
+        672
+      ],
+      "source": "bude_gemini_base.jpg"
+    },
+    "robinhood": {
+      "energy_label": "emerald",
+      "hue": 145.0,
+      "sat": 0.5,
+      "val": 0.647,
+      "amulet": "layers/amulets/robinhood_amulet.png",
+      "amulet_bbox": [
+        475,
+        508,
+        527,
+        568
+      ],
+      "source": "bude_gemini_robinhood.jpg"
+    },
+    "bnb": {
+      "energy_label": "amber",
+      "hue": 28.4,
+      "sat": 0.653,
+      "val": 0.741,
+      "amulet": "layers/amulets/bnb_amulet.png",
+      "amulet_bbox": [
+        379,
+        484,
+        615,
+        576
+      ],
+      "source": "bude_gemini_bnb.jpg"
+    },
+    "solana": {
+      "energy_label": "violet",
+      "hue": 272.2,
+      "sat": 0.625,
+      "val": 0.651,
+      "amulet": "layers/amulets/solana_amulet.png",
+      "amulet_bbox": [
+        435,
+        580,
+        567,
+        672
+      ],
+      "source": "bude_gemini_solana.jpg"
+    }
+  }
+}
