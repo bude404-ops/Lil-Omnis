@@ -49,10 +49,10 @@
       "val": 0.741,
       "amulet": "layers/amulets/bnb_amulet.png",
       "amulet_bbox": [
-        379,
-        484,
-        615,
-        576
+        470,
+        594,
+        538,
+        686
       ],
       "source": "bude_gemini_bnb.jpg"
     },
