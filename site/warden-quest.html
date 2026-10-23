@@ -1,1 +1,440 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Lil Omnis: Warden Quest</title>
+<style>
+:root {
+  --gold: #e8c779;
+  --panel: #111426;
+  --text: #f6f0df;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #070914;
+  color: var(--text);
+  font-family: system-ui, Arial, sans-serif;
+  text-align: center;
+  overscroll-behavior: none;
+}
+header { padding: 18px 12px 10px; }
+h1 {
+  margin: 0;
+  color: var(--gold);
+  font-size: clamp(24px, 6vw, 38px);
+  letter-spacing: 2px;
+}
+.subtitle { color: #aaaec9; font-size: 13px; margin-top: 5px; }
+main { max-width: 900px; margin: auto; padding: 8px 12px 24px; }
+.hud {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 8px; flex-wrap: wrap; margin-bottom: 8px;
+  background: var(--panel); border: 1px solid #34334d;
+  border-radius: 12px; padding: 10px 12px; font-size: 13px;
+}
+.hud strong { color: var(--gold); }
+canvas {
+  display: block; width: 100%; height: auto; aspect-ratio: 800 / 420;
+  background: #10152b; border: 1px solid #47405e; border-radius: 12px;
+  touch-action: none;
+}
+.message {
+  min-height: 44px; padding: 12px 6px; color: #d5d4e8; font-size: 14px;
+}
+.controls {
+  display: flex; justify-content: center; align-items: center;
+  gap: 12px; flex-wrap: wrap; margin: 4px auto 14px;
+  user-select: none; -webkit-user-select: none;
+}
+.control {
+  width: 76px; height: 62px; border-radius: 16px;
+  border: 1px solid #686080; background: #20233d; color: white;
+  font-size: 24px; font-weight: bold; touch-action: none;
+  box-shadow: 0 4px 0 #0a0b15;
+}
+.control:active { transform: translateY(3px); box-shadow: none; }
+.jump { width: 106px; background: #564326; border-color: var(--gold); }
+.action {
+  background: transparent; color: var(--gold); border: 1px solid #75623e;
+  padding: 10px 16px; border-radius: 10px; font-size: 14px;
+}
+.help { color: #9297b6; font-size: 12px; line-height: 1.7; }
+</style>
+</head>
+<body>
+<header>
+  <h1>LIL OMNIS</h1>
+  <div class="subtitle">WARDEN QUEST · A SIX-REALM ADVENTURE</div>
+</header>
+
+<main>
+  <div class="hud">
+    <span>REALM: <strong id="realm">ETHEREUM</strong></span>
+    <span>SHARDS: <strong id="score">0</strong></span>
+    <span>HEARTS: <strong id="hearts">♥ ♥ ♥</strong></span>
+  </div>
+
+  <canvas id="game" width="800" height="420" aria-label="Lil Omnis platform game"></canvas>
+  <div class="message" id="message">Collect the glowing shards and find the realm gate!</div>
+
+  <div class="controls">
+    <button class="control" id="left" aria-label="Move left">◀</button>
+    <button class="control" id="right" aria-label="Move right">▶</button>
+    <button class="control jump" id="jump" aria-label="Jump">JUMP ↑</button>
+  </div>
+
+  <button class="action" id="restart">Restart Realm</button>
+  <p class="help">
+    PHONE: Hold the arrows to move and hold JUMP to leap.<br>
+    COMPUTER: Arrow keys or A/D to move · Space or W to jump.<br>
+    Reach the glowing gate to unlock the next realm.
+  </p>
+</main>
+
+<script>
+(() => {
+  const canvas = document.getElementById("game");
+  const ctx = canvas.getContext("2d");
+  const scoreEl = document.getElementById("score");
+  const heartsEl = document.getElementById("hearts");
+  const realmEl = document.getElementById("realm");
+  const messageEl = document.getElementById("message");
+
+  const realms = [
+    { name:"ETHEREUM", color:"#8b8cff", dark:"#171d49", accent:"#b9c4ff" },
+    { name:"BASE", color:"#4da6ff", dark:"#102b4b", accent:"#a4dcff" },
+    { name:"ROBINHOOD", color:"#44d69a", dark:"#103b35", accent:"#a0ffce" },
+    { name:"BNB CHAIN", color:"#f2c34e", dark:"#453418", accent:"#ffed9e" },
+    { name:"SOLANA", color:"#c77cff", dark:"#351b53", accent:"#f1b4ff" },
+    { name:"SUI", color:"#56d9ed", dark:"#103847", accent:"#b1f8ff" }
+  ];
+
+  const W = 800, H = 420, worldWidth = 1800;
+  const keys = { left:false, right:false, jump:false };
+  let realmIndex = 0, score = 0, hearts = 3;
+  let camera = 0, gameOver = false, won = false;
+  let platforms = [], shards = [], hazards = [], player, gate;
+  let lastTime = 0;
+
+  function buildRealm() {
+    const r = realms[realmIndex];
+    score = 0;
+    hearts = 3;
+    camera = 0;
+    gameOver = false;
+    won = false;
+    player = { x:55, y:300, w:28, h:38, vx:0, vy:0, grounded:false, invulnerable:0 };
+    platforms = [
+      {x:0,y:365,w:300,h:55},
+      {x:350,y:320,w:170,h:22},
+      {x:565,y:275,w:155,h:22},
+      {x:755,y:325,w:175,h:22},
+      {x:965,y:280,w:170,h:22},
+      {x:1170,y:320,w:180,h:22},
+      {x:1390,y:270,w:180,h:22},
+      {x:1580,y:365,w:220,h:55}
+    ];
+    shards = [];
+    platforms.slice(1,7).forEach((p, i) => {
+      for (let j=0; j<3; j++) {
+        shards.push({
+          x:p.x + 30 + j*42, y:p.y - 27,
+          taken:false, phase:Math.random()*6
+        });
+      }
+    });
+    hazards = [
+      {x:240,y:344,w:42,h:21},
+      {x:680,y:254,w:30,h:21},
+      {x:1030,y:259,w:40,h:21},
+      {x:1470,y:249,w:36,h:21}
+    ];
+    gate = { x:1690, y:300, w:50, h:65 };
+    realmEl.textContent = r.name;
+    updateHud();
+    messageEl.textContent = "Collect the glowing shards and find the realm gate!";
+  }
+
+  function updateHud() {
+    scoreEl.textContent = score;
+    heartsEl.textContent = hearts > 0 ? "♥ ".repeat(hearts).trim() : "0";
+  }
+
+  function setMessage(text) { messageEl.textContent = text; }
+
+  function resetPlayer() {
+    player.x = 55;
+    player.y = 300;
+    player.vx = 0;
+    player.vy = 0;
+    player.invulnerable = 1.2;
+    camera = 0;
+  }
+
+  function hurt() {
+    if (player.invulnerable > 0 || gameOver || won) return;
+    hearts--;
+    updateHud();
+    if (hearts <= 0) {
+      gameOver = true;
+      setMessage("The Warden has fallen. Restart the realm to try again.");
+    } else {
+      setMessage("Careful! You lost a heart.");
+      resetPlayer();
+    }
+  }
+
+  function move(dt) {
+    if (gameOver || won) return;
+
+    const speed = 235;
+    player.vx = (keys.right ? speed : 0) - (keys.left ? speed : 0);
+    player.x += player.vx * dt;
+    player.x = Math.max(0, Math.min(worldWidth-player.w, player.x));
+
+    if (keys.jump && player.grounded) {
+      player.vy = -480;
+      player.grounded = false;
+    }
+    player.vy += 1150 * dt;
+    player.y += player.vy * dt;
+    player.grounded = false;
+
+    for (const p of platforms) {
+      if (player.vy >= 0 &&
+          player.x + player.w > p.x &&
+          player.x < p.x + p.w &&
+          player.y + player.h >= p.y &&
+          player.y + player.h - player.vy*dt <= p.y) {
+        player.y = p.y - player.h;
+        player.vy = 0;
+        player.grounded = true;
+      }
+    }
+
+    if (player.y > H + 100) {
+      hurt();
+      if (!gameOver) resetPlayer();
+    }
+
+    if (player.invulnerable > 0) player.invulnerable -= dt;
+
+    for (const s of shards) {
+      if (!s.taken && Math.abs((player.x+player.w/2)-s.x) < 24 &&
+          Math.abs((player.y+player.h/2)-s.y) < 28) {
+        s.taken = true;
+        score++;
+        updateHud();
+      }
+    }
+
+    for (const h of hazards) {
+      if (player.x+player.w > h.x && player.x < h.x+h.w &&
+          player.y+player.h > h.y && player.y < h.y+h.h) {
+        hurt();
+      }
+    }
+
+    if (player.x+player.w > gate.x && player.x < gate.x+gate.w &&
+        player.y+player.h > gate.y) {
+      won = true;
+      setMessage("Realm cleared! You collected " + score + " shards.");
+    }
+
+    camera = Math.max(0, Math.min(worldWidth-W, player.x - W*0.36));
+  }
+
+  function roundedRect(x,y,w,h,r,fill) {
+    ctx.fillStyle = fill;
+    ctx.beginPath();
+    ctx.roundRect(x,y,w,h,r);
+    ctx.fill();
+  }
+
+  function draw() {
+    const r = realms[realmIndex];
+    ctx.clearRect(0,0,W,H);
+    const bg = ctx.createLinearGradient(0,0,0,H);
+    bg.addColorStop(0,r.dark);
+    bg.addColorStop(1,"#080b19");
+    ctx.fillStyle = bg;
+    ctx.fillRect(0,0,W,H);
+
+    // Stars
+    for (let i=0;i<75;i++) {
+      const x = ((i*137 + 23) % worldWidth) - camera*0.35;
+      const sx = ((x % W) + W) % W;
+      const sy = (i*67+19) % 260;
+      ctx.globalAlpha = 0.3 + (i%4)*0.16;
+      ctx.fillStyle = r.accent;
+      ctx.fillRect(sx,sy,2,2);
+    }
+    ctx.globalAlpha = 1;
+
+    ctx.save();
+    ctx.translate(-camera,0);
+
+    // Distant realm pillars
+    for (let i=0;i<12;i++) {
+      const x = i*175+35;
+      ctx.globalAlpha = 0.14;
+      ctx.fillStyle = r.color;
+      ctx.beginPath();
+      ctx.moveTo(x,365); ctx.lineTo(x+28,155+(i%3)*24);
+      ctx.lineTo(x+56,365); ctx.closePath(); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // Platforms
+    for (const p of platforms) {
+      roundedRect(p.x,p.y,p.w,p.h,5,"#242641");
+      ctx.fillStyle = r.color;
+      ctx.fillRect(p.x,p.y,p.w,5);
+      ctx.globalAlpha = 0.2;
+      ctx.fillStyle = r.accent;
+      ctx.fillRect(p.x+8,p.y+12,Math.max(0,p.w-16),2);
+      ctx.globalAlpha = 1;
+    }
+
+    // Hazards
+    for (const h of hazards) {
+      ctx.fillStyle = "#ff5f75";
+      ctx.beginPath();
+      ctx.moveTo(h.x,h.y+h.h);
+      ctx.lineTo(h.x+h.w/2,h.y);
+      ctx.lineTo(h.x+h.w,h.y+h.h);
+      ctx.closePath(); ctx.fill();
+      ctx.fillStyle = "#ffd6dd";
+      ctx.fillRect(h.x+h.w/2-2,h.y+9,4,5);
+    }
+
+    // Shards
+    const time = performance.now()/350;
+    for (const s of shards) {
+      if (s.taken) continue;
+      const bob = Math.sin(time+s.phase)*4;
+      ctx.save();
+      ctx.translate(s.x,s.y+bob);
+      ctx.shadowColor = r.accent;
+      ctx.shadowBlur = 15;
+      ctx.fillStyle = r.accent;
+      ctx.beginPath();
+      ctx.moveTo(0,-11); ctx.lineTo(8,0); ctx.lineTo(0,11); ctx.lineTo(-8,0);
+      ctx.closePath(); ctx.fill();
+      ctx.restore();
+    }
+
+    // Realm gate
+    ctx.save();
+    ctx.shadowColor = r.color;
+    ctx.shadowBlur = 24;
+    roundedRect(gate.x,gate.y,gate.w,gate.h,23,r.color);
+    roundedRect(gate.x+7,gate.y+8,gate.w-14,gate.h-16,18,"#111326");
+    ctx.restore();
+    ctx.fillStyle = r.accent;
+    ctx.font = "bold 11px system-ui";
+    ctx.textAlign = "center";
+    ctx.fillText("GATE",gate.x+gate.w/2,gate.y+gate.h+15);
+
+    // Hooded Omni character placeholder
+    if (!(player.invulnerable > 0 && Math.floor(performance.now()/100)%2===0)) {
+      const x=player.x, y=player.y;
+      ctx.save();
+      ctx.shadowColor = r.color;
+      ctx.shadowBlur = 12;
+      // Body
+      roundedRect(x+4,y+19,20,18,7,"#171725");
+      // Hood
+      ctx.fillStyle = r.color;
+      ctx.beginPath();
+      ctx.arc(x+14,y+14,15,Math.PI,Math.PI*2);
+      ctx.lineTo(x+29,y+23);
+      ctx.lineTo(x-1,y+23);
+      ctx.closePath(); ctx.fill();
+      // Face shadow
+      ctx.fillStyle = "#111426";
+      ctx.beginPath();
+      ctx.ellipse(x+14,y+18,9,9,0,0,Math.PI*2); ctx.fill();
+      // Eyes
+      ctx.fillStyle = r.accent;
+      ctx.shadowBlur = 5;
+      ctx.fillRect(x+7,y+16,4,3);
+      ctx.fillRect(x+17,y+16,4,3);
+      // Little feet
+      roundedRect(x+2,y+33,10,5,3,"#080914");
+      roundedRect(x+16,y+33,10,5,3,"#080914");
+      ctx.restore();
+    }
+
+    ctx.restore();
+
+    if (won || gameOver) {
+      ctx.fillStyle = "rgba(5,7,18,0.76)";
+      ctx.fillRect(0,0,W,H);
+      ctx.textAlign = "center";
+      ctx.fillStyle = r.accent;
+      ctx.font = "bold 30px system-ui";
+      ctx.fillText(won ? "REALM CLEARED!" : "TRY AGAIN",W/2,170);
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "16px system-ui";
+      ctx.fillText(won ? "Your journey continues..." : "Restart this realm to continue",W/2,205);
+      if (won) {
+        ctx.font = "14px system-ui";
+        ctx.fillText(realmIndex===realms.length-1 ? "All six realms explored!" : "Tap NEXT REALM below to continue",W/2,238);
+      }
+    }
+  }
+
+  function frame(now) {
+    const dt = Math.min((now-lastTime)/1000 || 0, 0.033);
+    lastTime = now;
+    move(dt);
+    draw();
+    requestAnimationFrame(frame);
+  }
+
+  function bindHold(id,key) {
+    const el = document.getElementById(id);
+    const down = e => { e.preventDefault(); keys[key]=true; };
+    const up = e => { e.preventDefault(); keys[key]=false; };
+    el.addEventListener("pointerdown",down);
+    el.addEventListener("pointerup",up);
+    el.addEventListener("pointercancel",up);
+    el.addEventListener("pointerleave",up);
+    el.addEventListener("contextmenu",e=>e.preventDefault());
+  }
+
+  bindHold("left","left");
+  bindHold("right","right");
+  bindHold("jump","jump");
+
+  document.addEventListener("keydown",e=>{
+    if (["ArrowLeft","ArrowRight","ArrowUp"," ","a","A","d","D","w","W"].includes(e.key)) e.preventDefault();
+    if (e.key==="ArrowLeft"||e.key==="a"||e.key==="A") keys.left=true;
+    if (e.key==="ArrowRight"||e.key==="d"||e.key==="D") keys.right=true;
+    if (e.key===" "||e.key==="ArrowUp"||e.key==="w"||e.key==="W") keys.jump=true;
+  });
+  document.addEventListener("keyup",e=>{
+    if (e.key==="ArrowLeft"||e.key==="a"||e.key==="A") keys.left=false;
+    if (e.key==="ArrowRight"||e.key==="d"||e.key==="D") keys.right=false;
+    if (e.key===" "||e.key==="ArrowUp"||e.key==="w"||e.key==="W") keys.jump=false;
+  });
+
+  document.getElementById("restart").addEventListener("click",()=>{
+    if (won) {
+      if (realmIndex < realms.length-1) realmIndex++;
+      else realmIndex=0;
+    }
+    buildRealm();
+  });
+
+  buildRealm();
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
+
