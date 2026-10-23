@@ -69,6 +69,20 @@
         672
       ],
       "source": "bude_gemini_solana.jpg"
+    },
+    "sui": {
+      "energy_label": "ocean-cyan",
+      "hue": 182.0,
+      "sat": 0.753,
+      "val": 0.604,
+      "amulet": "layers/amulets/sui_amulet.png",
+      "amulet_bbox": [
+        460,
+        606,
+        540,
+        694
+      ],
+      "source": "bude_realm_new1.jpg"
     }
   }
 }
