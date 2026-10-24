@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lil Omnis — One Connected Universe</title>
+<meta name="description" content="666 Collectibles. Six Chapters. Multiple Blockchains. One Connected Universe.">
+<style>
+  :root{
+    --bg:#05060d;
+    --panel:#0b0e1a;
+    --line:#1c2138;
+    --gold:#d9b45b;
+    --violet:#8f7bd8;
+    --ink:#c9cede;
+    --dim:#6b7290;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:Georgia,'Times New Roman',serif;
+    overflow-x:hidden;
+  }
+  #stars{position:fixed;inset:0;z-index:0;opacity:.55}
+  .wrap{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:0 22px 90px}
+  header{padding:74px 0 30px;text-align:center}
+  .sigil{
+    width:64px;height:64px;margin:0 auto 26px;
+    border:1px solid var(--gold);transform:rotate(45deg);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 0 34px rgba(217,180,91,.25);
+  }
+  .sigil span{transform:rotate(-45deg);font-size:26px;color:var(--gold)}
+  h1{
+    font-size:clamp(44px,9vw,84px);
+    letter-spacing:.14em;
+    color:#f2ead6;
+    font-weight:400;
+  }
+  h1 .om{color:var(--gold)}
+  .tag{
+    margin-top:14px;letter-spacing:.42em;font-size:12px;
+    color:var(--dim);text-transform:uppercase;
+  }
+  .creed{
+    margin:34px auto 0;max-width:640px;
+    font-size:17px;line-height:1.75;color:var(--ink);font-style:italic;
+  }
+  .creed b{color:var(--gold);font-weight:400}
+  .stats{
+    display:flex;justify-content:center;gap:44px;flex-wrap:wrap;
+    margin-top:38px;
+  }
+  .stat{text-align:center}
+  .stat .n{font-size:34px;color:#f2ead6;letter-spacing:.06em}
+  .stat .l{font-size:10px;letter-spacing:.34em;color:var(--dim);text-transform:uppercase;margin-top:6px}
+  .div{width:120px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:52px auto;opacity:.6}
+  h2{
+    text-align:center;font-size:13px;letter-spacing:.5em;color:var(--dim);
+    text-transform:uppercase;font-weight:400;margin-bottom:38px;
+  }
+  .gates{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:18px;
+  }
+  .gate{
+    position:relative;
+    background:linear-gradient(180deg,var(--panel),#070912);
+    border:1px solid var(--line);
+    padding:30px 24px 26px;
+    text-align:center;
+    transition:border-color .35s, transform .35s, box-shadow .35s;
+    cursor:default;
+  }
+  .gate:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 14px 44px rgba(0,0,0,.5)}
+  .gate .glyph{
+    width:52px;height:52px;margin:0 auto 18px;
+    border:1px solid var(--line);transform:rotate(45deg);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .gate .glyph span{transform:rotate(-45deg);font-size:20px;color:var(--dim)}
+  .gate:hover .glyph{border-color:var(--gold)}
+  .gate:hover .glyph span{color:var(--gold)}
+  .gate .ch{font-size:10px;letter-spacing:.4em;color:var(--gold);text-transform:uppercase}
+  .gate .nm{font-size:20px;margin:10px 0 6px;color:#e8e2d2;letter-spacing:.08em}
+  .gate .realm{font-size:11px;letter-spacing:.24em;color:var(--dim);text-transform:uppercase}
+  .gate .seal{
+    margin-top:18px;display:inline-block;
+    font-size:10px;letter-spacing:.38em;color:var(--violet);
+    border:1px solid rgba(143,123,216,.4);padding:6px 14px;
+    text-transform:uppercase;
+  }
+  .gate.open .seal{color:var(--gold);border-color:var(--gold)}
+  .gate.open{border-color:rgba(217,180,91,.55);box-shadow:0 0 30px rgba(217,180,91,.08)}
+  .codex{
+    margin-top:64px;
+    background:var(--panel);border:1px solid var(--line);
+    padding:38px 34px;
+  }
+  .codex h3{font-size:15px;letter-spacing:.34em;color:var(--gold);text-transform:uppercase;font-weight:400;text-align:center}
+  .codex p{margin-top:16px;line-height:1.8;font-size:15.5px;color:var(--ink);text-align:center;max-width:640px;margin-left:auto;margin-right:auto}
+  .codex .frag{margin-top:20px;font-style:italic;color:#9aa2c0}
+  .clues{
+    margin-top:22px;text-align:center;font-size:12px;letter-spacing:.2em;color:var(--dim);
+  }
+  .clues .dot{color:var(--gold)}
+  footer{
+    margin-top:80px;text-align:center;font-size:11px;letter-spacing:.3em;color:#3d4360;
+    text-transform:uppercase;line-height:2.1;
+  }
+  footer .x{color:#20243a;cursor:default}
+  .hint{color:#20243a;font-size:10px;letter-spacing:.26em;margin-top:6px;transition:color .8s}
+  .hint:hover{color:#4a4f6e}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div class="wrap">
+
+  <header>
+    <div class="sigil"><span>◉</span></div>
+    <h1>LIL <span class="om">OMNIS</span></h1>
+    <div class="tag">One Connected Universe</div>
+    <p class="creed">
+      Six realms, sealed from one another for an age. In each, a chain hums like a heartbeat —
+      and small watchers stir at its edges, keeping pieces of a single, forgotten truth.
+      Collectors who cross the realms do not simply collect. <b>They remember.</b>
+    </p>
+    <div class="stats">
+      <div class="stat"><div class="n">666</div><div class="l">Collectibles</div></div>
+      <div class="stat"><div class="n">6</div><div class="l">Chapters</div></div>
+      <div class="stat"><div class="n">6</div><div class="l">Blockchains</div></div>
+      <div class="stat"><div class="n">1</div><div class="l">Universe</div></div>
+    </div>
+  </header>
+
+  <div class="div"></div>
+
+  <h2>The Six Gates</h2>
+  <div class="gates">
+    <div class="gate" data-ch="I">
+      <div class="glyph"><span>◈</span></div>
+      <div class="ch">Chapter I</div>
+      <div class="nm">The Awakening</div>
+      <div class="realm">First Realm</div>
+      <div class="seal">Sealed</div>
+    </div>
+    <div class="gate" data-ch="II">
+      <div class="glyph"><span>◇</span></div>
+      <div class="ch">Chapter II</div>
+      <div class="nm">???</div>
+      <div class="realm">Second Realm</div>
+      <div class="seal">Sealed</div>
+    </div>
+    <div class="gate" data-ch="III">
+      <div class="glyph"><span>✦</span></div>
+      <div class="ch">Chapter III</div>
+      <div class="nm">???</div>
+      <div class="realm">Third Realm</div>
+      <div class="seal">Sealed</div>
+    </div>
+    <div class="gate" data-ch="IV">
+      <div class="glyph"><span>❖</span></div>
+      <div class="ch">Chapter IV</div>
+      <div class="nm">???</div>
+      <div class="realm">Fourth Realm</div>
+      <div class="seal">Sealed</div>
+    </div>
+    <div class="gate" data-ch="V">
+      <div class="glyph"><span>✧</span></div>
+      <div class="ch">Chapter V</div>
+      <div class="nm">???</div>
+      <div class="realm">Fifth Realm</div>
+      <div class="seal">Sealed</div>
+    </div>
+    <div class="gate" data-ch="VI">
+      <div class="glyph"><span>◉</span></div>
+      <div class="ch">Chapter VI</div>
+      <div class="nm">The Omniscient</div>
+      <div class="realm">The Center of All</div>
+      <div class="seal">Sealed</div>
+    </div>
+  </div>
+
+  <div class="codex">
+    <h3>Codex — Fragment 001</h3>
+    <p>
+      They were never separate worlds. The chains were never walls.
+      What the first collectors call luck, the oldest Omnis call <span style="color:var(--gold)">echoes</span> —
+      pieces of the same signal, surfacing on different shores.
+    </p>
+    <p class="frag">“Find one watcher and you have a picture. Find them all, and you have the map.”</p>
+    <div class="clues">
+      DISCOVERED CLUES <span class="dot">0</span> / <span class="dot">666</span>
+    </div>
+  </div>
+
+  <div class="codex" style="margin-top:22px">
+    <h3>Codex — Fragment 002 · The Unnamed</h3>
+    <p>
+      The oldest question in every realm is not where the watchers go. It is
+      <span style="color:var(--gold)">who sent them.</span> No signature. No ledger. No key.
+      The shape was carved by a hand no chain records, and it surfaced on every shore at once —
+      the way the first coin began: an open hand, a sealed origin.
+    </p>
+    <p class="frag">“He is not hidden. He is simply not ours to name.”</p>
+  </div>
+
+  <footer>
+    Lil Omnis · A Multichain Collection<br>
+    666 Collectibles · Six Chapters · One Connected Universe<br>
+    <span class="hint">some doors are not linked — they are found</span>
+  </footer>
+
+</div>
+<script>
+(function(){
+  var c=document.getElementById('stars'),x=c.getContext('2d'),w,h,pts=[];
+  function rs(){w=c.width=innerWidth;h=c.height=innerHeight;
+    pts=[];var n=Math.min(240,Math.floor(w*h/9000));
+    for(var i=0;i<n;i++)pts.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.4+.3,a:Math.random(),s:Math.random()*.012+.003});
+  }
+  rs();addEventListener('resize',rs);
+  function dr(){x.clearRect(0,0,w,h);
+    for(var i=0;i<pts.length;i++){var p=pts[i];
+      p.a+=p.s;var al=.25+Math.abs(Math.sin(p.a))*.7;
+      x.beginPath();x.arc(p.x,p.y,p.r,0,6.28);
+      x.fillStyle='rgba(216,208,255,'+al+')';x.fill();}
+    requestAnimationFrame(dr);}
+  dr();
+})();
+</script>
+</body>
+</html>
