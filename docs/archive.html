@@ -92,7 +92,23 @@ h1 em{color:var(--gold);font-style:normal}
 .orb-fragment{display:none;max-width:680px;margin:20px auto 0;padding:18px;border-top:1px solid #6b5a91;color:#e8dfca;font:italic 18px/1.8 Georgia,serif}
 .orb-fragment.open{display:block}
 .orb-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin-top:17px}
+
 @keyframes pulse{50%{filter:brightness(1.35)}}
+.orb-stage{overflow:hidden}
+.orb-stage .orb-particle{position:absolute;z-index:1;left:var(--x);top:var(--y);width:var(--s);height:var(--s);border-radius:50%;background:#e5d9ff;box-shadow:0 0 8px 3px #b8a4ff99;pointer-events:none;animation:particleRise var(--t) ease-in-out infinite;animation-delay:var(--d)}
+.orb-stage .orb-particle:nth-child(1){--x:22%;--y:68%;--s:4px;--t:3.2s;--d:-1s}
+.orb-stage .orb-particle:nth-child(2){--x:76%;--y:62%;--s:3px;--t:4s;--d:-2s}
+.orb-stage .orb-particle:nth-child(3){--x:31%;--y:28%;--s:3px;--t:3.6s;--d:-.5s}
+.orb-stage .orb-particle:nth-child(4){--x:68%;--y:34%;--s:5px;--t:4.4s;--d:-2.5s}
+.orb-stage .orb-particle:nth-child(5){--x:50%;--y:15%;--s:3px;--t:3.8s;--d:-1.8s}
+.orb-stage .orb-particle:nth-child(6){--x:48%;--y:80%;--s:4px;--t:4.1s;--d:-.8s}
+.orb-stage .orb-burst{position:absolute;z-index:4;width:30px;height:30px;border:2px solid #e9d9ff;border-radius:50%;opacity:0;pointer-events:none}
+.orb-stage.burst .orb-burst{animation:orbBurst .85s ease-out}
+.orb-stage.burst .whisper-orb{animation:orbAwaken .85s ease-out}
+@keyframes particleRise{0%,100%{transform:translateY(8px) scale(.65);opacity:.25}50%{transform:translateY(-18px) scale(1.25);opacity:1}}
+@keyframes orbBurst{0%{transform:scale(.3);opacity:1;box-shadow:0 0 20px #b8a4ff}100%{transform:scale(7);opacity:0;box-shadow:0 0 45px #b8a4ff}}
+@media(prefers-reduced-motion:reduce){.orb-particle,.orb-stage.burst .orb-burst{animation:none!important}}
+
 .safety{border:1px solid #e4c37b44;border-radius:12px;padding:15px;background:#e4c37b0b;color:var(--muted);font-size:12px}
 .safety strong{color:var(--gold)}
 footer{border-top:1px solid var(--line);padding:24px;text-align:center;color:#858ba7;font-size:10px;letter-spacing:.12em}
