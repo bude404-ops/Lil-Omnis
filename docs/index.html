@@ -6,243 +6,468 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#070811">
 <title>Lil Omnis — The Omni Archive</title>
-<meta name="description" content="Six realms. Six chains. 666 Lil Omnis. Explore the archive before the gates open.">
+<meta name="description" content="Six realms. Six blockchains. Six hidden truths. Enter the Lil Omnis Archive.">
 <style>
 :root {
-  color-scheme: dark;
-  --bg: #070811;
-  --panel: #111529;
-  --line: #292d48;
-  --gold: #e1c078;
-  --muted: #a3a8c1;
-  --ink: #f1efeb;
+  color-scheme:dark;
+  --bg:#070811;--panel:#111529;--line:#292d48;
+  --gold:#e1c078;--muted:#a3a8c1;--ink:#f1efeb;
 }
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 75px; }
-body {
-  margin: 0; background: radial-gradient(ellipse at top,#202143,transparent 48%),var(--bg);
-  color: var(--ink); font: 16px/1.65 system-ui,sans-serif;
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{
+  margin:0;background:radial-gradient(ellipse at top,#202143,transparent 48%),var(--bg);
+  color:var(--ink);font:16px/1.7 system-ui,sans-serif
 }
-a { color: inherit; }
-button,input { font: inherit; }
-a:focus-visible,button:focus-visible,input:focus-visible {
-  outline: 2px solid var(--gold); outline-offset: 4px;
+a{color:inherit}
+button,input{font:inherit}
+button,a,input{touch-action:manipulation}
+button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{
+  outline:2px solid var(--gold);outline-offset:4px
 }
-header {
-  position: sticky; top: 0; z-index: 5; background: #070811ee;
-  border-bottom: 1px solid var(--line); backdrop-filter: blur(12px);
+header{position:sticky;top:0;z-index:10;background:#070811ee;border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+nav{max-width:1100px;margin:auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.brand{text-decoration:none;font-weight:800;letter-spacing:.12em}
+.brand span{color:var(--gold);font-size:23px;margin-right:9px}
+.links{display:flex;gap:20px}
+.links a{color:var(--muted);text-decoration:none;font-size:12px}
+.links a:hover{color:var(--gold)}
+.menu{display:none;padding:7px 10px;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--ink)}
+.wrap{max-width:1100px;margin:auto;padding:0 20px}
+.hero{text-align:center;padding:75px 0 55px}
+.kicker{color:var(--gold);font-size:10px;font-weight:800;letter-spacing:.25em;text-transform:uppercase}
+.symbol{width:65px;height:65px;margin:0 auto 28px;border:1px solid #e1c078aa;display:grid;place-items:center;transform:rotate(45deg);box-shadow:0 0 45px #e1c07820}
+.symbol span{transform:rotate(-45deg);color:var(--gold);font-size:29px}
+h1{font-size:clamp(43px,8vw,82px);line-height:1.05;letter-spacing:.08em;margin:15px 0}
+h1 em{color:var(--gold);font-style:normal}
+.subtitle{color:var(--muted);font-size:11px;letter-spacing:.25em}
+.intro{max-width:720px;margin:25px auto;color:#c5c8d8;font:clamp(16px,2.3vw,20px)/1.9 Georgia,serif}
+.gold{color:var(--gold)}
+.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:27px 0}
+.btn{display:inline-block;padding:10px 17px;border:1px solid var(--line);border-radius:99px;background:#101326;color:var(--ink);text-decoration:none;font-size:12px;font-weight:700;cursor:pointer}
+.btn:hover{border-color:var(--gold)}
+.btn.primary{background:var(--gold);color:#171321;border-color:var(--gold)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);max-width:750px;margin:42px auto 0;border-block:1px solid var(--line)}
+.stat{padding:16px 4px}
+.stat+.stat{border-left:1px solid var(--line)}
+.stat strong{display:block;font-size:clamp(24px,4vw,35px);font-weight:500}
+.stat span{color:#858ba7;font-size:9px;letter-spacing:.08em;text-transform:uppercase}
+section{padding:58px 0}
+.heading{text-align:center;max-width:730px;margin:0 auto 30px}
+.heading h2{font-size:clamp(27px,4vw,38px);font-weight:500;margin:8px 0}
+.heading p{color:var(--muted);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.gate{--realm:#a99af0;padding:21px;border:1px solid var(--line);border-radius:15px;background:linear-gradient(145deg,#151a31,#0b0d19);transition:border-color .2s,transform .2s}
+.gate:hover{border-color:var(--realm);transform:translateY(-2px)}
+.gate-top{display:flex;justify-content:space-between;align-items:center}
+.sig{width:42px;height:42px;display:grid;place-items:center;border:1px solid var(--realm);border-radius:12px;color:var(--realm);font-size:22px}
+.chapter{color:var(--muted);font-size:9px;letter-spacing:.15em}
+.gate h3{margin:15px 0 0;font-size:19px}
+.chain{color:var(--realm);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.gate p{color:var(--muted);font-size:12px;min-height:60px}
+.gate button{background:transparent;border:0;color:var(--ink);padding:0;cursor:pointer;font-size:11px;font-weight:700}
+.gate button span{color:var(--realm)}
+.panel{padding:clamp(20px,4vw,31px);border:1px solid var(--line);border-radius:16px;background:var(--panel)}
+.panel h3{font-size:20px;font-weight:550;margin:8px 0}
+.panel p{color:var(--muted);font-size:13px}
+.columns{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.detail{display:none;margin-top:16px;padding:24px;border:1px solid var(--line);border-radius:16px;background:var(--panel)}
+.detail.show{display:block}
+.detail p{color:var(--muted)}
+.detail-meta,.fragment{color:var(--gold);font-size:10px;letter-spacing:.18em;text-transform:uppercase}
+.quote{color:#e2dfef;font:italic 17px/1.7 Georgia,serif}
+details{border-top:1px solid var(--line);padding:12px 0}
+summary{cursor:pointer;font-size:12px;font-weight:700;color:var(--gold)}
+details p{margin-bottom:0}
+.trial{margin-bottom:15px;border:1px solid var(--line);border-radius:15px;background:linear-gradient(140deg,#12162a,#090b16);overflow:hidden}
+.trial-head{display:flex;align-items:center;gap:14px;padding:19px 20px 8px}
+.trial-icon{width:43px;height:43px;flex-shrink:0;display:grid;place-items:center;border:1px solid var(--realm,#e1c078);border-radius:12px;color:var(--realm,#e1c078);font-size:21px}
+.trial-title{flex:1}
+.trial-title small{color:var(--realm,#e1c078);font-size:9px;letter-spacing:.16em;text-transform:uppercase}
+.trial-title h3{margin:2px 0;font-size:18px}
+.trial-state{color:var(--muted);font-size:10px;white-space:nowrap}
+.trial-body{padding:0 20px 20px}
+.trial-body p{color:var(--muted);font-size:13px}
+.clue{color:#e7e0cf!important;font:italic 17px/1.7 Georgia,serif!important}
+.fact{display:none;margin:13px 0;padding:13px;border-left:2px solid var(--gold);background:#e1c0780c;color:#d8d9e6;font-size:12px}
+.fact.show{display:block}
+.puzzle{padding:13px;border:1px solid var(--line);border-radius:11px;background:#090b17}
+.puzzle label{display:block;color:var(--muted);font-size:11px;margin-bottom:7px}
+.puzzle-row{display:flex;gap:8px}
+.puzzle input{width:100%;min-width:0;padding:10px;color:var(--ink);background:#111426;border:1px solid var(--line);border-radius:8px}
+.puzzle button{background:var(--gold);color:#171321;border:0;border-radius:8px;padding:9px 14px;font-weight:800;cursor:pointer}
+.feedback{color:var(--gold);font-size:12px;min-height:22px;margin-top:8px}
+.trial.master{border-color:#8d7444;background:linear-gradient(140deg,#211b25,#0b0d19)}
+.trial.locked .trial-body{opacity:.55}
+.trial.locked .master-puzzle{display:none}
+.progress-wrap{max-width:650px;margin:0 auto 28px}
+.progress-label{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:11px;margin-bottom:8px}
+.progress-track{height:7px;border-radius:99px;background:#24273b;overflow:hidden}
+.progress-bar{height:100%;width:0;background:linear-gradient(90deg,#9b83e8,var(--gold));transition:width .3s}
+.notice{display:flex;gap:15px;padding:22px;border:1px solid #e1c07855;border-radius:16px;background:#e1c0780b}
+.notice-icon{color:var(--gold);font-size:23px}
+.notice h3{margin:0;font-size:16px}
+.notice p{color:var(--muted);font-size:13px;margin-bottom:0}
+footer{border-top:1px solid var(--line);padding:28px 15px;text-align:center;color:#858ba7;font-size:10px;letter-spacing:.12em}
+@media(max-width:740px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:540px){
+ nav{padding:10px 15px}.menu{display:block}
+ .links{display:none;position:absolute;top:52px;left:0;right:0;padding:16px 20px;background:#0a0c18;border-bottom:1px solid var(--line);flex-direction:column}
+ .links.open{display:flex}.links a{font-size:13px}
+ .wrap{padding:0 15px}.hero{padding:52px 0 38px}
+ h1{letter-spacing:.04em}.subtitle{font-size:9px;letter-spacing:.16em}
+ .stat{padding:12px 2px}.stat span{font-size:8px;letter-spacing:0}
+ section{padding:42px 0}.grid,.columns{grid-template-columns:1fr}
+ .gate p{min-height:0}.trial-head{padding:16px 14px 8px}.trial-body{padding:0 14px 15px}
+ .trial-state{font-size:9px}
+ .puzzle-row{flex-direction:column}
 }
-nav {
-  max-width: 1080px; margin: auto; padding: 13px 20px;
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-}
-.brand { text-decoration: none; font-weight: 800; letter-spacing: .12em; }
-.brand span { color: var(--gold); font-size: 22px; margin-right: 8px; }
-.links { display: flex; gap: 18px; }
-.links a { color: var(--muted); text-decoration: none; font-size: 12px; }
-.links a:hover { color: var(--gold); }
-.menu {
-  display: none; padding: 7px 10px; border: 1px solid var(--line);
-  border-radius: 9px; background: var(--panel); color: var(--ink);
-}
-.wrap { max-width: 1080px; margin: auto; padding: 0 20px; }
-.hero { text-align: center; padding: 76px 0 60px; }
-.kicker {
-  color: var(--gold); font-size: 10px; font-weight: 700;
-  letter-spacing: .27em; text-transform: uppercase;
-}
-.symbol {
-  width: 64px; height: 64px; margin: 0 auto 28px;
-  border: 1px solid #e1c078aa; display: grid; place-items: center;
-  transform: rotate(45deg); box-shadow: 0 0 40px #e1c07820;
-}
-.symbol span { transform: rotate(-45deg); color: var(--gold); font-size: 28px; }
-h1 { font-size: clamp(42px,8vw,82px); line-height: 1.05; letter-spacing: .09em; margin: 16px 0; }
-h1 em { color: var(--gold); font-style: normal; }
-.subtitle { color: var(--muted); font-size: 11px; letter-spacing: .3em; }
-.intro {
-  max-width: 680px; margin: 25px auto; color: #c5c8d8;
-  font: clamp(16px,2.3vw,20px)/1.85 Georgia,serif;
-}
-.intro strong { color: var(--gold); font-weight: normal; }
-.actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin: 28px 0; }
-.btn {
-  display: inline-block; padding: 10px 17px; border: 1px solid var(--line);
-  border-radius: 99px; background: #101326; color: var(--ink);
-  text-decoration: none; font-size: 12px; font-weight: 700; cursor: pointer;
-}
-.btn:hover { border-color: var(--gold); }
-.btn.primary { background: var(--gold); color: #171321; border-color: var(--gold); }
-.stats {
-  display: grid; grid-template-columns: repeat(4,1fr); max-width: 740px;
-  margin: 45px auto 0; border-block: 1px solid var(--line);
-}
-.stat { padding: 17px 5px; }
-.stat + .stat { border-left: 1px solid var(--line); }
-.stat strong { display: block; font-size: clamp(25px,4vw,35px); font-weight: 500; }
-.stat span { color: #858ba7; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; }
-section { padding: 60px 0; }
-.heading { text-align: center; max-width: 680px; margin: 0 auto 30px; }
-.heading h2 { font-size: clamp(26px,4vw,37px); font-weight: 500; margin: 8px 0; }
-.heading p { color: var(--muted); font-size: 14px; }
-.grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
-.gate {
-  --realm: #a99af0; padding: 21px; border: 1px solid var(--line);
-  border-radius: 16px; background: linear-gradient(145deg,#151a31,#0b0d19);
-  transition: transform .2s,border-color .2s;
-}
-.gate:hover { transform: translateY(-3px); border-color: var(--realm); }
-.gate-top { display: flex; justify-content: space-between; align-items: center; }
-.sig {
-  width: 42px; height: 42px; display: grid; place-items: center;
-  border: 1px solid var(--realm); border-radius: 12px;
-  color: var(--realm); font-size: 21px;
-}
-.chapter { color: var(--muted); font-size: 9px; letter-spacing: .2em; }
-.gate h3 { margin: 17px 0 0; font-size: 19px; }
-.chain { color: var(--realm); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
-.gate p { color: var(--muted); font-size: 12px; }
-.gate button {
-  background: transparent; border: 0; color: var(--ink);
-  padding: 0; cursor: pointer; font-size: 11px; font-weight: 700;
-}
-.gate button span { color: var(--realm); }
-.detail {
-  display: none; margin-top: 16px; padding: 24px;
-  border: 1px solid var(--line); border-radius: 16px; background: var(--panel);
-}
-.detail.show { display: block; }
-.detail h3 { margin-bottom: 4px; }
-.detail p { color: var(--muted); }
-.detail-meta { color: var(--gold); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; }
-.columns { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.panel { padding: clamp(21px,4vw,32px); border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
-.panel h3 { font-size: 20px; font-weight: 550; margin: 8px 0; }
-.panel p { color: var(--muted); font-size: 13px; }
-.quote { color: #e2dfef; font: italic 17px/1.6 Georgia,serif; }
-.fragment { color: var(--gold); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; }
-details { border-top: 1px solid var(--line); padding: 13px 0; }
-summary { cursor: pointer; font-size: 13px; font-weight: 600; }
-.puzzle { padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: #090b17; }
-.puzzle label { display: block; color: var(--muted); font-size: 12px; margin-bottom: 8px; }
-.puzzle-row { display: flex; gap: 8px; }
-.puzzle input {
-  width: 100%; min-width: 0; padding: 10px; color: var(--ink);
-  background: #111426; border: 1px solid var(--line); border-radius: 9px;
-}
-.puzzle button { background: var(--gold); color: #171321; border: 0; border-radius: 9px; padding: 9px 14px; font-weight: 700; cursor: pointer; }
-.feedback { color: var(--gold); font-size: 12px; min-height: 24px; margin-top: 8px; }
-.status { padding: 12px 0; border-bottom: 1px solid var(--line); }
-.status:last-child { border: 0; }
-.status strong,.status span { display: block; }
-.status strong { font-size: 13px; }
-.status span { color: var(--muted); font-size: 12px; }
-.notice {
-  display: flex; gap: 15px; padding: 22px;
-  border: 1px solid #e1c07855; border-radius: 16px; background: #e1c0780b;
-}
-.notice-icon { color: var(--gold); font-size: 23px; }
-.notice h3 { margin: 0; font-size: 16px; }
-.notice p { color: var(--muted); font-size: 13px; margin-bottom: 0; }
-footer { border-top: 1px solid var(--line); padding: 28px 15px; text-align: center; color: #858ba7; font-size: 10px; letter-spacing: .12em; }
-@media(max-width:740px) { .grid { grid-template-columns: repeat(2,1fr); } }
-@media(max-width:540px) {
-  nav { padding: 10px 15px; }
-  .menu { display: block; }
-  .links { display: none; position: absolute; top: 52px; left: 0; right: 0; padding: 16px 20px; background: #0a0c18; border-bottom: 1px solid var(--line); flex-direction: column; }
-  .links.open { display: flex; }
-  .links a { font-size: 13px; }
-  .wrap { padding: 0 15px; }
-  .hero { padding: 52px 0 38px; }
-  h1 { letter-spacing: .04em; }
-  .subtitle { font-size: 9px; letter-spacing: .18em; }
-  .stat { padding: 13px 2px; }
-  .stat span { font-size: 8px; letter-spacing: 0; }
-  section { padding: 43px 0; }
-  .grid,.columns { grid-template-columns: 1fr; }
-  .puzzle-row { flex-direction: column; }
-}
-@media(prefers-reduced-motion:reduce) { html { scroll-behavior: auto; } * { transition: none!important; } }
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 </style>
 </head>
 <body>
 <header>
 <nav aria-label="Main navigation">
-  <a class="brand" href="#home"><span>◉</span>LIL OMNIS</a>
-  <button class="menu" id="menuToggle" aria-expanded="false" aria-controls="navlinks">Menu ☰</button>
-  <div class="links" id="navlinks">
-    <a href="#realms">Six Realms</a><a href="#archive">The Archive</a>
-    <a href="#lore">Lore & Riddles</a><a href="#launch">Launch Status</a>
-  </div>
+<a class="brand" href="#home"><span>◉</span>LIL OMNIS</a>
+<button class="menu" id="menuToggle" aria-expanded="false" aria-controls="navlinks">Menu ☰</button>
+<div class="links" id="navlinks">
+<a href="#realms">Six Realms</a><a href="#archive">The Archive</a><a href="#trials">Chain Trials</a><a href="#launch">Launch Status</a>
+</div>
 </nav>
 </header>
+
 <main id="home">
 <section class="hero wrap">
-  <div class="symbol" aria-hidden="true"><span>◉</span></div>
-  <div class="kicker">An Unfinished Map of a Connected Universe</div>
-  <h1>LIL <em>OMNIS</em></h1>
-  <div class="subtitle">Six Realms · One Hidden Truth</div>
-  <p class="intro">Six realms, sealed from one another for an age. In each, a chain hums like a heartbeat — and small watchers stir at its edges, keeping pieces of a single, forgotten truth. Those who cross the realms do not simply collect. <strong>They remember.</strong></p>
-  <div class="actions"><a class="btn primary" href="#realms">Explore the Six Gates ↓</a><a class="btn" href="#lore">Read the First Clues</a></div>
-  <div class="stats">
-    <div class="stat"><strong>666</strong><span>Planned Collectibles</span></div>
-    <div class="stat"><strong>6</strong><span>Realms</span></div>
-    <div class="stat"><strong>111</strong><span>Per Realm</span></div>
-    <div class="stat"><strong>1</strong><span>Connected Universe</span></div>
-  </div>
+<div class="symbol" aria-hidden="true"><span>◉</span></div>
+<div class="kicker">A classified record of six connected worlds</div>
+<h1>LIL <em>OMNIS</em></h1>
+<div class="subtitle">Six Realms · Six Chains · One Hidden Truth</div>
+<p class="intro">Before the first watcher was seen, the Archive was already old. Six networks carried six different kinds of order. Someone noticed that each held a piece of a pattern — but no single chain could explain the whole. The watchers were sent to remember what the ledgers could not.</p>
+<p class="intro gold">The records are fragmented. The clues are real. The truth is yours to uncover.</p>
+<div class="actions"><a class="btn primary" href="#realms">Enter the Realms ↓</a><a class="btn" href="#trials">Attempt the Trials</a></div>
+<div class="stats">
+<div class="stat"><strong>666</strong><span>Planned Collectibles</span></div>
+<div class="stat"><strong>6</strong><span>Blockchain Realms</span></div>
+<div class="stat"><strong>111</strong><span>Per Realm</span></div>
+<div class="stat"><strong>1</strong><span>Hidden Archive</span></div>
+</div>
 </section>
 
 <section class="wrap" id="realms">
-  <div class="heading"><div class="kicker">The Map Is Incomplete</div><h2>The Six Gates</h2><p>Choose a gate to read its first archive entry. Collection artwork stays hidden until launch.</p></div>
-  <div class="grid">
-    <article class="gate" style="--realm:#a99af0"><div class="gate-top"><div class="sig">◈</div><div class="chapter">Chapter I</div></div><h3>The Awakening</h3><div class="chain">Ethereum</div><p>Where the oldest signal first became impossible to ignore.</p><button data-realm="eth">Open archive entry ↗</button></article>
-    <article class="gate" style="--realm:#70aaff"><div class="gate-top"><div class="sig">◇</div><div class="chapter">Chapter II</div></div><h3>The Blue Passage</h3><div class="chain">Base</div><p>A quieter path for those willing to look beneath the surface.</p><button data-realm="base">Open archive entry ↗</button></article>
-    <article class="gate" style="--realm:#7bd6a2"><div class="gate-top"><div class="sig">✦</div><div class="chapter">Chapter III</div></div><h3>The Green Signal</h3><div class="chain">Robinhood Chain</div><p>A new threshold. Its symbols have not yet settled into place.</p><button data-realm="hood">Open archive entry ↗</button></article>
-    <article class="gate" style="--realm:#f0c76d"><div class="gate-top"><div class="sig">❖</div><div class="chapter">Chapter IV</div></div><h3>The Golden Index</h3><div class="chain">BNB Chain</div><p>Fragments of a ledger that remembers more than it records.</p><button data-realm="bnb">Open archive entry ↗</button></article>
-    <article class="gate" style="--realm:#d5a3f4"><div class="gate-top"><div class="sig">✧</div><div class="chapter">Chapter V</div></div><h3>The Shifting Current</h3><div class="chain">Solana</div><p>A fast-moving current carries echoes between distant shores.</p><button data-realm="sol">Open archive entry ↗</button></article>
-    <article class="gate" style="--realm:#78dbe4"><div class="gate-top"><div class="sig">◎</div><div class="chapter">Chapter VI</div></div><h3>The Unwritten</h3><div class="chain">Sui</div><p>At the edge of the map, the final gate points back to the beginning.</p><button data-realm="sui">Open archive entry ↗</button></article>
-  </div>
-  <div class="detail" id="realmDetail" aria-live="polite" tabindex="-1"><div class="detail-meta" id="detailMeta"></div><h3 id="detailTitle"></h3><p id="detailText"></p><button class="btn" id="closeDetail">Close entry</button></div>
+<div class="heading"><div class="kicker">Six networks, six philosophies</div><h2>The Six Realms</h2><p>Every realm has a technical truth hidden inside its myth. Open a gate to discover what that realm protects.</p></div>
+<div class="grid">
+<article class="gate" style="--realm:#a99af0"><div class="gate-top"><div class="sig">◈</div><div class="chapter">Chapter I</div></div><h3>The Finality Flame</h3><div class="chain">Ethereum</div><p>A realm where witnesses attest to a history they did not write alone.</p><button data-realm="eth">Read the record <span>↗</span></button></article>
+<article class="gate" style="--realm:#70aaff"><div class="gate-top"><div class="sig">◇</div><div class="chapter">Chapter II</div></div><h3>The Blue Passage</h3><div class="chain">Base</div><p>A crowded road learns to send its work beyond its own walls.</p><button data-realm="base">Read the record <span>↗</span></button></article>
+<article class="gate" style="--realm:#7bd6a2"><div class="gate-top"><div class="sig">✦</div><div class="chapter">Chapter III</div></div><h3>The Green Threshold</h3><div class="chain">Robinhood Chain</div><p>A new frontier built on familiar foundations, with a toll paid in an old coin.</p><button data-realm="hood">Read the record <span>↗</span></button></article>
+<article class="gate" style="--realm:#f0c76d"><div class="gate-top"><div class="sig">❖</div><div class="chapter">Chapter IV</div></div><h3>The Golden Index</h3><div class="chain">BNB Chain</div><p>A ledger of many voices, where the native token opens the gate to computation.</p><button data-realm="bnb">Read the record <span>↗</span></button></article>
+<article class="gate" style="--realm:#d5a3f4"><div class="gate-top"><div class="sig">✧</div><div class="chapter">Chapter V</div></div><h3>The Clockwork Current</h3><div class="chain">Solana</div><p>A cryptographic clock orders the echoes, but does not decide who may speak.</p><button data-realm="sol">Read the record <span>↗</span></button></article>
+<article class="gate" style="--realm:#78dbe4"><div class="gate-top"><div class="sig">◎</div><div class="chapter">Chapter VI</div></div><h3>The Living Objects</h3><div class="chain">Sui</div><p>A world where assets are not merely entries in a list, but objects with identity.</p><button data-realm="sui">Read the record <span>↗</span></button></article>
+</div>
+<div class="detail" id="realmDetail" aria-live="polite" tabindex="-1">
+<div class="detail-meta" id="detailMeta"></div><h3 id="detailTitle"></h3><p id="detailText"></p>
+<div class="quote" id="detailQuote"></div>
+<button class="btn" id="closeDetail" type="button">Close record</button>
+</div>
 </section>
 
 <section class="wrap" id="archive">
-  <div class="heading"><div class="kicker">Restricted Shelf · Visitor Access</div><h2>The Omni Archive</h2><p>A place for fragments, questions, and discoveries. The first shelves are open.</p></div>
-  <div class="columns">
-    <article class="panel"><div class="fragment">Codex · Fragment 001</div><h3>Echoes</h3><p>They were never separate worlds. The chains were never walls. What the first collectors call luck, the oldest Omnis call echoes — pieces of the same signal, surfacing on different shores.</p><div class="quote">“Find one watcher and you have a picture. Find them all, and you have the map.”</div></article>
-    <article class="panel"><div class="fragment">Codex · Fragment 002</div><h3>The Unnamed</h3><p>The oldest question in every realm is not where the watchers go. It is who sent them. No signature. No ledger. No key. The shape was carved by a hand no chain records, and it surfaced on every shore at once.</p><div class="quote">“He is not hidden. He is simply not ours to name.”</div></article>
-  </div>
+<div class="heading"><div class="kicker">Restricted shelf · Fragmentary records</div><h2>The Omni Archive</h2><p>These are the surviving pages of a story no single network can contain.</p></div>
+<div class="columns">
+<article class="panel">
+<div class="fragment">Codex 001 · The First Observation</div>
+<h3>The Six Were Never One</h3>
+<p>The first archivist made a mistake: they searched for one master ledger. They found six systems with different rules, different designs, and different ways of reaching agreement. The mistake was believing that connection required sameness.</p>
+<p>Ethereum remembers through a shared consensus. Base extends Ethereum through a rollup design. Robinhood Chain is an Ethereum-compatible layer-two network built on Arbitrum technology. BNB Chain has its own validator and execution design. Solana uses a distinctive time-ordering mechanism. Sui organizes state around programmable objects.</p>
+<div class="quote">“A key is not a kingdom. A bridge is not a border erased.”</div>
+</article>
+<article class="panel">
+<div class="fragment">Codex 002 · The Watchers</div>
+<h3>Why the Omnis Were Sent</h3>
+<p>The watchers were small enough to pass unnoticed and patient enough to wait through ages of blocks. Each carried a different mark, but none carried the entire message. Their task was not to conquer a realm or declare one chain superior.</p>
+<p>They were sent to learn the rules of each world. Only then could they recognize what traveled between worlds — and what could never travel without help.</p>
+<div class="quote">“Collect the fragments. Question the record. Never mistake a rumor for a proof.”</div>
+</article>
+</div>
 </section>
 
-<section class="wrap" id="lore">
-  <div class="heading"><div class="kicker">Look Closer</div><h2>Riddles from the Margins</h2><p>Some clues are meant to be solved. Others change the question.</p></div>
-  <div class="columns">
-    <article class="panel"><div class="fragment">Riddle 001 · The First Echo</div><h3>What travels without moving?</h3><p>It crosses every boundary, leaves no footprints, and grows clearer when another hears it.</p><details><summary>Ask the archive for a hint</summary><p>It is not a person or an object. Think about a message repeated across distant places.</p></details><div class="puzzle"><label for="answer">Enter your answer</label><div class="puzzle-row"><input id="answer" maxlength="80" autocomplete="off" placeholder="Your answer…"><button id="checkAnswer">Submit</button></div><div class="feedback" id="puzzleFeedback" aria-live="polite"></div></div></article>
-    <article class="panel"><div class="fragment">Archive Notes</div><h3>Nothing here is a mint promise</h3><p>The Archive is a lore experience for the Lil Omnis universe. Realm entries and puzzles can be explored before collection artwork and mint details are ready.</p><div class="status"><strong>✧ Discover the lore</strong><span>Available now on this page.</span></div><div class="status"><strong>⌁ Collection reveals</strong><span>Held back until artwork and mint are ready.</span></div></article>
-  </div>
+<section class="wrap" id="trials">
+<div class="heading"><div class="kicker">Seven locks · One discovery</div><h2>The Six Chain Trials</h2><p>Each answer reveals a technical truth behind the realm's myth. Use the hint if you need it. Recover all six fragments to open the Master Trial.</p></div>
+<div class="progress-wrap">
+<div class="progress-label"><span>Archive fragments recovered</span><span id="progressText">0 of 6</span></div>
+<div class="progress-track" role="progressbar" aria-label="Realm trials completed" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0" id="progressTrack"><div class="progress-bar" id="progressBar"></div></div>
+</div>
+
+<article class="trial" style="--realm:#a99af0" data-trial="eth">
+<div class="trial-head"><div class="trial-icon">◈</div><div class="trial-title"><small>Chapter I · Ethereum</small><h3>The Witness Without a Pen</h3></div><div class="trial-state" id="state-eth">SEALED</div></div>
+<div class="trial-body">
+<p>The Flame does not ask every witness to rewrite the whole history. Instead, a validator signs a statement supporting information it has observed about the chain's state or progress. These statements help the network reach agreement.</p>
+<p class="clue">“I am not the block, nor the hand that creates it. I am a signed declaration that says: I have seen this, and I stand behind this view. What am I?”</p>
+<details><summary>Reveal a hint</summary><p>Ethereum validators make these statements as part of proof-of-stake consensus. The word begins with A.</p></details>
+<div class="puzzle"><label for="r-eth">Name the signed statement.</label><div class="puzzle-row"><input id="r-eth" maxlength="100" autocomplete="off" placeholder="Enter your answer"><button class="solve" data-id="eth">Unlock</button></div><div class="feedback" id="f-eth" aria-live="polite"></div><div class="fact" id="fact-eth">ARCHIVE TRUTH: An <b>attestation</b> is a validator's signed statement. Ethereum uses proof of stake; validators propose blocks and attest to chain checkpoints as part of the consensus process.</div></div>
+</div>
+</article>
+
+<article class="trial" style="--realm:#70aaff" data-trial="base">
+<div class="trial-head"><div class="trial-icon">◇</div><div class="trial-title"><small>Chapter II · Base</small><h3>The Road Beyond the Walls</h3></div><div class="trial-state" id="state-base">SEALED</div></div>
+<div class="trial-body">
+<p>The Blue Passage grew because the main road could not carry every traveler cheaply on its own. A second system executes activity, then posts data or commitments so the parent chain can help secure the result. The passage is connected to Ethereum, but it is not Ethereum's base layer.</p>
+<p class="clue">“I gather many journeys away from the crowded road, then carry evidence back to the chain that anchors my security. I am not a bridge, and I am not the base layer. What kind of system am I?”</p>
+<details><summary>Reveal a hint</summary><p>Base is built as an Ethereum layer two using OP Stack technology. The answer is a general type of scaling system.</p></details>
+<div class="puzzle"><label for="r-base">Name the scaling design.</label><div class="puzzle-row"><input id="r-base" maxlength="100" autocomplete="off" placeholder="Enter your answer"><button class="solve" data-id="base">Unlock</button></div><div class="feedback" id="f-base" aria-live="polite"></div><div class="fact" id="fact-base">ARCHIVE TRUTH: A <b>rollup</b> executes transactions on a layer two and posts data or commitments to a layer one. Base is an Ethereum L2 built using the OP Stack. Rollup designs differ in how they establish validity and handle data.</div></div>
+</div>
+</article>
+
+<article class="trial" style="--realm:#7bd6a2" data-trial="hood">
+<div class="trial-head"><div class="trial-icon">✦</div><div class="trial-title"><small>Chapter III · Robinhood Chain</small><h3>The Toll at the New Gate</h3></div><div class="trial-state" id="state-hood">SEALED</div></div>
+<div class="trial-body">
+<p>The Green Threshold is a newer frontier, yet its foundations are familiar to Ethereum builders. The network is designed as an Ethereum-compatible layer two built on Arbitrum technology. Even a new frontier must account for the cost of computation.</p>
+<p class="clue">“I am not the name of the realm, nor the token that marks its doorway. I pay for the work of execution here, as I do on Ethereum's main network. Speak my three-letter ticker.”</p>
+<details><summary>Reveal a hint</summary><p>Look for the native gas asset documented for Robinhood Chain. It is the same asset used for gas on Ethereum mainnet.</p></details>
+<div class="puzzle"><label for="r-hood">Enter the ticker or asset name.</label><div class="puzzle-row"><input id="r-hood" maxlength="100" autocomplete="off" placeholder="Enter your answer"><button class="solve" data-id="hood">Unlock</button></div><div class="feedback" id="f-hood" aria-live="polite"></div><div class="fact" id="fact-hood">ARCHIVE TRUTH: <b>ETH</b> is used to pay gas on Robinhood Chain. Robinhood Chain is an Ethereum-compatible layer two built on Arbitrum technology. Always check current official documentation before sending assets or interacting with a new network.</div></div>
+</div>
+</article>
+
+<article class="trial" style="--realm:#f0c76d" data-trial="bnb">
+<div class="trial-head"><div class="trial-icon">❖</div><div class="trial-title"><small>Chapter IV · BNB Chain</small><h3>The Coin That Opens the Index</h3></div><div class="trial-state" id="state-bnb">SEALED</div></div>
+<div class="trial-body">
+<p>The Golden Index is not opened by a title, a badge, or a promise. Transactions consume computational resources, and the network requires payment for that work. The realm's native token serves as the usual gas asset on BNB Smart Chain.</p>
+<p class="clue">“Three letters name the asset that pays the toll on this road. It is also the name of the wider chain family. What mark appears on the gas ledger?”</p>
+<details><summary>Reveal a hint</summary><p>The ticker and the token name are the same: B-N-B.</p></details>
+<div class="puzzle"><label for="r-bnb">Enter the native gas ticker.</label><div class="puzzle-row"><input id="r-bnb" maxlength="100" autocomplete="off" placeholder="Enter your answer"><button class="solve" data-id="bnb">Unlock</button></div><div class="feedback" id="f-bnb" aria-live="polite"></div><div class="fact" id="fact-bnb">ARCHIVE TRUTH: <b>BNB</b> pays gas fees on BNB Smart Chain. Gas accounts for the computational work required by transactions and smart contracts. Token roles can differ across networks in the broader BNB Chain ecosystem.</div></div>
+</div>
+</article>
+
+<article class="trial" style="--realm:#d5a3f4" data-trial="sol">
+<div class="trial-head"><div class="trial-icon">✧</div><div class="trial-title"><small>Chapter V · Solana</small><h3>The Clock That Is Not a Judge</h3></div><div class="trial-state" id="state-sol">SEALED</div></div>
+<div class="trial-body">
+<p>The Shifting Current moves quickly, but speed alone cannot establish agreement. Solana uses a cryptographic mechanism that helps establish verifiable passage of time and order between events. It works with consensus; it is not, by itself, the consensus mechanism.</p>
+<p class="clue">“I leave a verifiable sequence, like a clock whose ticks can be checked after the fact. I help order events, but I do not decide alone which history the network accepts. What am I called?”</p>
+<details><summary>Reveal a hint</summary><p>The name contains four words. It starts with “Proof of” and ends with “History.”</p></details>
+<div class="puzzle"><label for="r-sol">Name the cryptographic mechanism.</label><div class="puzzle-row"><input id="r-sol" maxlength="100" autocomplete="off" placeholder="Enter your answer"><button class="solve" data-id="sol">Unlock</button></div><div class="feedback" id="f-sol" aria-live="polite"></div><div class="fact" id="fact-sol">ARCHIVE TRUTH: <b>Proof of History (PoH)</b> is a cryptographic clock/order mechanism that helps establish the passage of time between events. It is used alongside Solana's consensus design; PoH alone is not the network's consensus mechanism.</div></div>
+</div>
+</article>
+
+<article class="trial" style="--realm:#78dbe4" data-trial="sui">
+<div class="trial-head"><div class="trial-icon">◎</div><div class="trial-title"><small>Chapter VI · Sui</small><h3>The Thing That Is More Than a Row</h3></div><div class="trial-state" id="state-sui">SEALED</div></div>
+<div class="trial-body">
+<p>The Unwritten does not describe every asset as a mere row in a universal account table. Sui's object-centric model represents assets and other pieces of state as typed objects, with ownership and rules that determine how they can be used.</p>
+<p class="clue">“I may be owned, transferred, or changed according to my rules. My type tells you what I am, and my identity distinguishes me from another of my kind. In this realm, what is the fundamental unit?”</p>
+<details><summary>Reveal a hint</summary><p>The answer is a common word for a thing, but in Sui it has a specific technical role.</p></details>
+<div class="puzzle"><label for="r-sui">Name the fundamental unit.</label><div class="puzzle-row"><input id="r-sui" maxlength="100" autocomplete="off" placeholder="Enter your answer"><button class="solve" data-id="sui">Unlock</button></div><div class="feedback" id="f-sui" aria-live="polite"></div><div class="fact" id="fact-sui">ARCHIVE TRUTH: An <b>object</b> is a core unit of state in Sui. Objects have types and ownership rules. Different ownership and transaction patterns affect how the network processes them.</div></div>
+</div>
+</article>
+
+<article class="trial master locked" id="masterTrial">
+<div class="trial-head"><div class="trial-icon">◉</div><div class="trial-title"><small>Final chapter · The Omni Archive</small><h3>The Passage Between Worlds</h3></div><div class="trial-state" id="state-master">LOCKED</div></div>
+<div class="trial-body">
+<p id="masterIntro">Six fragments remain scattered. The Master Trial will open when all six realm records have been recovered.</p>
+<div class="master-puzzle">
+<p class="clue">“I do not make six ledgers become one. I do not erase their different rules. I carry supported assets or messages between separate networks, relying on mechanisms that must be trusted or verified. What am I?”</p>
+<details><summary>Reveal a hint</summary><p>It is a common cross-chain tool. The word suggests a way to cross a gap.</p></details>
+<div class="puzzle"><label for="r-master">Name the cross-chain passage.</label><div class="puzzle-row"><input id="r-master" maxlength="100" autocomplete="off" placeholder="Enter your answer"><button class="solve" data-id="master">Open the Archive</button></div><div class="feedback" id="f-master" aria-live="polite"></div><div class="fact" id="fact-master">MASTER RECORD RECOVERED: A <b>bridge</b> can transfer supported assets or messages between networks. Bridge designs vary in their security assumptions; bridging does not merge blockchains into one ledger. The six realms remain distinct, and that is the secret: connection is not sameness.</div></div>
+</div>
+</div>
+</article>
 </section>
 
-<section class="wrap" id="launch"><div class="notice"><div class="notice-icon">◈</div><div><h3>The gates are being prepared</h3><p>Lil Omnis is planned as 666 collectibles across six blockchain realms, with 111 assigned to each chapter. Artwork previews, mint details, and marketplace links will be added when the collection is finished and ready to launch. Nothing is being offered for mint on this page yet.</p></div></div></section>
+<section class="wrap" id="launch">
+<div class="notice"><div class="notice-icon">◈</div><div><h3>The gates are still being prepared</h3><p>Lil Omnis is planned as 666 collectibles across six blockchain realms, with 111 assigned to each chapter: Ethereum, Base, Robinhood Chain, BNB Chain, Solana, and Sui. Artwork previews, mint details, and marketplace links will be added when the collection is finished and ready. This page does not offer a mint or promise rewards.</p></div></div>
+</section>
 </main>
-<footer><p>LIL OMNIS · THE OMNI ARCHIVE</p><p>Six Realms · 666 Planned Collectibles · One Connected Universe</p><p>Some doors are not linked — they are found.</p></footer>
+<footer>
+<p>LIL OMNIS · THE OMNI ARCHIVE</p>
+<p>Six Realms · 666 Planned Collectibles · One Hidden Truth</p>
+<p>Some doors are not linked. They must be discovered.</p>
+</footer>
+
 <script>
 (function(){
-  var toggle=document.getElementById('menuToggle'),nav=document.getElementById('navlinks');
-  toggle.addEventListener('click',function(){var open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));});
-  nav.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){nav.classList.remove('open');toggle.setAttribute('aria-expanded','false');});});
+  "use strict";
+
+  var toggle=document.getElementById("menuToggle");
+  var nav=document.getElementById("navlinks");
+  toggle.addEventListener("click",function(){
+    var open=nav.classList.toggle("open");
+    toggle.setAttribute("aria-expanded",String(open));
+  });
+  nav.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click",function(){
+      nav.classList.remove("open");
+      toggle.setAttribute("aria-expanded","false");
+    });
+  });
+
   var entries={
-    eth:{chapter:'Chapter I · Ethereum',title:'The Awakening',text:'The first surviving notes describe a signal mistaken for a coincidence. The oldest records do not say who heard it first — only that the same mark appeared in places that had never spoken to one another.'},
-    base:{chapter:'Chapter II · Base',title:'The Blue Passage',text:'A passage is not a destination. The Blue Passage teaches that a path can connect distant places without making them the same. What changes when the traveler changes, but the message remains?'},
-    hood:{chapter:'Chapter III · Robinhood Chain',title:'The Green Signal',text:'This entry is incomplete. A green mark appears beside the words “a new threshold.” The archive cannot yet tell whether it is a warning, an invitation, or a record of someone who crossed before the gate was named.'},
-    bnb:{chapter:'Chapter IV · BNB Chain',title:'The Golden Index',text:'The Golden Index contains references to things missing from the ledger. Its keeper believed a record could preserve a clue even after the object itself disappeared. The final line has been scratched away.'},
-    sol:{chapter:'Chapter V · Solana',title:'The Shifting Current',text:'The current carries fragments faster than the archive can classify them. The note attached to this gate reads: “Speed reveals the pattern, but patience reveals its meaning.”'},
-    sui:{chapter:'Chapter VI · Sui',title:'The Unwritten',text:'The final gate has no surviving origin story. Its symbol resembles the first mark in the archive, rotated once. Beneath it, someone wrote: “The end is only the beginning seen from the other side.”'}
+    eth:{
+      chapter:"Chapter I · Ethereum",
+      title:"The Finality Flame",
+      text:"Ethereum moved from proof of work to proof of stake in 2022. Validators stake ETH, propose blocks, and attest to checkpoints. Finality emerges from the consensus protocol, not from a single witness. The Flame is the record of many participants agreeing on one history.",
+      quote:"“No witness owns the truth. The witnesses make it endure.”"
+    },
+    base:{
+      chapter:"Chapter II · Base",
+      title:"The Blue Passage",
+      text:"Base is an Ethereum layer-two network built using the OP Stack. Rollups can execute activity away from layer one and post data or commitments back to it. The design aims to scale activity while inheriting important security properties from Ethereum. A passage extends the road without becoming the road itself.",
+      quote:"“The path grows wider; the foundation remains beneath it.”"
+    },
+    hood:{
+      chapter:"Chapter III · Robinhood Chain",
+      title:"The Green Threshold",
+      text:"Robinhood Chain is designed as an Ethereum-compatible layer two built on Arbitrum technology. ETH is used for gas. Compatibility helps developers work with familiar Ethereum tools, but users must still verify network details and asset support before moving funds. A familiar doorway is not permission to ignore the sign above it.",
+      quote:"“A new gate can use an old language and still lead somewhere new.”"
+    },
+    bnb:{
+      chapter:"Chapter IV · BNB Chain",
+      title:"The Golden Index",
+      text:"BNB Smart Chain is an EVM-compatible network where BNB is used to pay gas. Gas represents the computational resources consumed by transactions and contract execution. The Golden Index keeps a record of effort as well as outcome: every operation has a cost, even when the result looks effortless.",
+      quote:"“The ledger records what happened. The toll reveals the work it took.”"
+    },
+    sol:{
+      chapter:"Chapter V · Solana",
+      title:"The Clockwork Current",
+      text:"Solana's Proof of History provides a verifiable ordering of events using a sequence of cryptographic computations. It helps the network reason about time and order, but it is not a standalone consensus protocol. The Current teaches the difference between a clock that orders events and a community that agrees on a ledger.",
+      quote:"“A clock can order the echoes. It cannot decide which story is true.”"
+    },
+    sui:{
+      chapter:"Chapter VI · Sui",
+      title:"The Living Objects",
+      text:"Sui uses an object-centric data model. Objects have types and ownership, and transaction processing depends on how those objects are accessed. Some transactions involving owned objects can be handled without ordering every transaction against the entire shared state. The Unwritten is not empty: it is state organized around things and their rules.",
+      quote:"“Know the thing, know its owner, and the rules begin to speak.”"
+    }
   };
-  var detail=document.getElementById('realmDetail');
-  document.querySelectorAll('[data-realm]').forEach(function(btn){btn.addEventListener('click',function(){var e=entries[btn.dataset.realm];document.getElementById('detailMeta').textContent=e.chapter;document.getElementById('detailTitle').textContent=e.title;document.getElementById('detailText').textContent=e.text;detail.classList.add('show');detail.focus();});});
-  document.getElementById('closeDetail').addEventListener('click',function(){detail.classList.remove('show');});
-  function check(){var v=document.getElementById('answer').value.trim().toLowerCase().replace(/[.!?]/g,''),out=document.getElementById('puzzleFeedback');if(!v){out.textContent='The archive awaits your answer.';}else if(['echo','an echo','sound','a sound','a message','message'].includes(v)){out.textContent='The archive accepts your answer: an echo. One fragment has been understood.';}else{out.textContent='Not quite. Look at the hint and listen for what is repeated.';}}
-  document.getElementById('checkAnswer').addEventListener('click',check);
-  document.getElementById('answer').addEventListener('keydown',function(e){if(e.key==='Enter')check();});
+
+  var detail=document.getElementById("realmDetail");
+  document.querySelectorAll("[data-realm]").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      var entry=entries[btn.dataset.realm];
+      document.getElementById("detailMeta").textContent=entry.chapter;
+      document.getElementById("detailTitle").textContent=entry.title;
+      document.getElementById("detailText").textContent=entry.text;
+      document.getElementById("detailQuote").textContent=entry.quote;
+      detail.classList.add("show");
+      detail.focus();
+    });
+  });
+  document.getElementById("closeDetail").addEventListener("click",function(){
+    detail.classList.remove("show");
+  });
+
+  var answers={
+    eth:["attestation","an attestation","attestations"],
+    base:["rollup","a rollup","rollups"],
+    hood:["eth","ether","ethereum"],
+    bnb:["bnb","bnb coin"],
+    sol:["proof of history","poh","proof-of-history"],
+    sui:["object","an object","objects"],
+    master:["bridge","a bridge","bridges","blockchain bridge","cross-chain bridge"]
+  };
+  var realmIds=["eth","base","hood","bnb","sol","sui"];
+  var solved={};
+  var storageKey="lilOmnisArchiveProgressV1";
+
+  function normalize(value){
+    return value.trim().toLowerCase()
+      .replace(/[.!?]/g,"")
+      .replace(/\s+/g," ");
+  }
+
+  function updateProgress(){
+    var count=realmIds.filter(function(id){return solved[id];}).length;
+    document.getElementById("progressText").textContent=count+" of 6";
+    document.getElementById("progressBar").style.width=(count/6*100)+"%";
+    document.getElementById("progressTrack").setAttribute("aria-valuenow",String(count));
+
+    if(count===6){
+      var master=document.getElementById("masterTrial");
+      master.classList.remove("locked");
+      document.getElementById("state-master").textContent="UNSEALED";
+      document.getElementById("masterIntro").textContent=
+        "All six realm fragments are recovered. Their technical truths point to one final idea: networks can connect without becoming the same.";
+    }
+  }
+
+  function saveProgress(){
+    try{
+      localStorage.setItem(storageKey,JSON.stringify(solved));
+    }catch(e){}
+  }
+
+  function loadProgress(){
+    try{
+      var saved=JSON.parse(localStorage.getItem(storageKey)||"{}");
+      realmIds.forEach(function(id){
+        if(saved[id]===true) solved[id]=true;
+      });
+      if(saved.master===true && realmIds.every(function(id){return solved[id];})){
+        solved.master=true;
+      }
+    }catch(e){}
+    realmIds.forEach(function(id){
+      if(solved[id]){
+        document.getElementById("state-"+id).textContent="RECOVERED";
+        document.getElementById("f-"+id).textContent="Fragment already recovered. The record remains in your archive.";
+        document.getElementById("fact-"+id).classList.add("show");
+      }
+    });
+    if(solved.master){
+      document.getElementById("state-master").textContent="RECOVERED";
+      document.getElementById("f-master").textContent="The Master Record has already been recovered.";
+      document.getElementById("fact-master").classList.add("show");
+    }
+    updateProgress();
+  }
+
+  document.querySelectorAll(".solve").forEach(function(button){
+    button.addEventListener("click",function(){
+      var id=button.dataset.id;
+      var input=document.getElementById("r-"+id);
+      var feedback=document.getElementById("f-"+id);
+      var answer=normalize(input.value);
+
+      if(id==="master" && !realmIds.every(function(key){return solved[key];})){
+        feedback.textContent="The six realm fragments must be recovered first.";
+        return;
+      }
+      if(!answer){
+        feedback.textContent="The Archive awaits your answer.";
+        return;
+      }
+      if(answers[id].includes(answer)){
+        solved[id]=true;
+        document.getElementById("state-"+id).textContent="RECOVERED";
+        document.getElementById("fact-"+id).classList.add("show");
+        feedback.textContent=id==="master"
+          ?"MASTER RECORD RECOVERED. The six realms remain distinct, yet their stories can meet."
+          :"FRAGMENT RECOVERED. The Archive reveals the technical truth behind this realm.";
+        input.disabled=true;
+        button.disabled=true;
+        button.textContent="Unlocked";
+        saveProgress();
+        updateProgress();
+      }else{
+        feedback.textContent="The lock remains sealed. Re-read the clue and inspect the hint.";
+      }
+    });
+  });
+
+  document.querySelectorAll(".puzzle input").forEach(function(input){
+    input.addEventListener("keydown",function(event){
+      if(event.key==="Enter"){
+        var button=input.closest(".puzzle").querySelector(".solve");
+        if(button) button.click();
+      }
+    });
+  });
+
+  loadProgress();
+  realmIds.concat(["master"]).forEach(function(id){
+    if(solved[id]){
+      var input=document.getElementById("r-"+id);
+      var button=document.querySelector('.solve[data-id="'+id+'"]');
+      if(input) input.disabled=true;
+      if(button){button.disabled=true;button.textContent="Unlocked";}
+    }
+  });
 })();
 </script>
 </body>
