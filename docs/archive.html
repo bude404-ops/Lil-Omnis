@@ -4,470 +4,647 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#070811">
-
-<title>Holder Archive | Lil Omnis</title>
-<meta name="description" content="The hidden archive of Lil Omnis. Six realms. Three achievements. One secret beyond them all.">
-
+<meta name="theme-color" content="#080912">
+<title>The Seventh Archive | Lil Omnis</title>
 <style>
 :root {
-  color-scheme: dark;
-  --bg: #070811;
-  --panel: #111529;
-  --line: #292d48;
-  --gold: #e1c078;
-  --muted: #a3a8c1;
-  --ink: #f1efeb;
+  --bg:#080912;
+  --panel:#12162a;
+  --line:#30344f;
+  --gold:#e4c37b;
+  --muted:#a7abc3;
+  --ink:#f4f1ea;
+  --violet:#b8a4ff;
+  --mint:#8bd8bd;
 }
-
-* {
-  box-sizing: border-box;
-}
-
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
 body {
-  margin: 0;
-  min-height: 100vh;
-  background:
-    radial-gradient(ellipse at top, #202143, transparent 48%),
-    var(--bg);
-  color: var(--ink);
-  font: 16px/1.7 system-ui, sans-serif;
+  margin:0;
+  background:radial-gradient(ellipse at top,#282346,transparent 48%),var(--bg);
+  color:var(--ink);
+  font:15px/1.7 system-ui,sans-serif;
 }
-
-a {
-  color: inherit;
+a { color:inherit; }
+button { font:inherit; cursor:pointer; }
+button:focus-visible,a:focus-visible {
+  outline:2px solid var(--gold);
+  outline-offset:4px;
 }
-
 header {
-  border-bottom: 1px solid var(--line);
-  background: #070811dd;
+  position:sticky;
+  top:0;
+  z-index:5;
+  background:#080912ed;
+  border-bottom:1px solid var(--line);
 }
-
 nav {
-  max-width: 1100px;
-  margin: auto;
-  padding: 16px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
+  max-width:1100px;
+  margin:auto;
+  padding:13px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
 }
-
 .brand {
-  text-decoration: none;
-  font-weight: 800;
-  letter-spacing: .12em;
+  text-decoration:none;
+  font-weight:850;
+  letter-spacing:.13em;
 }
-
-.brand span {
-  color: var(--gold);
-  font-size: 23px;
-  margin-right: 9px;
+.brand b {
+  color:var(--gold);
+  font-size:23px;
+  margin-right:8px;
 }
-
-.back {
-  color: var(--muted);
-  font-size: 12px;
-  text-decoration: none;
+.navlinks { display:flex; gap:17px; }
+.navlinks a {
+  color:var(--muted);
+  font-size:12px;
+  text-decoration:none;
 }
-
-.back:hover {
-  color: var(--gold);
+.navlinks a:hover { color:var(--gold); }
+.menu {
+  display:none;
+  background:var(--panel);
+  color:var(--ink);
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:7px 10px;
 }
-
 .wrap {
-  max-width: 1000px;
-  margin: auto;
-  padding: 0 20px;
+  max-width:1080px;
+  margin:auto;
+  padding:0 19px;
 }
-
 .hero {
-  text-align: center;
-  padding: 65px 0 45px;
+  text-align:center;
+  padding:55px 0 35px;
 }
-
-.symbol {
-  width: 66px;
-  height: 66px;
-  margin: 0 auto 28px;
-  border: 1px solid #e1c078aa;
-  display: grid;
-  place-items: center;
-  transform: rotate(45deg);
-  box-shadow: 0 0 45px #e1c07820;
+.eyebrow {
+  color:var(--gold);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.22em;
+  text-transform:uppercase;
 }
-
-.symbol span {
-  transform: rotate(-45deg);
-  color: var(--gold);
-  font-size: 30px;
+.sigil {
+  width:61px;
+  height:61px;
+  margin:0 auto 23px;
+  display:grid;
+  place-items:center;
+  border:1px solid #e4c37b99;
+  transform:rotate(45deg);
+  box-shadow:0 0 40px #e4c37b18;
 }
-
-.kicker {
-  color: var(--gold);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: .25em;
-  text-transform: uppercase;
+.sigil span {
+  transform:rotate(-45deg);
+  color:var(--gold);
+  font-size:28px;
 }
-
 h1 {
-  font-size: clamp(36px, 7vw, 65px);
-  line-height: 1.1;
-  letter-spacing: .04em;
-  margin: 15px 0;
+  font-size:clamp(38px,7vw,70px);
+  line-height:1.08;
+  margin:14px 0;
 }
-
-h1 em {
-  color: var(--gold);
-  font-style: normal;
+h1 em { color:var(--gold); font-style:normal; }
+.lead {
+  max-width:690px;
+  margin:18px auto;
+  color:#c8c9d8;
+  font:17px/1.85 Georgia,serif;
 }
-
-.intro {
-  max-width: 680px;
-  margin: 20px auto;
-  color: var(--muted);
-  font: 17px/1.9 Georgia, serif;
-}
-
 .status {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 7px 12px;
-  border: 1px solid #e1c07866;
-  border-radius: 99px;
-  color: var(--gold);
-  font-size: 10px;
-  letter-spacing: .12em;
+  display:inline-block;
+  border:1px solid #e4c37b66;
+  color:var(--gold);
+  padding:7px 12px;
+  border-radius:99px;
+  font-size:10px;
+  letter-spacing:.1em;
 }
-
-section {
-  padding: 35px 0;
+.stats {
+  max-width:760px;
+  margin:32px auto 0;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  border-block:1px solid var(--line);
 }
-
-.heading {
-  text-align: center;
-  max-width: 700px;
-  margin: 0 auto 25px;
+.stat { padding:12px; }
+.stat + .stat { border-left:1px solid var(--line); }
+.stat strong { display:block; font-size:27px; font-weight:550; }
+.stat span {
+  color:var(--muted);
+  font-size:9px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
 }
-
-.heading h2 {
-  font-size: clamp(25px, 4vw, 36px);
-  font-weight: 500;
-  margin: 8px 0;
+section { padding:32px 0 40px; }
+.sectionhead {
+  max-width:700px;
+  text-align:center;
+  margin:0 auto 23px;
 }
-
-.heading p {
-  color: var(--muted);
-  font-size: 13px;
+.sectionhead h2 {
+  font-size:clamp(25px,4vw,35px);
+  font-weight:550;
+  margin:7px 0;
 }
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
+.sectionhead p { color:var(--muted); font-size:13px; }
+.dashboard {
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:15px;
 }
-
-.card {
-  border: 1px solid var(--line);
-  border-radius: 15px;
-  padding: 23px;
-  background: linear-gradient(145deg, #151a31, #0b0d19);
+.panel,.realm,.path {
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:linear-gradient(145deg,#161a30,#0c0e19);
+  padding:20px;
 }
-
-.card:hover {
-  border-color: #8b7cb7;
+.panel h3,.realm h3,.path h3 { margin:7px 0; }
+.panel p,.realm p,.path p {
+  color:var(--muted);
+  font-size:12px;
 }
-
-.badge-icon {
-  width: 52px;
-  height: 52px;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--gold);
-  border-radius: 14px;
-  color: var(--gold);
-  font-size: 25px;
-  margin-bottom: 17px;
+.panelhead,.progressrow {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
 }
-
-.card h3 {
-  font-size: 19px;
-  margin: 0 0 5px;
+.tag {
+  border:1px solid #e4c37b66;
+  color:var(--gold);
+  border-radius:99px;
+  padding:4px 8px;
+  font-size:9px;
 }
-
-.requirement {
-  color: var(--gold);
-  font-size: 10px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
+.progressrow {
+  color:var(--muted);
+  font-size:11px;
+  margin:18px 0 8px;
 }
-
-.card p {
-  color: var(--muted);
-  font-size: 12px;
+.track {
+  height:7px;
+  border-radius:99px;
+  overflow:hidden;
+  background:#292d45;
 }
-
+.bar {
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,var(--violet),var(--gold));
+  transition:width .25s;
+}
+.seals {
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:6px;
+  margin-top:15px;
+}
+.seal {
+  aspect-ratio:1;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--line);
+  border-radius:9px;
+  color:#777d99;
+}
+.seal.done {
+  color:var(--gold);
+  border-color:var(--gold);
+  background:#e4c37b12;
+}
+.note {
+  color:#858ba7!important;
+  font-size:10px!important;
+}
+.next {
+  margin:15px 0;
+  padding-left:13px;
+  border-left:2px solid var(--violet);
+}
+.next strong { display:block; }
+.next span { color:var(--muted); font-size:12px; }
+.action {
+  display:inline-block;
+  margin-top:8px;
+  border:1px solid var(--line);
+  border-radius:99px;
+  background:#101326;
+  color:var(--ink);
+  text-decoration:none;
+  padding:9px 13px;
+  font-size:11px;
+  font-weight:700;
+}
+.action:hover { border-color:var(--gold); }
+.realmgrid,.pathgrid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:13px;
+}
+.realm {
+  --realm:var(--violet);
+  padding:0;
+  overflow:hidden;
+}
+.realm-top { height:4px; background:var(--realm); }
+.realm-inner { padding:17px; }
+.realm-symbol {
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--realm);
+  border-radius:12px;
+  color:var(--realm);
+  font-size:20px;
+}
+.chapter {
+  float:right;
+  color:var(--muted);
+  font-size:9px;
+  letter-spacing:.1em;
+}
+.realm h3 { font-size:17px; }
+.chain {
+  color:var(--realm);
+  font-size:10px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.realm p { min-height:54px; }
+.realm button,.reset {
+  border:1px solid var(--line);
+  border-radius:99px;
+  padding:8px 11px;
+  background:#101326;
+  color:var(--ink);
+  font-size:11px;
+}
+.realm button:hover { border-color:var(--gold); }
+.realm button.done { color:var(--mint); }
+.lore {
+  display:none;
+  border-top:1px solid var(--line);
+  padding-top:12px;
+  margin-top:12px;
+  color:#ded7c6;
+  font-size:12px;
+}
+.lore.open { display:block; }
+.path { position:relative; }
+.path:before {
+  content:"";
+  position:absolute;
+  top:0; left:0; right:0;
+  height:3px;
+  background:var(--accent,var(--gold));
+}
+.path .number {
+  color:var(--accent,var(--gold));
+  font-size:10px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
 .reward {
-  padding-top: 12px;
-  border-top: 1px solid var(--line);
-  color: #ded7c6 !important;
+  border-top:1px solid var(--line);
+  padding-top:12px;
+  color:#ded7c6!important;
 }
-
-.panel {
-  padding: clamp(20px, 4vw, 32px);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: #111529bb;
-  margin-bottom: 18px;
+.path small {
+  color:var(--muted);
+  font-size:9px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
 }
-
-.panel h3 {
-  margin-top: 0;
-  font-size: 20px;
-  font-weight: 550;
+.secret {
+  padding:clamp(22px,5vw,40px);
+  border:1px solid #806caa;
+  border-radius:18px;
+  text-align:center;
+  background:radial-gradient(ellipse at top,#33264d55,transparent 65%),#10101d;
 }
-
-.panel p,
-.panel li {
-  color: var(--muted);
-  font-size: 13px;
+.bigseal {
+  width:70px;
+  height:70px;
+  margin:0 auto 18px;
+  border:1px solid #b8a4ff88;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  color:var(--violet);
+  font-size:30px;
 }
-
-.panel ul {
-  padding-left: 22px;
+.secret h2 { font-size:clamp(27px,5vw,42px); margin:8px 0; }
+.secret p { max-width:650px; margin:13px auto; color:var(--muted); font-size:13px; }
+.lock {
+  display:inline-block;
+  border:1px solid #b8a4ff66;
+  border-radius:99px;
+  padding:7px 12px;
+  color:var(--violet);
+  font-size:10px;
+  letter-spacing:.1em;
 }
-
-.quote {
-  color: #e2dfef;
-  font: italic 17px/1.8 Georgia, serif;
-  text-align: center;
-  padding: 15px 0;
+.secret-content {
+  display:none;
+  max-width:690px;
+  margin:22px auto 0;
+  padding-top:20px;
+  border-top:1px solid #b8a4ff55;
+  text-align:left;
 }
-
-.notice {
-  border-left: 2px solid var(--gold);
-  padding: 13px 16px;
-  background: #e1c0780b;
+.secret-content.open { display:block; }
+.secret-content blockquote {
+  margin:0;
+  color:#e8dfca;
+  font:italic 19px/1.8 Georgia,serif;
 }
-
-.notice strong {
-  color: var(--gold);
+.safety {
+  border:1px solid #e4c37b44;
+  border-radius:12px;
+  padding:15px;
+  background:#e4c37b0b;
+  color:var(--muted);
+  font-size:12px;
 }
-
-.notice p {
-  margin-bottom: 0;
-}
-
-.button {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 10px 17px;
-  border: 1px solid var(--line);
-  border-radius: 99px;
-  background: #101326;
-  text-decoration: none;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.button:hover {
-  border-color: var(--gold);
-}
-
+.safety strong { color:var(--gold); }
 footer {
-  border-top: 1px solid var(--line);
-  margin-top: 35px;
-  padding: 25px 15px;
-  text-align: center;
-  color: #858ba7;
-  font-size: 10px;
-  letter-spacing: .12em;
+  border-top:1px solid var(--line);
+  padding:24px 15px;
+  text-align:center;
+  color:#858ba7;
+  font-size:10px;
+  letter-spacing:.12em;
 }
-
-@media (max-width: 760px) {
-  .grid {
-    grid-template-columns: 1fr;
+@media(max-width:760px) {
+  .dashboard { grid-template-columns:1fr; }
+  .realmgrid,.pathgrid { grid-template-columns:repeat(2,1fr); }
+}
+@media(max-width:540px) {
+  nav { padding:10px 14px; }
+  .menu { display:block; }
+  .navlinks {
+    display:none;
+    position:absolute;
+    top:50px; left:0; right:0;
+    padding:15px 20px;
+    background:#0a0c18;
+    border-bottom:1px solid var(--line);
+    flex-direction:column;
   }
-
-  .hero {
-    padding-top: 48px;
-  }
-
-  .card {
-    padding: 20px;
-  }
+  .navlinks.open { display:flex; }
+  .wrap { padding:0 14px; }
+  .hero { padding-top:40px; }
+  .realmgrid,.pathgrid { grid-template-columns:1fr; }
+  .realm p { min-height:0; }
+  .stat strong { font-size:23px; }
 }
 </style>
 </head>
-
 <body>
-
 <header>
-  <nav>
-    <a class="brand" href="index.html">
-      <span>◉</span>LIL OMNIS
-    </a>
-    <a class="back" href="index.html">← Return to the realms</a>
-  </nav>
+<nav>
+<a class="brand" href="index.html"><b>◉</b>LIL OMNIS</a>
+<button class="menu" id="menu" aria-expanded="false">Menu ☰</button>
+<div class="navlinks" id="navlinks">
+<a href="#dashboard">My Archive</a>
+<a href="#realms">Six Seals</a>
+<a href="#paths">Achievements</a>
+<a href="#seventh">Seventh Archive</a>
+<a href="index.html">Main Site ↗</a>
+</div>
+</nav>
 </header>
 
 <main>
-
 <section class="hero wrap">
-  <div class="symbol" aria-hidden="true">
-    <span>◉</span>
-  </div>
+<div class="sigil"><span>◉</span></div>
+<div class="eyebrow">Restricted shelf · Access by discovery</div>
+<h1>The <em>Omni Archive</em></h1>
+<p class="lead">A collector can own a fragment. An explorer can cross a threshold. But only those who understand all six realms can uncover what the original archivists hid beyond them.</p>
+<div class="status">Preview mode · Wallet verification not connected</div>
+<div class="stats">
+<div class="stat"><strong>06</strong><span>Realm Seals</span></div>
+<div class="stat"><strong>02</strong><span>Major Paths</span></div>
+<div class="stat"><strong>VII</strong><span>Hidden Chamber</span></div>
+</div>
+</section>
 
-  <div class="kicker">Restricted shelf · The hidden records</div>
+<section class="wrap" id="dashboard">
+<div class="sectionhead">
+<div class="eyebrow">Your field journal</div>
+<h2>The Explorer's Dashboard</h2>
+<p>Track discoveries in this demo. Progress saves in this browser only; it does not verify NFTs or wallets.</p>
+</div>
+<div class="dashboard">
+<div class="panel">
+<div class="panelhead"><div><div class="eyebrow">Archive status</div><h3>Fragments recovered</h3></div><span class="tag" id="rank">NEW ARRIVAL</span></div>
+<div class="progressrow"><span>Realm discovery progress</span><strong id="count">0 / 6</strong></div>
+<div class="track"><div class="bar" id="bar"></div></div>
+<div class="seals" id="seals">
+<div class="seal">◈</div><div class="seal">◇</div><div class="seal">✦</div><div class="seal">❖</div><div class="seal">✧</div><div class="seal">◎</div>
+</div>
+<p class="note">Demo discoveries are saved on this device. Clearing browser data resets them.</p>
+</div>
+<div class="panel">
+<div class="eyebrow">Suggested next step</div>
+<h3 id="nextTitle">Begin with Ethereum</h3>
+<p id="nextText">Open a realm record to uncover its hidden note.</p>
+<div class="next"><strong id="pathStatus">The Seventh Archive remains sealed</strong><span id="pathHint">Discover all six realm seals in this demo.</span></div>
+<a class="action" href="#realms">Explore the seals ↓</a>
+</div>
+</div>
+</section>
 
-  <h1>The <em>Omni Archive</em></h1>
+<section class="wrap" id="realms">
+<div class="sectionhead">
+<div class="eyebrow">The six realm records</div>
+<h2>Recover the Seals</h2>
+<p>Open a realm record to uncover its lore fragment. Each discovered seal advances your demo progress.</p>
+</div>
+<div class="realmgrid">
+<article class="realm" style="--realm:#b8a4ff">
+<div class="realm-top"></div><div class="realm-inner">
+<span class="chapter">CHAPTER I</span><div class="realm-symbol">◈</div>
+<h3>The Finality Flame</h3><div class="chain">Ethereum</div>
+<p>A realm of shared consensus and a history secured by many witnesses.</p>
+<button data-realm="eth">Open realm record +</button>
+<div class="lore" id="lore-eth">Validators help Ethereum agree on a canonical history. The flame is not one person's memory; it is a record maintained by a distributed network.<br><br><em>Fragment: Many witnesses. One enduring record.</em></div>
+</div></article>
+<article class="realm" style="--realm:#70aaff">
+<div class="realm-top"></div><div class="realm-inner">
+<span class="chapter">CHAPTER II</span><div class="realm-symbol">◇</div>
+<h3>The Blue Passage</h3><div class="chain">Base</div>
+<p>A road extending Ethereum activity through rollup technology.</p>
+<button data-realm="base">Open realm record +</button>
+<div class="lore" id="lore-base">Base is an Ethereum layer two built with the OP Stack. A passage can extend the road without becoming the foundation.<br><br><em>Fragment: The path grows wider; the foundation remains.</em></div>
+</div></article>
+<article class="realm" style="--realm:#7bd6a2">
+<div class="realm-top"></div><div class="realm-inner">
+<span class="chapter">CHAPTER III</span><div class="realm-symbol">✦</div>
+<h3>The Green Threshold</h3><div class="chain">Robinhood Chain</div>
+<p>A frontier built with Ethereum compatibility and Arbitrum technology.</p>
+<button data-realm="hood">Open realm record +</button>
+<div class="lore" id="lore-hood">ETH is used for gas on Robinhood Chain. Familiar tools help travelers navigate, but every traveler must still check the network.<br><br><em>Fragment: A familiar key does not erase the threshold.</em></div>
+</div></article>
+<article class="realm" style="--realm:#f0c76d">
+<div class="realm-top"></div><div class="realm-inner">
+<span class="chapter">CHAPTER IV</span><div class="realm-symbol">❖</div>
+<h3>The Golden Index</h3><div class="chain">BNB Chain</div>
+<p>A ledger where execution has a cost, and the native gas asset opens the way.</p>
+<button data-realm="bnb">Open realm record +</button>
+<div class="lore" id="lore-bnb">BNB pays gas on BNB Smart Chain. Every transaction consumes computational resources, even when the result seems effortless.<br><br><em>Fragment: Every passage has a cost.</em></div>
+</div></article>
+<article class="realm" style="--realm:#d5a3f4">
+<div class="realm-top"></div><div class="realm-inner">
+<span class="chapter">CHAPTER V</span><div class="realm-symbol">✧</div>
+<h3>The Clockwork Current</h3><div class="chain">Solana</div>
+<p>A cryptographic clock helps order events, while consensus decides which history stands.</p>
+<button data-realm="sol">Open realm record +</button>
+<div class="lore" id="lore-sol">Proof of History provides a verifiable ordering mechanism; it is not, by itself, Solana's consensus protocol.<br><br><em>Fragment: A clock can order echoes, not choose the truth.</em></div>
+</div></article>
+<article class="realm" style="--realm:#78dbe4">
+<div class="realm-top"></div><div class="realm-inner">
+<span class="chapter">CHAPTER VI</span><div class="realm-symbol">◎</div>
+<h3>The Living Objects</h3><div class="chain">Sui</div>
+<p>A world where typed objects, ownership, and rules shape how state is organized.</p>
+<button data-realm="sui">Open realm record +</button>
+<div class="lore" id="lore-sui">Sui uses an object-centric data model. Objects have types and ownership rules that influence how transactions are processed.<br><br><em>Fragment: Know the thing, and its rules begin to speak.</em></div>
+</div></article>
+</div>
+</section>
 
-  <p class="intro">
-    Six realms hold six fragments of a greater truth.
-    Some seek knowledge by collecting. Others discover
-    the paths between worlds. Only those who do both
-    can approach the Seventh Archive.
-  </p>
+<section class="wrap" id="paths">
+<div class="sectionhead">
+<div class="eyebrow">Longer journeys</div>
+<h2>Two Paths. One Ascension.</h2>
+<p>These are planned achievement concepts. Official rules should be published before any real achievement or reward is offered.</p>
+</div>
+<div class="pathgrid">
+<article class="path" style="--accent:#e4c37b">
+<div class="number">PATH 01 · THE COLLECTOR</div>
+<h3>Six Realms Voyager</h3>
+<p>Hold at least one qualifying Lil Omni from each realm: Ethereum, Base, Robinhood Chain, BNB Chain, Solana, and Sui.</p>
+<p class="reward"><strong>Archive reward</strong><br>The First Seal — deeper origin stories and collector-only lore.</p>
+<small>Planned · Ownership check not active</small>
+</article>
+<article class="path" style="--accent:#8bd8bd">
+<div class="number">PATH 02 · THE EXPLORER</div>
+<h3>Omni Bridgewalker</h3>
+<p>Complete qualifying cross-chain exploration under clear, published rules. A bridge transaction alone should not count unless it meets those rules.</p>
+<p class="reward"><strong>Archive reward</strong><br>The Bridgekeeper's Secret — hidden records about the paths between worlds.</p>
+<small>Planned · Bridge verification not active</small>
+</article>
+<article class="path" style="--accent:#b8a4ff">
+<div class="number">FINAL PATH · THE ASCENDANT</div>
+<h3>Omni Ascendant</h3>
+<p>Earn both major achievements. Gather the fragments, then travel between the realms.</p>
+<p class="reward"><strong>Archive reward</strong><br>Access to the Seventh Archive and its legendary lore chapter.</p>
+<small id="ascStatus">Locked in this preview</small>
+</article>
+</div>
+</section>
 
-  <div class="status">WALLET ACCESS COMING AFTER LAUNCH</div>
+<section class="wrap" id="seventh">
+<div class="secret">
+<div class="bigseal">◉</div>
+<div class="eyebrow">Codex VII · The chamber beyond the map</div>
+<h2>The Seventh Archive</h2>
+<p id="secretIntro">Six seals guard the entrance. Discover all six in this preview to reveal the first message from the chamber.</p>
+<div class="lock" id="lock">◈ CHAMBER SEALED · 0/6 SEALS</div>
+<div class="secret-content" id="secretContent">
+<blockquote>“You searched for a seventh chain. There was none. The Seventh Archive was never another realm — it was the understanding that made six separate realms part of one story.”</blockquote>
+<p>The first archivist left no master key. The key was a pattern: identity without sameness, connection without surrender, and knowledge that grows when it crosses a boundary.</p>
+<p><strong style="color:var(--gold)">Codex fragment recovered:</strong> The Omnis were never sent to make the chains one. They were sent to remember what each chain could teach the others.</p>
+</div>
+</div>
 </section>
 
 <section class="wrap">
-  <div class="heading">
-    <div class="kicker">The achievement records</div>
-    <h2>Three Paths to Discovery</h2>
-    <p>
-      These achievements will be awarded after the website
-      can verify ownership and qualifying cross-chain activity.
-    </p>
-  </div>
-
-  <div class="grid">
-
-    <article class="card">
-      <div class="badge-icon">✧</div>
-      <div class="requirement">Six NFTs · Six chains</div>
-      <h3>Six Realms Voyager</h3>
-      <p>
-        The collector has gathered one Lil Omni from each
-        realm: Ethereum, Base, Robinhood Chain, BNB Chain,
-        Solana, and Sui.
-      </p>
-      <p class="reward">
-        <strong>Reward: The First Seal</strong><br>
-        Unlock the origins of the six realms and their
-        first hidden archive records.
-      </p>
-    </article>
-
-    <article class="card">
-      <div class="badge-icon">⟡</div>
-      <div class="requirement">Verified exploration</div>
-      <h3>Omni Bridgewalker</h3>
-      <p>
-        The explorer completes verified cross-chain
-        journeys involving all six realms, according to
-        the archive's published rules.
-      </p>
-      <p class="reward">
-        <strong>Reward: The Bridgekeeper's Secret</strong><br>
-        Reveal hidden lore about the paths connecting
-        separate blockchain worlds.
-      </p>
-    </article>
-
-    <article class="card">
-      <div class="badge-icon">◉</div>
-      <div class="requirement">Both achievements</div>
-      <h3>Omni Ascendant</h3>
-      <p>
-        The collector earns both Six Realms Voyager
-        and Omni Bridgewalker.
-      </p>
-      <p class="reward">
-        <strong>Reward: The Seventh Archive</strong><br>
-        Discover the deepest lore chapter and a special
-        legendary digital collectible.
-      </p>
-    </article>
-
-  </div>
+<div class="safety"><strong>Important:</strong> This is a demo. It does not connect a wallet, verify NFT ownership, verify bridge activity, or grant real rewards. Browser progress can be edited or reset, so it is not an official achievement. Never enter your seed phrase or private key into this website.</div>
+<p style="text-align:center;margin-top:20px"><a class="action" href="index.html">← Return to the main realms</a> <button class="reset" id="reset">Reset demo progress</button></p>
 </section>
-
-<section class="wrap">
-  <div class="panel">
-    <div class="kicker">The permanent record</div>
-    <h3>What you discover stays with you</h3>
-
-    <p>
-      Once an achievement is earned and verified, it will
-      remain in the archive record for the wallet that earned
-      it—even if the qualifying NFTs are later sold or transferred.
-    </p>
-
-    <p>
-      Lore discoveries and completed story milestones will
-      remain recorded as well. Permanent achievements do not
-      automatically guarantee eligibility for future holder rewards.
-    </p>
-  </div>
-
-  <div class="panel">
-    <div class="kicker">Future distributions</div>
-    <h3>Airdrops and holder rewards</h3>
-
-    <p>
-      Future airdrops, digital items, and holder-only benefits
-      may use separate eligibility rules. Each distribution
-      should clearly state its qualifying collections, chains,
-      snapshot date or block, and any other requirements.
-    </p>
-
-    <p>
-      Earning an achievement does not guarantee that a future
-      airdrop or paid reward will be offered.
-    </p>
-  </div>
-
-  <div class="panel">
-    <div class="kicker">The current status</div>
-    <h3>The gates are being prepared</h3>
-
-    <p>
-      This page introduces the planned achievement system.
-      Wallet connection, blockchain ownership checks,
-      bridge verification, and permanent achievement records
-      are not active yet.
-    </p>
-
-    <div class="notice">
-      <strong>Wallet safety</strong>
-      <p>
-        Never enter your seed phrase or private key into this
-        website. Future access should use a wallet connection
-        and, where appropriate, a clearly explained signature.
-      </p>
-    </div>
-  </div>
-
-  <div class="quote">
-    “The realms may trade their treasures. The knowledge
-    earned between them remains in the record.”
-  </div>
-
-  <p style="text-align:center">
-    <a class="button" href="index.html">← Return to the Six Realms</a>
-  </p>
-</section>
-
 </main>
 
-<footer>
-  <p>LIL OMNIS · THE OMNI ARCHIVE</p>
-  <p>Six Realms · Six Chains · One Hidden Truth</p>
-</footer>
+<footer><p>LIL OMNIS · THE OMNI ARCHIVE</p><p>Six Realms · Six Chains · One Hidden Truth</p></footer>
 
+<script>
+(function(){
+"use strict";
+const ids=["eth","base","hood","bnb","sol","sui"];
+const symbols=["◈","◇","✦","❖","✧","◎"];
+const names=["The Finality Flame","The Blue Passage","The Green Threshold","The Golden Index","The Clockwork Current","The Living Objects"];
+const key="lilOmnisHolderDemoV2";
+let progress={};
+try { progress=JSON.parse(localStorage.getItem(key)||"{}")||{}; }
+catch(e) { progress={}; }
+
+function save(){
+  try { localStorage.setItem(key,JSON.stringify(progress)); }
+  catch(e) {}
+}
+function render(){
+  const count=ids.filter(id=>progress[id]).length;
+  document.getElementById("count").textContent=count+" / 6";
+  document.getElementById("bar").style.width=(count/6*100)+"%";
+  document.getElementById("rank").textContent=count===6?"ARCHIVE ASCENDANT":count>=3?"ACTIVE EXPLORER":count?"FIRST FOOTPRINTS":"NEW ARRIVAL";
+  document.querySelectorAll(".seal").forEach((el,i)=>{
+    el.classList.toggle("done",!!progress[ids[i]]);
+    el.textContent=progress[ids[i]]?"✧":symbols[i];
+  });
+  const next=ids.findIndex(id=>!progress[id]);
+  document.getElementById("nextTitle").textContent=next<0?"All six seals recovered":"Begin with "+names[next];
+  document.getElementById("nextText").textContent=next<0?"Every realm fragment has been recovered in this local demo. The secret chamber is now open.":"Explore "+names[next]+" and open its record to discover the next fragment.";
+  document.getElementById("pathStatus").textContent=count===6?"The Seventh Archive is open":"The Seventh Archive remains sealed";
+  document.getElementById("pathHint").textContent=count===6?"The six fragments have aligned. Enter the chamber below.":"Recover "+(6-count)+" more realm seal"+(6-count===1?"":"s")+" in this demo.";
+  document.getElementById("lock").textContent=count===6?"✧ CHAMBER OPEN · CODEX VII":"◈ CHAMBER SEALED · "+count+"/6 SEALS";
+  document.getElementById("secretContent").classList.toggle("open",count===6);
+  document.getElementById("secretIntro").textContent=count===6?"The six marks align. The first hidden message is revealed below.":"Six seals guard the entrance. Discover all six in this preview to reveal the first message from the chamber.";
+  document.getElementById("ascStatus").textContent=count===6?"Demo path complete · Real verification pending":"Locked in this preview";
+  ids.forEach(id=>{
+    const btn=document.querySelector('[data-realm="'+id+'"]');
+    btn.classList.toggle("done",!!progress[id]);
+    btn.textContent=progress[id]?"✓ Seal discovered":"Open realm record +";
+  });
+}
+document.querySelectorAll("[data-realm]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const id=btn.dataset.realm;
+    const lore=document.getElementById("lore-"+id);
+    const opening=!lore.classList.contains("open");
+    lore.classList.toggle("open",opening);
+    if(opening&&!progress[id]){
+      progress[id]=true;
+      save();
+      render();
+    }
+  });
+});
+document.getElementById("reset").addEventListener("click",()=>{
+  if(confirm("Reset the demo discoveries saved on this device?")){
+    progress={};
+    save();
+    document.querySelectorAll(".lore").forEach(el=>el.classList.remove("open"));
+    render();
+  }
+});
+const menu=document.getElementById("menu");
+const links=document.getElementById("navlinks");
+menu.addEventListener("click",()=>{
+  const open=links.classList.toggle("open");
+  menu.setAttribute("aria-expanded",String(open));
+});
+links.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{
+  links.classList.remove("open");
+  menu.setAttribute("aria-expanded","false");
+}));
+render();
+})();
+</script>
 </body>
 </html>
-
