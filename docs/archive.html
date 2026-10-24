@@ -1,1 +1,473 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#070811">
+
+<title>Holder Archive | Lil Omnis</title>
+<meta name="description" content="The hidden archive of Lil Omnis. Six realms. Three achievements. One secret beyond them all.">
+
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #070811;
+  --panel: #111529;
+  --line: #292d48;
+  --gold: #e1c078;
+  --muted: #a3a8c1;
+  --ink: #f1efeb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at top, #202143, transparent 48%),
+    var(--bg);
+  color: var(--ink);
+  font: 16px/1.7 system-ui, sans-serif;
+}
+
+a {
+  color: inherit;
+}
+
+header {
+  border-bottom: 1px solid var(--line);
+  background: #070811dd;
+}
+
+nav {
+  max-width: 1100px;
+  margin: auto;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.brand {
+  text-decoration: none;
+  font-weight: 800;
+  letter-spacing: .12em;
+}
+
+.brand span {
+  color: var(--gold);
+  font-size: 23px;
+  margin-right: 9px;
+}
+
+.back {
+  color: var(--muted);
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.back:hover {
+  color: var(--gold);
+}
+
+.wrap {
+  max-width: 1000px;
+  margin: auto;
+  padding: 0 20px;
+}
+
+.hero {
+  text-align: center;
+  padding: 65px 0 45px;
+}
+
+.symbol {
+  width: 66px;
+  height: 66px;
+  margin: 0 auto 28px;
+  border: 1px solid #e1c078aa;
+  display: grid;
+  place-items: center;
+  transform: rotate(45deg);
+  box-shadow: 0 0 45px #e1c07820;
+}
+
+.symbol span {
+  transform: rotate(-45deg);
+  color: var(--gold);
+  font-size: 30px;
+}
+
+.kicker {
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: clamp(36px, 7vw, 65px);
+  line-height: 1.1;
+  letter-spacing: .04em;
+  margin: 15px 0;
+}
+
+h1 em {
+  color: var(--gold);
+  font-style: normal;
+}
+
+.intro {
+  max-width: 680px;
+  margin: 20px auto;
+  color: var(--muted);
+  font: 17px/1.9 Georgia, serif;
+}
+
+.status {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 7px 12px;
+  border: 1px solid #e1c07866;
+  border-radius: 99px;
+  color: var(--gold);
+  font-size: 10px;
+  letter-spacing: .12em;
+}
+
+section {
+  padding: 35px 0;
+}
+
+.heading {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 25px;
+}
+
+.heading h2 {
+  font-size: clamp(25px, 4vw, 36px);
+  font-weight: 500;
+  margin: 8px 0;
+}
+
+.heading p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.card {
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  padding: 23px;
+  background: linear-gradient(145deg, #151a31, #0b0d19);
+}
+
+.card:hover {
+  border-color: #8b7cb7;
+}
+
+.badge-icon {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--gold);
+  border-radius: 14px;
+  color: var(--gold);
+  font-size: 25px;
+  margin-bottom: 17px;
+}
+
+.card h3 {
+  font-size: 19px;
+  margin: 0 0 5px;
+}
+
+.requirement {
+  color: var(--gold);
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.reward {
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  color: #ded7c6 !important;
+}
+
+.panel {
+  padding: clamp(20px, 4vw, 32px);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #111529bb;
+  margin-bottom: 18px;
+}
+
+.panel h3 {
+  margin-top: 0;
+  font-size: 20px;
+  font-weight: 550;
+}
+
+.panel p,
+.panel li {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.panel ul {
+  padding-left: 22px;
+}
+
+.quote {
+  color: #e2dfef;
+  font: italic 17px/1.8 Georgia, serif;
+  text-align: center;
+  padding: 15px 0;
+}
+
+.notice {
+  border-left: 2px solid var(--gold);
+  padding: 13px 16px;
+  background: #e1c0780b;
+}
+
+.notice strong {
+  color: var(--gold);
+}
+
+.notice p {
+  margin-bottom: 0;
+}
+
+.button {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 10px 17px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: #101326;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.button:hover {
+  border-color: var(--gold);
+}
+
+footer {
+  border-top: 1px solid var(--line);
+  margin-top: 35px;
+  padding: 25px 15px;
+  text-align: center;
+  color: #858ba7;
+  font-size: 10px;
+  letter-spacing: .12em;
+}
+
+@media (max-width: 760px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    padding-top: 48px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <nav>
+    <a class="brand" href="index.html">
+      <span>◉</span>LIL OMNIS
+    </a>
+    <a class="back" href="index.html">← Return to the realms</a>
+  </nav>
+</header>
+
+<main>
+
+<section class="hero wrap">
+  <div class="symbol" aria-hidden="true">
+    <span>◉</span>
+  </div>
+
+  <div class="kicker">Restricted shelf · The hidden records</div>
+
+  <h1>The <em>Omni Archive</em></h1>
+
+  <p class="intro">
+    Six realms hold six fragments of a greater truth.
+    Some seek knowledge by collecting. Others discover
+    the paths between worlds. Only those who do both
+    can approach the Seventh Archive.
+  </p>
+
+  <div class="status">WALLET ACCESS COMING AFTER LAUNCH</div>
+</section>
+
+<section class="wrap">
+  <div class="heading">
+    <div class="kicker">The achievement records</div>
+    <h2>Three Paths to Discovery</h2>
+    <p>
+      These achievements will be awarded after the website
+      can verify ownership and qualifying cross-chain activity.
+    </p>
+  </div>
+
+  <div class="grid">
+
+    <article class="card">
+      <div class="badge-icon">✧</div>
+      <div class="requirement">Six NFTs · Six chains</div>
+      <h3>Six Realms Voyager</h3>
+      <p>
+        The collector has gathered one Lil Omni from each
+        realm: Ethereum, Base, Robinhood Chain, BNB Chain,
+        Solana, and Sui.
+      </p>
+      <p class="reward">
+        <strong>Reward: The First Seal</strong><br>
+        Unlock the origins of the six realms and their
+        first hidden archive records.
+      </p>
+    </article>
+
+    <article class="card">
+      <div class="badge-icon">⟡</div>
+      <div class="requirement">Verified exploration</div>
+      <h3>Omni Bridgewalker</h3>
+      <p>
+        The explorer completes verified cross-chain
+        journeys involving all six realms, according to
+        the archive's published rules.
+      </p>
+      <p class="reward">
+        <strong>Reward: The Bridgekeeper's Secret</strong><br>
+        Reveal hidden lore about the paths connecting
+        separate blockchain worlds.
+      </p>
+    </article>
+
+    <article class="card">
+      <div class="badge-icon">◉</div>
+      <div class="requirement">Both achievements</div>
+      <h3>Omni Ascendant</h3>
+      <p>
+        The collector earns both Six Realms Voyager
+        and Omni Bridgewalker.
+      </p>
+      <p class="reward">
+        <strong>Reward: The Seventh Archive</strong><br>
+        Discover the deepest lore chapter and a special
+        legendary digital collectible.
+      </p>
+    </article>
+
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="panel">
+    <div class="kicker">The permanent record</div>
+    <h3>What you discover stays with you</h3>
+
+    <p>
+      Once an achievement is earned and verified, it will
+      remain in the archive record for the wallet that earned
+      it—even if the qualifying NFTs are later sold or transferred.
+    </p>
+
+    <p>
+      Lore discoveries and completed story milestones will
+      remain recorded as well. Permanent achievements do not
+      automatically guarantee eligibility for future holder rewards.
+    </p>
+  </div>
+
+  <div class="panel">
+    <div class="kicker">Future distributions</div>
+    <h3>Airdrops and holder rewards</h3>
+
+    <p>
+      Future airdrops, digital items, and holder-only benefits
+      may use separate eligibility rules. Each distribution
+      should clearly state its qualifying collections, chains,
+      snapshot date or block, and any other requirements.
+    </p>
+
+    <p>
+      Earning an achievement does not guarantee that a future
+      airdrop or paid reward will be offered.
+    </p>
+  </div>
+
+  <div class="panel">
+    <div class="kicker">The current status</div>
+    <h3>The gates are being prepared</h3>
+
+    <p>
+      This page introduces the planned achievement system.
+      Wallet connection, blockchain ownership checks,
+      bridge verification, and permanent achievement records
+      are not active yet.
+    </p>
+
+    <div class="notice">
+      <strong>Wallet safety</strong>
+      <p>
+        Never enter your seed phrase or private key into this
+        website. Future access should use a wallet connection
+        and, where appropriate, a clearly explained signature.
+      </p>
+    </div>
+  </div>
+
+  <div class="quote">
+    “The realms may trade their treasures. The knowledge
+    earned between them remains in the record.”
+  </div>
+
+  <p style="text-align:center">
+    <a class="button" href="index.html">← Return to the Six Realms</a>
+  </p>
+</section>
+
+</main>
+
+<footer>
+  <p>LIL OMNIS · THE OMNI ARCHIVE</p>
+  <p>Six Realms · Six Chains · One Hidden Truth</p>
+</footer>
+
+</body>
+</html>
+
