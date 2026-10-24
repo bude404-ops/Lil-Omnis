@@ -37,3 +37,16 @@ The immediate goal is to establish the master character design, build the trait 
 Guiding Principle
 
 Every Lil Omni is a piece of a larger mystery. Each chapter reveals something different, but the complete picture can only be discovered by exploring the connections between them.
+
+
+Mint Pipeline (build_mint.py)
+
+The collection assembles and exports deterministically:
+
+- python3 generator/build_mint.py --dry-run   assigns all 666 (seeded, reproducible), writes mint/assignment.json + trait_counts.json
+- python3 generator/build_mint.py --sample    renders one standard piece per realm as a smoke test
+- python3 generator/build_mint.py --full      renders all 666 images + ERC-721 metadata into mint/chains/<realm>/ (resumable), writes sha256 manifest
+
+Per realm: 111 pieces (standard 60, relic staff 25, vested 12, pale-eyed 8, gilded rim 5, The Unnamed 1).
+Each chain receives its own folder: mint/chains/<realm>/images/001-111.png + metadata/001-111.json,
+ready for upload to multisea.io or IPFS as-is. Image base URI is set via --image-base when pinning.
