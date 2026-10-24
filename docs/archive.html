@@ -63,7 +63,24 @@ h1 em{color:var(--gold);font-style:normal}
 .secret-content{display:none;max-width:690px;margin:22px auto 0;padding-top:20px;border-top:1px solid #b8a4ff55;text-align:left}
 .secret-content.open{display:block}
 .secret-content blockquote{margin:0;color:#e8dfca;font:italic 19px/1.8 Georgia,serif}
-.orb-stage{position:relative;display:grid;place-items:center;min-height:240px;margin:12px auto}
+
+.orb-stage{position:relative;isolation:isolate;display:grid;place-items:center;min-height:290px;margin:18px auto;overflow:hidden}
+.orb-stage:before{content:"";position:absolute;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,#a98bff35 0%,#7550ff16 40%,transparent 72%);filter:blur(8px);animation:orbAura 5s ease-in-out infinite}
+.orb-stage:after{content:"";position:absolute;width:190px;height:190px;border:1px solid #b8a4ff35;border-radius:50%;box-shadow:0 0 28px #8b5cf622,inset 0 0 25px #b8a4ff15;animation:orbRing 16s linear infinite}
+.whisper-orb{z-index:2;position:relative;width:145px;height:145px;border:1px solid #e4d8ff;border-radius:50%;background:radial-gradient(circle at 32% 23%,#fff 0 1%,#e8d9ff 3%,#b8a4ff 9%,#8062c9 22%,#38265f 48%,#171026 72%,#080912 82%);box-shadow:0 0 18px #d7c4ff99,0 0 45px #9c7bff88,0 0 95px #8b5cf644,inset -12px -15px 28px #05040c,inset 8px 8px 24px #fff6;transition:transform .6s,box-shadow .6s;animation:orbFloat 4s ease-in-out infinite}
+.whisper-orb:before,.whisper-orb:after{content:"";position:absolute;inset:-18px;border:1px solid #c7b3ff99;border-radius:50%;transform:rotate(-25deg) scaleY(.42);box-shadow:0 0 12px #b8a4ff33}
+.whisper-orb:after{inset:-27px;transform:rotate(55deg) scaleY(.42);border-color:#e4c37b99}
+.whisper-orb.awake{transform:scale(1.1);box-shadow:0 0 25px #fff,0 0 65px #c3a9ff,0 0 125px #8b5cf6aa,inset 0 0 35px #fff9;animation:orbAwaken 1.8s ease-in-out infinite}
+.orb-glyph{position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:48px;text-shadow:0 0 8px #fff,0 0 24px #c7aaff,0 0 45px #9c7bff}
+.orb-rune{z-index:3;position:absolute;color:var(--gold);font-size:21px;text-shadow:0 0 8px var(--gold),0 0 20px #e4c37b88;animation:runeFloat 4s ease-in-out infinite}
+.r1{top:12%;left:20%}.r2{top:17%;right:18%;animation-delay:-1s}.r3{bottom:15%;left:17%;animation-delay:-2s}.r4{bottom:12%;right:20%;animation-delay:-3s}
+@keyframes orbAura{50%{transform:scale(1.25);opacity:.65}}
+@keyframes orbRing{to{transform:rotate(360deg)}}
+@keyframes orbFloat{50%{translate:0 -7px}}
+@keyframes orbAwaken{50%{filter:brightness(1.4);transform:scale(1.1)}}
+@keyframes runeFloat{50%{translate:0 -10px;rotate:12deg}}
+@media(prefers-reduced-motion:reduce){.orb-stage:before,.orb-stage:after,.whisper-orb,.whisper-orb.awake,.orb-rune{animation:none!important}}
+
 .whisper-orb{position:relative;width:145px;height:145px;border:1px solid #c8b5ff99;border-radius:50%;background:radial-gradient(circle at 35% 28%,#f1eaff 0 2%,#b8a4ff 5%,#6b4e9e 20%,#221b3e 55%,#080912 75%);box-shadow:0 0 30px #9c7bff66,0 0 70px #8b5cf633,inset 0 0 25px #e7d8ff66;transition:.5s}
 .whisper-orb:before,.whisper-orb:after{content:"";position:absolute;inset:-14px;border:1px solid #b8a4ff66;border-radius:50%;transform:rotate(-25deg) scaleY(.45)}
 .whisper-orb:after{transform:rotate(55deg) scaleY(.45);border-color:#e4c37b77}
