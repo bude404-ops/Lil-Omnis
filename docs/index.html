@@ -1,235 +1,248 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lil Omnis — One Connected Universe</title>
-<meta name="description" content="666 Collectibles. Six Chapters. Multiple Blockchains. One Connected Universe.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#070811">
+<title>Lil Omnis — The Omni Archive</title>
+<meta name="description" content="Six realms. Six chains. 666 Lil Omnis. Explore the archive before the gates open.">
 <style>
-  :root{
-    --bg:#05060d;
-    --panel:#0b0e1a;
-    --line:#1c2138;
-    --gold:#d9b45b;
-    --violet:#8f7bd8;
-    --ink:#c9cede;
-    --dim:#6b7290;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    background:var(--bg);
-    color:var(--ink);
-    font-family:Georgia,'Times New Roman',serif;
-    overflow-x:hidden;
-  }
-  #stars{position:fixed;inset:0;z-index:0;opacity:.55}
-  .wrap{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:0 22px 90px}
-  header{padding:74px 0 30px;text-align:center}
-  .sigil{
-    width:64px;height:64px;margin:0 auto 26px;
-    border:1px solid var(--gold);transform:rotate(45deg);
-    display:flex;align-items:center;justify-content:center;
-    box-shadow:0 0 34px rgba(217,180,91,.25);
-  }
-  .sigil span{transform:rotate(-45deg);font-size:26px;color:var(--gold)}
-  h1{
-    font-size:clamp(44px,9vw,84px);
-    letter-spacing:.14em;
-    color:#f2ead6;
-    font-weight:400;
-  }
-  h1 .om{color:var(--gold)}
-  .tag{
-    margin-top:14px;letter-spacing:.42em;font-size:12px;
-    color:var(--dim);text-transform:uppercase;
-  }
-  .creed{
-    margin:34px auto 0;max-width:640px;
-    font-size:17px;line-height:1.75;color:var(--ink);font-style:italic;
-  }
-  .creed b{color:var(--gold);font-weight:400}
-  .stats{
-    display:flex;justify-content:center;gap:44px;flex-wrap:wrap;
-    margin-top:38px;
-  }
-  .stat{text-align:center}
-  .stat .n{font-size:34px;color:#f2ead6;letter-spacing:.06em}
-  .stat .l{font-size:10px;letter-spacing:.34em;color:var(--dim);text-transform:uppercase;margin-top:6px}
-  .div{width:120px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:52px auto;opacity:.6}
-  h2{
-    text-align:center;font-size:13px;letter-spacing:.5em;color:var(--dim);
-    text-transform:uppercase;font-weight:400;margin-bottom:38px;
-  }
-  .gates{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:18px;
-  }
-  .gate{
-    position:relative;
-    background:linear-gradient(180deg,var(--panel),#070912);
-    border:1px solid var(--line);
-    padding:30px 24px 26px;
-    text-align:center;
-    transition:border-color .35s, transform .35s, box-shadow .35s;
-    cursor:default;
-  }
-  .gate:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 14px 44px rgba(0,0,0,.5)}
-  .gate .glyph{
-    width:52px;height:52px;margin:0 auto 18px;
-    border:1px solid var(--line);transform:rotate(45deg);
-    display:flex;align-items:center;justify-content:center;
-  }
-  .gate .glyph span{transform:rotate(-45deg);font-size:20px;color:var(--dim)}
-  .gate:hover .glyph{border-color:var(--gold)}
-  .gate:hover .glyph span{color:var(--gold)}
-  .gate .ch{font-size:10px;letter-spacing:.4em;color:var(--gold);text-transform:uppercase}
-  .gate .nm{font-size:20px;margin:10px 0 6px;color:#e8e2d2;letter-spacing:.08em}
-  .gate .realm{font-size:11px;letter-spacing:.24em;color:var(--dim);text-transform:uppercase}
-  .gate .seal{
-    margin-top:18px;display:inline-block;
-    font-size:10px;letter-spacing:.38em;color:var(--violet);
-    border:1px solid rgba(143,123,216,.4);padding:6px 14px;
-    text-transform:uppercase;
-  }
-  .gate.open .seal{color:var(--gold);border-color:var(--gold)}
-  .gate.open{border-color:rgba(217,180,91,.55);box-shadow:0 0 30px rgba(217,180,91,.08)}
-  .codex{
-    margin-top:64px;
-    background:var(--panel);border:1px solid var(--line);
-    padding:38px 34px;
-  }
-  .codex h3{font-size:15px;letter-spacing:.34em;color:var(--gold);text-transform:uppercase;font-weight:400;text-align:center}
-  .codex p{margin-top:16px;line-height:1.8;font-size:15.5px;color:var(--ink);text-align:center;max-width:640px;margin-left:auto;margin-right:auto}
-  .codex .frag{margin-top:20px;font-style:italic;color:#9aa2c0}
-  .clues{
-    margin-top:22px;text-align:center;font-size:12px;letter-spacing:.2em;color:var(--dim);
-  }
-  .clues .dot{color:var(--gold)}
-  footer{
-    margin-top:80px;text-align:center;font-size:11px;letter-spacing:.3em;color:#3d4360;
-    text-transform:uppercase;line-height:2.1;
-  }
-  footer .x{color:#20243a;cursor:default}
-  .hint{color:#20243a;font-size:10px;letter-spacing:.26em;margin-top:6px;transition:color .8s}
-  .hint:hover{color:#4a4f6e}
+:root {
+  color-scheme: dark;
+  --bg: #070811;
+  --panel: #111529;
+  --line: #292d48;
+  --gold: #e1c078;
+  --muted: #a3a8c1;
+  --ink: #f1efeb;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 75px; }
+body {
+  margin: 0; background: radial-gradient(ellipse at top,#202143,transparent 48%),var(--bg);
+  color: var(--ink); font: 16px/1.65 system-ui,sans-serif;
+}
+a { color: inherit; }
+button,input { font: inherit; }
+a:focus-visible,button:focus-visible,input:focus-visible {
+  outline: 2px solid var(--gold); outline-offset: 4px;
+}
+header {
+  position: sticky; top: 0; z-index: 5; background: #070811ee;
+  border-bottom: 1px solid var(--line); backdrop-filter: blur(12px);
+}
+nav {
+  max-width: 1080px; margin: auto; padding: 13px 20px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.brand { text-decoration: none; font-weight: 800; letter-spacing: .12em; }
+.brand span { color: var(--gold); font-size: 22px; margin-right: 8px; }
+.links { display: flex; gap: 18px; }
+.links a { color: var(--muted); text-decoration: none; font-size: 12px; }
+.links a:hover { color: var(--gold); }
+.menu {
+  display: none; padding: 7px 10px; border: 1px solid var(--line);
+  border-radius: 9px; background: var(--panel); color: var(--ink);
+}
+.wrap { max-width: 1080px; margin: auto; padding: 0 20px; }
+.hero { text-align: center; padding: 76px 0 60px; }
+.kicker {
+  color: var(--gold); font-size: 10px; font-weight: 700;
+  letter-spacing: .27em; text-transform: uppercase;
+}
+.symbol {
+  width: 64px; height: 64px; margin: 0 auto 28px;
+  border: 1px solid #e1c078aa; display: grid; place-items: center;
+  transform: rotate(45deg); box-shadow: 0 0 40px #e1c07820;
+}
+.symbol span { transform: rotate(-45deg); color: var(--gold); font-size: 28px; }
+h1 { font-size: clamp(42px,8vw,82px); line-height: 1.05; letter-spacing: .09em; margin: 16px 0; }
+h1 em { color: var(--gold); font-style: normal; }
+.subtitle { color: var(--muted); font-size: 11px; letter-spacing: .3em; }
+.intro {
+  max-width: 680px; margin: 25px auto; color: #c5c8d8;
+  font: clamp(16px,2.3vw,20px)/1.85 Georgia,serif;
+}
+.intro strong { color: var(--gold); font-weight: normal; }
+.actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin: 28px 0; }
+.btn {
+  display: inline-block; padding: 10px 17px; border: 1px solid var(--line);
+  border-radius: 99px; background: #101326; color: var(--ink);
+  text-decoration: none; font-size: 12px; font-weight: 700; cursor: pointer;
+}
+.btn:hover { border-color: var(--gold); }
+.btn.primary { background: var(--gold); color: #171321; border-color: var(--gold); }
+.stats {
+  display: grid; grid-template-columns: repeat(4,1fr); max-width: 740px;
+  margin: 45px auto 0; border-block: 1px solid var(--line);
+}
+.stat { padding: 17px 5px; }
+.stat + .stat { border-left: 1px solid var(--line); }
+.stat strong { display: block; font-size: clamp(25px,4vw,35px); font-weight: 500; }
+.stat span { color: #858ba7; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; }
+section { padding: 60px 0; }
+.heading { text-align: center; max-width: 680px; margin: 0 auto 30px; }
+.heading h2 { font-size: clamp(26px,4vw,37px); font-weight: 500; margin: 8px 0; }
+.heading p { color: var(--muted); font-size: 14px; }
+.grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+.gate {
+  --realm: #a99af0; padding: 21px; border: 1px solid var(--line);
+  border-radius: 16px; background: linear-gradient(145deg,#151a31,#0b0d19);
+  transition: transform .2s,border-color .2s;
+}
+.gate:hover { transform: translateY(-3px); border-color: var(--realm); }
+.gate-top { display: flex; justify-content: space-between; align-items: center; }
+.sig {
+  width: 42px; height: 42px; display: grid; place-items: center;
+  border: 1px solid var(--realm); border-radius: 12px;
+  color: var(--realm); font-size: 21px;
+}
+.chapter { color: var(--muted); font-size: 9px; letter-spacing: .2em; }
+.gate h3 { margin: 17px 0 0; font-size: 19px; }
+.chain { color: var(--realm); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+.gate p { color: var(--muted); font-size: 12px; }
+.gate button {
+  background: transparent; border: 0; color: var(--ink);
+  padding: 0; cursor: pointer; font-size: 11px; font-weight: 700;
+}
+.gate button span { color: var(--realm); }
+.detail {
+  display: none; margin-top: 16px; padding: 24px;
+  border: 1px solid var(--line); border-radius: 16px; background: var(--panel);
+}
+.detail.show { display: block; }
+.detail h3 { margin-bottom: 4px; }
+.detail p { color: var(--muted); }
+.detail-meta { color: var(--gold); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; }
+.columns { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.panel { padding: clamp(21px,4vw,32px); border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
+.panel h3 { font-size: 20px; font-weight: 550; margin: 8px 0; }
+.panel p { color: var(--muted); font-size: 13px; }
+.quote { color: #e2dfef; font: italic 17px/1.6 Georgia,serif; }
+.fragment { color: var(--gold); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; }
+details { border-top: 1px solid var(--line); padding: 13px 0; }
+summary { cursor: pointer; font-size: 13px; font-weight: 600; }
+.puzzle { padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: #090b17; }
+.puzzle label { display: block; color: var(--muted); font-size: 12px; margin-bottom: 8px; }
+.puzzle-row { display: flex; gap: 8px; }
+.puzzle input {
+  width: 100%; min-width: 0; padding: 10px; color: var(--ink);
+  background: #111426; border: 1px solid var(--line); border-radius: 9px;
+}
+.puzzle button { background: var(--gold); color: #171321; border: 0; border-radius: 9px; padding: 9px 14px; font-weight: 700; cursor: pointer; }
+.feedback { color: var(--gold); font-size: 12px; min-height: 24px; margin-top: 8px; }
+.status { padding: 12px 0; border-bottom: 1px solid var(--line); }
+.status:last-child { border: 0; }
+.status strong,.status span { display: block; }
+.status strong { font-size: 13px; }
+.status span { color: var(--muted); font-size: 12px; }
+.notice {
+  display: flex; gap: 15px; padding: 22px;
+  border: 1px solid #e1c07855; border-radius: 16px; background: #e1c0780b;
+}
+.notice-icon { color: var(--gold); font-size: 23px; }
+.notice h3 { margin: 0; font-size: 16px; }
+.notice p { color: var(--muted); font-size: 13px; margin-bottom: 0; }
+footer { border-top: 1px solid var(--line); padding: 28px 15px; text-align: center; color: #858ba7; font-size: 10px; letter-spacing: .12em; }
+@media(max-width:740px) { .grid { grid-template-columns: repeat(2,1fr); } }
+@media(max-width:540px) {
+  nav { padding: 10px 15px; }
+  .menu { display: block; }
+  .links { display: none; position: absolute; top: 52px; left: 0; right: 0; padding: 16px 20px; background: #0a0c18; border-bottom: 1px solid var(--line); flex-direction: column; }
+  .links.open { display: flex; }
+  .links a { font-size: 13px; }
+  .wrap { padding: 0 15px; }
+  .hero { padding: 52px 0 38px; }
+  h1 { letter-spacing: .04em; }
+  .subtitle { font-size: 9px; letter-spacing: .18em; }
+  .stat { padding: 13px 2px; }
+  .stat span { font-size: 8px; letter-spacing: 0; }
+  section { padding: 43px 0; }
+  .grid,.columns { grid-template-columns: 1fr; }
+  .puzzle-row { flex-direction: column; }
+}
+@media(prefers-reduced-motion:reduce) { html { scroll-behavior: auto; } * { transition: none!important; } }
 </style>
 </head>
 <body>
-<canvas id="stars"></canvas>
-<div class="wrap">
-
-  <header>
-    <div class="sigil"><span>◉</span></div>
-    <h1>LIL <span class="om">OMNIS</span></h1>
-    <div class="tag">One Connected Universe</div>
-    <p class="creed">
-      Six realms, sealed from one another for an age. In each, a chain hums like a heartbeat —
-      and small watchers stir at its edges, keeping pieces of a single, forgotten truth.
-      Collectors who cross the realms do not simply collect. <b>They remember.</b>
-    </p>
-    <div class="stats">
-      <div class="stat"><div class="n">666</div><div class="l">Collectibles</div></div>
-      <div class="stat"><div class="n">6</div><div class="l">Chapters</div></div>
-      <div class="stat"><div class="n">6</div><div class="l">Blockchains</div></div>
-      <div class="stat"><div class="n">1</div><div class="l">Universe</div></div>
-    </div>
-  </header>
-
-  <div class="div"></div>
-
-  <h2>The Six Gates</h2>
-  <div class="gates">
-    <div class="gate" data-ch="I">
-      <div class="glyph"><span>◈</span></div>
-      <div class="ch">Chapter I</div>
-      <div class="nm">The Awakening</div>
-      <div class="realm">First Realm</div>
-      <div class="seal">Sealed</div>
-    </div>
-    <div class="gate" data-ch="II">
-      <div class="glyph"><span>◇</span></div>
-      <div class="ch">Chapter II</div>
-      <div class="nm">???</div>
-      <div class="realm">Second Realm</div>
-      <div class="seal">Sealed</div>
-    </div>
-    <div class="gate" data-ch="III">
-      <div class="glyph"><span>✦</span></div>
-      <div class="ch">Chapter III</div>
-      <div class="nm">???</div>
-      <div class="realm">Third Realm</div>
-      <div class="seal">Sealed</div>
-    </div>
-    <div class="gate" data-ch="IV">
-      <div class="glyph"><span>❖</span></div>
-      <div class="ch">Chapter IV</div>
-      <div class="nm">???</div>
-      <div class="realm">Fourth Realm</div>
-      <div class="seal">Sealed</div>
-    </div>
-    <div class="gate" data-ch="V">
-      <div class="glyph"><span>✧</span></div>
-      <div class="ch">Chapter V</div>
-      <div class="nm">???</div>
-      <div class="realm">Fifth Realm</div>
-      <div class="seal">Sealed</div>
-    </div>
-    <div class="gate" data-ch="VI">
-      <div class="glyph"><span>◉</span></div>
-      <div class="ch">Chapter VI</div>
-      <div class="nm">The Omniscient</div>
-      <div class="realm">The Center of All</div>
-      <div class="seal">Sealed</div>
-    </div>
+<header>
+<nav aria-label="Main navigation">
+  <a class="brand" href="#home"><span>◉</span>LIL OMNIS</a>
+  <button class="menu" id="menuToggle" aria-expanded="false" aria-controls="navlinks">Menu ☰</button>
+  <div class="links" id="navlinks">
+    <a href="#realms">Six Realms</a><a href="#archive">The Archive</a>
+    <a href="#lore">Lore & Riddles</a><a href="#launch">Launch Status</a>
   </div>
-
-  <div class="codex">
-    <h3>Codex — Fragment 001</h3>
-    <p>
-      They were never separate worlds. The chains were never walls.
-      What the first collectors call luck, the oldest Omnis call <span style="color:var(--gold)">echoes</span> —
-      pieces of the same signal, surfacing on different shores.
-    </p>
-    <p class="frag">“Find one watcher and you have a picture. Find them all, and you have the map.”</p>
-    <div class="clues">
-      DISCOVERED CLUES <span class="dot">0</span> / <span class="dot">666</span>
-    </div>
+</nav>
+</header>
+<main id="home">
+<section class="hero wrap">
+  <div class="symbol" aria-hidden="true"><span>◉</span></div>
+  <div class="kicker">An Unfinished Map of a Connected Universe</div>
+  <h1>LIL <em>OMNIS</em></h1>
+  <div class="subtitle">Six Realms · One Hidden Truth</div>
+  <p class="intro">Six realms, sealed from one another for an age. In each, a chain hums like a heartbeat — and small watchers stir at its edges, keeping pieces of a single, forgotten truth. Those who cross the realms do not simply collect. <strong>They remember.</strong></p>
+  <div class="actions"><a class="btn primary" href="#realms">Explore the Six Gates ↓</a><a class="btn" href="#lore">Read the First Clues</a></div>
+  <div class="stats">
+    <div class="stat"><strong>666</strong><span>Planned Collectibles</span></div>
+    <div class="stat"><strong>6</strong><span>Realms</span></div>
+    <div class="stat"><strong>111</strong><span>Per Realm</span></div>
+    <div class="stat"><strong>1</strong><span>Connected Universe</span></div>
   </div>
+</section>
 
-  <div class="codex" style="margin-top:22px">
-    <h3>Codex — Fragment 002 · The Unnamed</h3>
-    <p>
-      The oldest question in every realm is not where the watchers go. It is
-      <span style="color:var(--gold)">who sent them.</span> No signature. No ledger. No key.
-      The shape was carved by a hand no chain records, and it surfaced on every shore at once —
-      the way the first coin began: an open hand, a sealed origin.
-    </p>
-    <p class="frag">“He is not hidden. He is simply not ours to name.”</p>
+<section class="wrap" id="realms">
+  <div class="heading"><div class="kicker">The Map Is Incomplete</div><h2>The Six Gates</h2><p>Choose a gate to read its first archive entry. Collection artwork stays hidden until launch.</p></div>
+  <div class="grid">
+    <article class="gate" style="--realm:#a99af0"><div class="gate-top"><div class="sig">◈</div><div class="chapter">Chapter I</div></div><h3>The Awakening</h3><div class="chain">Ethereum</div><p>Where the oldest signal first became impossible to ignore.</p><button data-realm="eth">Open archive entry ↗</button></article>
+    <article class="gate" style="--realm:#70aaff"><div class="gate-top"><div class="sig">◇</div><div class="chapter">Chapter II</div></div><h3>The Blue Passage</h3><div class="chain">Base</div><p>A quieter path for those willing to look beneath the surface.</p><button data-realm="base">Open archive entry ↗</button></article>
+    <article class="gate" style="--realm:#7bd6a2"><div class="gate-top"><div class="sig">✦</div><div class="chapter">Chapter III</div></div><h3>The Green Signal</h3><div class="chain">Robinhood Chain</div><p>A new threshold. Its symbols have not yet settled into place.</p><button data-realm="hood">Open archive entry ↗</button></article>
+    <article class="gate" style="--realm:#f0c76d"><div class="gate-top"><div class="sig">❖</div><div class="chapter">Chapter IV</div></div><h3>The Golden Index</h3><div class="chain">BNB Chain</div><p>Fragments of a ledger that remembers more than it records.</p><button data-realm="bnb">Open archive entry ↗</button></article>
+    <article class="gate" style="--realm:#d5a3f4"><div class="gate-top"><div class="sig">✧</div><div class="chapter">Chapter V</div></div><h3>The Shifting Current</h3><div class="chain">Solana</div><p>A fast-moving current carries echoes between distant shores.</p><button data-realm="sol">Open archive entry ↗</button></article>
+    <article class="gate" style="--realm:#78dbe4"><div class="gate-top"><div class="sig">◎</div><div class="chapter">Chapter VI</div></div><h3>The Unwritten</h3><div class="chain">Sui</div><p>At the edge of the map, the final gate points back to the beginning.</p><button data-realm="sui">Open archive entry ↗</button></article>
   </div>
+  <div class="detail" id="realmDetail" aria-live="polite" tabindex="-1"><div class="detail-meta" id="detailMeta"></div><h3 id="detailTitle"></h3><p id="detailText"></p><button class="btn" id="closeDetail">Close entry</button></div>
+</section>
 
-  <footer>
-    Lil Omnis · A Multichain Collection<br>
-    666 Collectibles · Six Chapters · One Connected Universe<br>
-    <span class="hint">some doors are not linked — they are found</span>
-  </footer>
+<section class="wrap" id="archive">
+  <div class="heading"><div class="kicker">Restricted Shelf · Visitor Access</div><h2>The Omni Archive</h2><p>A place for fragments, questions, and discoveries. The first shelves are open.</p></div>
+  <div class="columns">
+    <article class="panel"><div class="fragment">Codex · Fragment 001</div><h3>Echoes</h3><p>They were never separate worlds. The chains were never walls. What the first collectors call luck, the oldest Omnis call echoes — pieces of the same signal, surfacing on different shores.</p><div class="quote">“Find one watcher and you have a picture. Find them all, and you have the map.”</div></article>
+    <article class="panel"><div class="fragment">Codex · Fragment 002</div><h3>The Unnamed</h3><p>The oldest question in every realm is not where the watchers go. It is who sent them. No signature. No ledger. No key. The shape was carved by a hand no chain records, and it surfaced on every shore at once.</p><div class="quote">“He is not hidden. He is simply not ours to name.”</div></article>
+  </div>
+</section>
 
-</div>
+<section class="wrap" id="lore">
+  <div class="heading"><div class="kicker">Look Closer</div><h2>Riddles from the Margins</h2><p>Some clues are meant to be solved. Others change the question.</p></div>
+  <div class="columns">
+    <article class="panel"><div class="fragment">Riddle 001 · The First Echo</div><h3>What travels without moving?</h3><p>It crosses every boundary, leaves no footprints, and grows clearer when another hears it.</p><details><summary>Ask the archive for a hint</summary><p>It is not a person or an object. Think about a message repeated across distant places.</p></details><div class="puzzle"><label for="answer">Enter your answer</label><div class="puzzle-row"><input id="answer" maxlength="80" autocomplete="off" placeholder="Your answer…"><button id="checkAnswer">Submit</button></div><div class="feedback" id="puzzleFeedback" aria-live="polite"></div></div></article>
+    <article class="panel"><div class="fragment">Archive Notes</div><h3>Nothing here is a mint promise</h3><p>The Archive is a lore experience for the Lil Omnis universe. Realm entries and puzzles can be explored before collection artwork and mint details are ready.</p><div class="status"><strong>✧ Discover the lore</strong><span>Available now on this page.</span></div><div class="status"><strong>⌁ Collection reveals</strong><span>Held back until artwork and mint are ready.</span></div></article>
+  </div>
+</section>
+
+<section class="wrap" id="launch"><div class="notice"><div class="notice-icon">◈</div><div><h3>The gates are being prepared</h3><p>Lil Omnis is planned as 666 collectibles across six blockchain realms, with 111 assigned to each chapter. Artwork previews, mint details, and marketplace links will be added when the collection is finished and ready to launch. Nothing is being offered for mint on this page yet.</p></div></div></section>
+</main>
+<footer><p>LIL OMNIS · THE OMNI ARCHIVE</p><p>Six Realms · 666 Planned Collectibles · One Connected Universe</p><p>Some doors are not linked — they are found.</p></footer>
 <script>
 (function(){
-  var c=document.getElementById('stars'),x=c.getContext('2d'),w,h,pts=[];
-  function rs(){w=c.width=innerWidth;h=c.height=innerHeight;
-    pts=[];var n=Math.min(240,Math.floor(w*h/9000));
-    for(var i=0;i<n;i++)pts.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.4+.3,a:Math.random(),s:Math.random()*.012+.003});
-  }
-  rs();addEventListener('resize',rs);
-  function dr(){x.clearRect(0,0,w,h);
-    for(var i=0;i<pts.length;i++){var p=pts[i];
-      p.a+=p.s;var al=.25+Math.abs(Math.sin(p.a))*.7;
-      x.beginPath();x.arc(p.x,p.y,p.r,0,6.28);
-      x.fillStyle='rgba(216,208,255,'+al+')';x.fill();}
-    requestAnimationFrame(dr);}
-  dr();
+  var toggle=document.getElementById('menuToggle'),nav=document.getElementById('navlinks');
+  toggle.addEventListener('click',function(){var open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));});
+  nav.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){nav.classList.remove('open');toggle.setAttribute('aria-expanded','false');});});
+  var entries={
+    eth:{chapter:'Chapter I · Ethereum',title:'The Awakening',text:'The first surviving notes describe a signal mistaken for a coincidence. The oldest records do not say who heard it first — only that the same mark appeared in places that had never spoken to one another.'},
+    base:{chapter:'Chapter II · Base',title:'The Blue Passage',text:'A passage is not a destination. The Blue Passage teaches that a path can connect distant places without making them the same. What changes when the traveler changes, but the message remains?'},
+    hood:{chapter:'Chapter III · Robinhood Chain',title:'The Green Signal',text:'This entry is incomplete. A green mark appears beside the words “a new threshold.” The archive cannot yet tell whether it is a warning, an invitation, or a record of someone who crossed before the gate was named.'},
+    bnb:{chapter:'Chapter IV · BNB Chain',title:'The Golden Index',text:'The Golden Index contains references to things missing from the ledger. Its keeper believed a record could preserve a clue even after the object itself disappeared. The final line has been scratched away.'},
+    sol:{chapter:'Chapter V · Solana',title:'The Shifting Current',text:'The current carries fragments faster than the archive can classify them. The note attached to this gate reads: “Speed reveals the pattern, but patience reveals its meaning.”'},
+    sui:{chapter:'Chapter VI · Sui',title:'The Unwritten',text:'The final gate has no surviving origin story. Its symbol resembles the first mark in the archive, rotated once. Beneath it, someone wrote: “The end is only the beginning seen from the other side.”'}
+  };
+  var detail=document.getElementById('realmDetail');
+  document.querySelectorAll('[data-realm]').forEach(function(btn){btn.addEventListener('click',function(){var e=entries[btn.dataset.realm];document.getElementById('detailMeta').textContent=e.chapter;document.getElementById('detailTitle').textContent=e.title;document.getElementById('detailText').textContent=e.text;detail.classList.add('show');detail.focus();});});
+  document.getElementById('closeDetail').addEventListener('click',function(){detail.classList.remove('show');});
+  function check(){var v=document.getElementById('answer').value.trim().toLowerCase().replace(/[.!?]/g,''),out=document.getElementById('puzzleFeedback');if(!v){out.textContent='The archive awaits your answer.';}else if(['echo','an echo','sound','a sound','a message','message'].includes(v)){out.textContent='The archive accepts your answer: an echo. One fragment has been understood.';}else{out.textContent='Not quite. Look at the hint and listen for what is repeated.';}}
+  document.getElementById('checkAnswer').addEventListener('click',check);
+  document.getElementById('answer').addEventListener('keydown',function(e){if(e.key==='Enter')check();});
 })();
 </script>
 </body>
